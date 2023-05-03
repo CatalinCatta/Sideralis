@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Decals hatch 03 yellow Mat
-  m_Shader: {fileID: 4800000, guid: 13c02b14c4d048fa9653293d54f6e0e1, type: 3}
+  m_Name: Decal fan grey diffuse
+  m_Shader: {fileID: 4800000, guid: e260cfa7296ee7642b167f1eb5be5023, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -24,20 +24,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: cec8181b5bb503449a965a76db1aa452, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Cube:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DecalTex:
-        m_Texture: {fileID: 2800000, guid: 2fb64c287b024844d9a51eb573f1298d, type: 3}
-        m_Scale: {x: 5, y: 5}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8b7de7b6130dd7d468b3714bb27ad600, type: 3}
+        m_Texture: {fileID: 2800000, guid: d9274d591fbeb444faa8037e632b00c8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -50,14 +38,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - PixelSnap: 0
-    - _Cutoff: 0.12499999
     - _EnableExternalAlpha: 0
-    - _Shininess: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _ReflectColor: {r: 1, g: 1, b: 1, a: 0.5}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
