@@ -4,6 +4,7 @@ using UnityEngine;
  
 public class CameraController : MonoBehaviour
 {
+    private bool isMouseOverUI = false;
  
     private Camera cam;
     private float targetZoom;
@@ -19,9 +20,17 @@ public class CameraController : MonoBehaviour
 
     private bool isDragging = false;
     private Vector3 dragStartPos;
+    
+    public void OnPointerEnterUI()
+    {
+        isMouseOverUI = true;
+    }
 
+    public void OnPointerExitUI()
+    {
+        isMouseOverUI = false;
+    }
  
-    // Start is called before the first frame update
     void Start()
     {
         ResetCamera = Camera.main.transform.position;
@@ -29,10 +38,10 @@ public class CameraController : MonoBehaviour
         targetZoom = cam.orthographicSize;
     }
  
-    // Update is called once per frame
     void Update()
     {
-        float scrollData = Input.GetAxis("Mouse ScrollWheel");
+        if (isMouseOverUI) return;
+        var scrollData = Input.GetAxis("Mouse ScrollWheel");
         targetZoom -= scrollData * zoomFactor;
         targetZoom = Mathf.Clamp(targetZoom, 1f, 50f);
         cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerpSpeed);
@@ -69,38 +78,5 @@ public class CameraController : MonoBehaviour
             isDragging = false;
             StopAllCoroutines();
         }
-        //
-        // if (Input.GetMouseButtonDown(1))
-        // {
-        //     Origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // }
-        //
-        // if (Input.GetMouseButton(1))
-        // {
-        //     Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //     Vector3 move = Origin - pos;
-        //     Vector3 targetPos = Camera.main.transform.position + move;
-        //     Camera.main.transform.position = Vector3.SmoothDamp(Camera.main.transform.position, targetPos, ref velocity, smoothTime);
-        //     Origin = pos;
-        // }
-        // if (Input.GetMouseButton(1))
-        // {
-        //     Difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position;
-        //     if(!drag)
-        //     {
-        //         drag = true;
-        //         Origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //     }
-        // }
-        // else
-        // {
-        //     drag = false;
-        // }
-        // if (drag)
-        // {
-        //     Vector3 newPosition = Origin - Difference * 0.5f;
-        //     Camera.main.transform.position = Vector3.SmoothDamp(Camera.main.transform.position, newPosition, ref velocity, smoothTime);
-        // }
-
     }
 }
