@@ -1,86 +1,69 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class ConstructMaterial  : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-	public bool dragOnSurfaces = true;
-	
-	private readonly Dictionary<int,GameObject> _mDraggingIcons = new();
-	private readonly Dictionary<int, RectTransform> _mDraggingPlanes = new();
+	private Vector3 startPosition;
+	private GameObject draggingClone;
 
 	public void OnBeginDrag(PointerEventData eventData)
 	{
-		var canvas = FindInParents<Canvas>(gameObject);
-		if (canvas == null)
-			return;
+		startPosition = transform.position;
 
-		// We have clicked something that can be dragged.
-		// What we want to do is create an icon for this.
-		_mDraggingIcons[eventData.pointerId] = new GameObject("icon");
+		// Make draggable object invisible
+		var canvasGroup = GetComponent<CanvasGroup>();
+		canvasGroup.interactable = false;
+		canvasGroup.alpha = 0;
 
-		_mDraggingIcons[eventData.pointerId].transform.SetParent (canvas.transform, false);
-		_mDraggingIcons[eventData.pointerId].transform.SetAsLastSibling();
-		
-		var image = _mDraggingIcons[eventData.pointerId].AddComponent<Image>();
-		// The icon will be under the cursor.
-		// We want it to be ignored by the event system.
-		var group = _mDraggingIcons[eventData.pointerId].AddComponent<CanvasGroup>();
-		group.blocksRaycasts = false;
+		// Create dragging clone
+		draggingClone = new GameObject("DraggingClone");
+		draggingClone.transform.SetParent(transform.parent);
+		draggingClone.transform.SetAsLastSibling(); // Render on top
+		draggingClone.transform.localScale = Vector3.one;
 
-		image.sprite = GetComponent<Image>().sprite;
-		image.SetNativeSize();
+		var draggingImage = draggingClone.AddComponent<Image>();
+		draggingImage.maskable = false;
+		draggingImage.sprite = GetComponent<Image>().sprite;
+		// Debug.Log(GetComponent<RectTransform>().sizeDelta);
+		draggingImage.color = new Color(1f, 1f, 1f, 0.5f); // Semi-transparent
+
+		var mainCamera = Camera.main;
+		var cameraSize = mainCamera.orthographicSize / 42;
 		
-		if (dragOnSurfaces)
-			_mDraggingPlanes[eventData.pointerId] = transform as RectTransform;
-		else
-			_mDraggingPlanes[eventData.pointerId]  = canvas.transform as RectTransform;
+		draggingImage.rectTransform.sizeDelta = new Vector2(70f / cameraSize, 28f / cameraSize);
 		
-		SetDraggedPosition(eventData);
+		draggingClone.transform.position = Input.mousePosition;
+		// draggingClone.maskable = true;
 	}
 
 	public void OnDrag(PointerEventData eventData)
 	{
-		if (_mDraggingIcons[eventData.pointerId] != null)
-			SetDraggedPosition(eventData);
-	}
-
-	private void SetDraggedPosition(PointerEventData eventData)
-	{
-		if (dragOnSurfaces && eventData.pointerEnter != null && eventData.pointerEnter.transform as RectTransform != null)
-			_mDraggingPlanes[eventData.pointerId] = eventData.pointerEnter.transform as RectTransform;
-		
-		var rt = _mDraggingIcons[eventData.pointerId].GetComponent<RectTransform>();
-		if (!RectTransformUtility.ScreenPointToWorldPointInRectangle(_mDraggingPlanes[eventData.pointerId],
-			    eventData.position, eventData.pressEventCamera, out var globalMousePos)) return;
-		rt.position = globalMousePos;
-		rt.rotation = _mDraggingPlanes[eventData.pointerId].rotation;
+		draggingClone.transform.position = Input.mousePosition;
 	}
 
 	public void OnEndDrag(PointerEventData eventData)
 	{
-		if (_mDraggingIcons[eventData.pointerId] != null)
-			Destroy(_mDraggingIcons[eventData.pointerId]);
+		// Make draggable object visible again
+		CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+		canvasGroup.interactable = true;
+		canvasGroup.alpha = 1;
 
-		_mDraggingIcons[eventData.pointerId] = null;
-	}
+		// Destroy dragging clone
+		Destroy(draggingClone);
 
-	private static T FindInParents<T>(GameObject go) where T : Component
-	{
-		if (go == null) return null;
-		var comp = go.GetComponent<T>();
-
-		if (comp != null)
-			return comp;
-		
-		var t = go.transform.parent;
-		while (t != null && comp == null)
-		{
-			comp = t.gameObject.GetComponent<T>();
-			t = t.parent;
-		}
-		return comp;
+		// Check if dropped onto a drop zone in the game
+		// Ray ray = Camera.main.ScreenPointToRay(eventData.position);
+		// RaycastHit hit;
+		// if (Physics.Raycast(ray, out hit))
+		// {
+		// 	GameObject dropZone = hit.collider.gameObject;
+		// 	if (dropZone.GetComponent<DropZone>() != null)
+		// 	{
+		// 		// Send drop event to drop zone object
+		// 		ExecuteEvents.Execute<IDropHandler>(dropZone, eventData, ExecuteEvents.dropHandler);
+		// 	}
+		// }
 	}
 }

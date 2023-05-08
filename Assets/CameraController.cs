@@ -4,7 +4,7 @@ using UnityEngine;
  
 public class CameraController : MonoBehaviour
 {
-    private bool isMouseOverUI = false;
+    private bool isMouseOverUI;
  
     private Camera cam;
     private float targetZoom;
