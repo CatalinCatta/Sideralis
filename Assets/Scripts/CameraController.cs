@@ -14,11 +14,7 @@ public class CameraController : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     [SerializeField] private float smoothTime = 0.3f;
     
-    private Vector3 Origin;
-    private Vector3 Difference;
-    private Vector3 ResetCamera;
-
-    private bool isDragging = false;
+    private bool isDragging;
     private Vector3 dragStartPos;
     
     public void OnPointerEnterUI()
@@ -33,7 +29,6 @@ public class CameraController : MonoBehaviour
  
     void Start()
     {
-        ResetCamera = Camera.main.transform.position;
         cam = Camera.main;
         targetZoom = cam.orthographicSize;
     }
@@ -50,14 +45,14 @@ public class CameraController : MonoBehaviour
     private IEnumerator StartDrag(Vector3 startPos)
     {
         yield return new WaitUntil(() => isDragging);
-        Vector3 prevPos = startPos;
+        var prevPos = startPos;
         while (isDragging)
         {
-            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 move = prevPos - pos;
-            float dist = move.magnitude;
-            float smooth = Mathf.Lerp(0.01f, 0.1f, dist / 50f);
-            Vector3 targetPos = Camera.main.transform.position + move;
+            var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var move = prevPos - pos;
+            var dist = move.magnitude;
+            var smooth = Mathf.Lerp(0.01f, 0.1f, dist / 50f);
+            var targetPos = Camera.main.transform.position + move;
             Camera.main.transform.position = Vector3.SmoothDamp(Camera.main.transform.position, targetPos, ref velocity, smooth, Mathf.Infinity, Time.deltaTime);
             prevPos = pos;
             yield return null;
