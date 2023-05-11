@@ -64,8 +64,8 @@ public class SpaceShipManager : MonoBehaviour
                 break;
          
             case RoomType.RoadRotated:
-                if (IsBlocked(_ship[(int)x, (int)y - 1], 0f, 180f, 270f) &&
-                    IsBlocked(_ship[(int)x, (int)y + 1], 0f, 90f, 0f)) return;
+                if (IsBlocked(_ship[(int)x, (int)y - 1], 90f, 0f, 270f) &&
+                    IsBlocked(_ship[(int)x, (int)y + 1], 90f, 90f, 180f)) return;
                 RemoveRoom(((int)x, (int)y));
                 AddToShip(_actorManager.CreateObject(position, RoomType.RoadRotated), (x, y));
                 AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Left, Direction.Right);
@@ -79,7 +79,7 @@ public class SpaceShipManager : MonoBehaviour
          
             case RoomType.LRoad:
                 if (IsBlocked(_ship[(int)x - 1, (int)y], 0f, 180f, 270f) &&
-                    IsBlocked(_ship[(int)x, (int)y + 1], 0f, 90f, 0f)) return;
+                    IsBlocked(_ship[(int)x, (int)y + 1], 90f, 90f, 180f)) return;
                 RemoveRoom(((int)x, (int)y));
                 AddToShip(_actorManager.CreateObject(position, RoomType.LRoad), (x, y));
                 AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Up, Direction.Right);
@@ -87,23 +87,23 @@ public class SpaceShipManager : MonoBehaviour
        
             case RoomType.LRoadRotated90:
                 if (IsBlocked(_ship[(int)x - 1, (int)y], 0f, 180f, 270f) &&
-                    IsBlocked(_ship[(int)x, (int)y - 1], 0f, 90f, 0f)) return;
+                    IsBlocked(_ship[(int)x, (int)y - 1], 90f, 0f, 270f)) return;
                 RemoveRoom(((int)x, (int)y));
                 AddToShip(_actorManager.CreateObject(position, RoomType.LRoadRotated90), (x, y));
                 AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Up, Direction.Left);
                 break;
            
             case RoomType.LRoadRotated180:
-                if (IsBlocked(_ship[(int)x + 1, (int)y], 0f, 180f, 270f) &&
-                    IsBlocked(_ship[(int)x, (int)y - 1], 0f, 90f, 0f)) return;
+                if (IsBlocked(_ship[(int)x + 1, (int)y], 0f, 90f, 0f) &&
+                    IsBlocked(_ship[(int)x, (int)y - 1], 90f, 0f, 270f)) return;
                 RemoveRoom(((int)x, (int)y));
                 AddToShip(_actorManager.CreateObject(position, RoomType.LRoadRotated180), (x, y));
                 AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Left, Direction.Down);
                 break;
           
             case RoomType.LRoadRotated270:
-                if (IsBlocked(_ship[(int)x + 1, (int)y], 0f, 180f, 270f) &&
-                    IsBlocked(_ship[(int)x, (int)y + 1], 0f, 90f, 0f)) return;
+                if (IsBlocked(_ship[(int)x + 1, (int)y], 0f, 90f, 0f) &&
+                    IsBlocked(_ship[(int)x, (int)y + 1], 90f, 90f, 180f)) return;
                 RemoveRoom(((int)x, (int)y));
                 AddToShip(_actorManager.CreateObject(position, RoomType.LRoadRotated270), (x, y));
                 AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Down, Direction.Right);
@@ -111,13 +111,8 @@ public class SpaceShipManager : MonoBehaviour
         }
     }
 
-    private void AddToShip(GameObject construction, params (double x, double y)[] coords)
-    {
-        foreach (var coord in coords)
-        {
-            _ship[(int)coord.x, (int)coord.y] = construction;
-        }
-    }
+    private void AddToShip(GameObject construction, params (double x, double y)[] coords) => coords.ToList().ForEach(
+        coord => _ship[(int)coord.x, (int)coord.y] = construction);
     
     private static double GetXCoordinate(Vector2 position) => (double)-Mathf.RoundToInt(position.y) / 10 + 24.5;
 
