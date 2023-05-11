@@ -1,6 +1,3 @@
-﻿using UnityEngine;
-
-public class LRoad : Road
+﻿public class LRoad : Road
 {
-    
 }

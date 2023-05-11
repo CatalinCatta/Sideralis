@@ -1,6 +1,3 @@
-﻿using UnityEngine;
-
-public class LinearRoad : Road
+﻿public class LinearRoad : Road
 {
-    
 }

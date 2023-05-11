@@ -1,12 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Mkey
 {
-    public enum Mode { IOS, STANDALONE, ANDROID, WEBGL }
+    public enum Mode
+    {
+        IOS,
+        STANDALONE,
+        ANDROID,
+        WEBGL
+    }
+
     public class TopMenuController : MonoBehaviour
     {
         public Mode mode;
@@ -16,7 +21,7 @@ namespace Mkey
         public Toggle mouse;
         public Button nextButton;
 
-        void Awake()
+        private void Awake()
         {
 #if UNITY_STANDALONE_WIN
             mode = Mode.STANDALONE;
@@ -33,13 +38,25 @@ namespace Mkey
 #endif
         }
 
-        void Start()
+        private void Start()
         {
             HideUnusedToggle();
-            touch.onValueChanged.AddListener((on) => { if (on) CameraFollow.Instance.track = TrackMode.Touch; });
-            keyboard.onValueChanged.AddListener((on) => { if (on) CameraFollow.Instance.track = TrackMode.Keyboard; });
-            gyro.onValueChanged.AddListener((on) => { if (on) CameraFollow.Instance.track = TrackMode.Gyroscope; });
-            mouse.onValueChanged.AddListener((on) => { if (on) CameraFollow.Instance.track = TrackMode.Mouse; });
+            touch.onValueChanged.AddListener(on =>
+            {
+                if (on) CameraFollow.Instance.track = TrackMode.Touch;
+            });
+            keyboard.onValueChanged.AddListener(on =>
+            {
+                if (on) CameraFollow.Instance.track = TrackMode.Keyboard;
+            });
+            gyro.onValueChanged.AddListener(on =>
+            {
+                if (on) CameraFollow.Instance.track = TrackMode.Gyroscope;
+            });
+            mouse.onValueChanged.AddListener(on =>
+            {
+                if (on) CameraFollow.Instance.track = TrackMode.Mouse;
+            });
             nextButton.onClick.AddListener(NextButtonClick);
         }
 
@@ -68,35 +85,32 @@ namespace Mkey
                     mouse.gameObject.SetActive(!IsMobileDevice());
                     break;
             }
+
             touch.gameObject.SetActive(true);
             touch.isOn = true;
         }
 
         private void NextButtonClick()
         {
-            int sceneCount = SceneManager.sceneCountInBuildSettings;
-            int activeScene = SceneManager.GetActiveScene().buildIndex;
-            int nextScene = (int)Mathf.Repeat(++activeScene, sceneCount);
+            var sceneCount = SceneManager.sceneCountInBuildSettings;
+            var activeScene = SceneManager.GetActiveScene().buildIndex;
+            var nextScene = (int)Mathf.Repeat(++activeScene, sceneCount);
             SceneManager.LoadScene(nextScene);
         }
 
         /// <summary>
-        /// Return true touch pad run on mobile device
+        ///     Return true touch pad run on mobile device
         /// </summary>
         public static bool IsMobileDevice()
         {
             //check if our current system info equals a desktop
             if (SystemInfo.deviceType == DeviceType.Desktop)
-            {
                 //we are on a desktop device, so don't use touch
                 return false;
-            }
             //if it isn't a desktop, lets see if our device is a handheld device aka a mobile device
-            else if (SystemInfo.deviceType == DeviceType.Handheld)
-            {
+            if (SystemInfo.deviceType == DeviceType.Handheld)
                 //we are on a mobile device, so lets use touch input
                 return true;
-            }
             return false;
         }
     }

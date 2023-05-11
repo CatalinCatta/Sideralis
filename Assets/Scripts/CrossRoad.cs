@@ -1,6 +1,3 @@
-﻿using UnityEngine;
-
-public class CrossRoad : Road
+﻿public class CrossRoad : Road
 {
-    
 }

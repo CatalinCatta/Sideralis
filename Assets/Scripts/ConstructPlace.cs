@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ConstructPlace: MonoBehaviour, IDropHandler
+public class ConstructPlace : MonoBehaviour, IDropHandler
 {
     private SpaceShipManager _spaceShipManager;
 
@@ -9,9 +9,10 @@ public class ConstructPlace: MonoBehaviour, IDropHandler
     {
         _spaceShipManager = FindObjectOfType<SpaceShipManager>();
     }
-    
+
     public void OnDrop(PointerEventData eventData)
     {
-        _spaceShipManager.CreateRoom(eventData.pointerDrag.GetComponent<ConstructMaterial>().roomType, transform.position);
+        _spaceShipManager.CreateRoom(eventData.pointerDrag.GetComponent<ConstructMaterial>().roomType,
+            transform.position);
     }
 }

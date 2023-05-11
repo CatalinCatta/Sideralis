@@ -1,12 +1,13 @@
 ﻿using UnityEditor;
-
 using UnityEngine;
+
 namespace Mkey
 {
     [CustomEditor(typeof(SpriteParallax))]
     public class SpriteParallaxEditor : Editor
     {
         private bool showDefault;
+
         public override void OnInspectorGUI()
         {
             var script = target as SpriteParallax;
@@ -66,10 +67,7 @@ namespace Mkey
             EditorGUILayout.Space();
             EditorGUILayout.Space();
             EditorGUI.indentLevel += 1;
-            if (showDefault = EditorGUILayout.Foldout(showDefault, "Default Inspector"))
-            {
-                DrawDefaultInspector();
-            }
+            if (showDefault = EditorGUILayout.Foldout(showDefault, "Default Inspector")) DrawDefaultInspector();
             EditorGUI.indentLevel -= 1;
             EditorGUILayout.Space();
             EditorGUILayout.Space();
