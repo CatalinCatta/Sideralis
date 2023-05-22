@@ -8,7 +8,7 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
 {
     [SerializeField] private GameObject parent;
 
-    [SerializeField] public RoomType roomType; // = RoomType.Road;
+    [SerializeField] public RoomType roomType;
 
     private GameObject _draggingClone;
     private Transform _draggingCloneTransform;

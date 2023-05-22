@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ActorManager : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class ActorManager : MonoBehaviour
     [SerializeField] private Transform constructPlaceParent;
 
     [SerializeField] private Transform spaceSheep;
+
+    public int selectedCrewNumber;
+
+    public Room curentRoom;
 
     public GameObject CreateObject(Vector2 position, RoomType roomType) => roomType switch
     {

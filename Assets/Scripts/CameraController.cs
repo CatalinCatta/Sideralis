@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour
     private Vector3 dragStartPos;
 
     private bool isDragging;
-    private bool isMouseOverUI;
+    public bool isMouseOverUI;
     private float targetZoom;
 
     private Vector3 velocity = Vector3.zero;

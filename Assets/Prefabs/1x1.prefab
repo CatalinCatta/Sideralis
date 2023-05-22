@@ -192,7 +192,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209082
+  m_InstanceId: 94918
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -450,7 +450,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   m_ShapePathHash: 160822549
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209110
+  m_InstanceId: 94946
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0}
@@ -465,7 +465,6 @@ GameObject:
   - component: {fileID: 1144134431299565026}
   - component: {fileID: 1144134431299565025}
   - component: {fileID: 1144134431299565024}
-  - component: {fileID: 1144134431299565027}
   m_Layer: 6
   m_Name: Floor
   m_TagString: Untagged
@@ -481,7 +480,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1144134431299565029}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -538,19 +537,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1144134431299565027
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1144134431299565029}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1144134431335494421
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,7 +597,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   m_ShapePathHash: 160822549
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209128
+  m_InstanceId: 94964
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0}
@@ -739,7 +725,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209136
+  m_InstanceId: 94972
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -803,7 +789,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   m_ShapePathHash: 160822549
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209144
+  m_InstanceId: 94980
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0}
@@ -931,7 +917,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209158
+  m_InstanceId: 94994
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -993,6 +979,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1144134431469425387}
   - component: {fileID: 1154683861312315093}
+  - component: {fileID: 3433804341748014818}
+  - component: {fileID: 1307894175264850535}
   m_Layer: 6
   m_Name: 1x1
   m_TagString: Untagged
@@ -1030,6 +1018,78 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51862385c6e5484d999cb9a12086a52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  crews: []
+--- !u!114 &3433804341748014818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144134431469425386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1154683861312315093}
+          m_TargetAssemblyTypeName: Room, Assembly-CSharp
+          m_MethodName: AddMeToActorManager
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1154683861312315093}
+          m_TargetAssemblyTypeName: Room, Assembly-CSharp
+          m_MethodName: RemoveMeFromActorManager
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+--- !u!61 &1307894175264850535
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144134431469425386}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.8, y: 0.8}
+  m_EdgeRadius: 0
 --- !u!1 &1144134431483834721
 GameObject:
   m_ObjectHideFlags: 0
@@ -1154,7 +1214,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209182
+  m_InstanceId: 95018
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -1265,7 +1325,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1144134431538865631}
   - component: {fileID: 1144134431538865628}
-  - component: {fileID: 1144134431538865629}
   m_Layer: 6
   m_Name: Door
   m_TagString: Wall
@@ -1316,36 +1375,10 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209194
+  m_InstanceId: 95030
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
---- !u!61 &1144134431538865629
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1144134431538865630}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!1 &1144134431619726342
 GameObject:
   m_ObjectHideFlags: 0
@@ -1470,7 +1503,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209206
+  m_InstanceId: 95042
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -1598,7 +1631,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209218
+  m_InstanceId: 95054
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -1856,7 +1889,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209242
+  m_InstanceId: 95078
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -2259,7 +2292,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209290
+  m_InstanceId: 95126
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -2354,7 +2387,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1144134432113463548}
   - component: {fileID: 1144134432113463549}
-  - component: {fileID: 1144134432113463546}
   m_Layer: 6
   m_Name: Door
   m_TagString: Wall
@@ -2405,36 +2437,10 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209308
+  m_InstanceId: 95144
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
---- !u!61 &1144134432113463546
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1144134432113463551}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!1 &1144134432131248780
 GameObject:
   m_ObjectHideFlags: 0
@@ -2542,7 +2548,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1144134432131406065}
   - component: {fileID: 1144134432131406078}
-  - component: {fileID: 1144134432131406079}
   m_Layer: 6
   m_Name: Door
   m_TagString: Wall
@@ -2593,36 +2598,10 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209326
+  m_InstanceId: 95162
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
---- !u!61 &1144134432131406079
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1144134432131406064}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!1 &1144134432131757757
 GameObject:
   m_ObjectHideFlags: 0
@@ -2747,7 +2726,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209336
+  m_InstanceId: 95172
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -2811,7 +2790,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   m_ShapePathHash: 160822549
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209344
+  m_InstanceId: 95180
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0}
@@ -3019,7 +2998,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1144134432278954545}
   - component: {fileID: 1144134432278954558}
-  - component: {fileID: 1144134432278954559}
   m_Layer: 6
   m_Name: Door
   m_TagString: Wall
@@ -3070,36 +3048,10 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209372
+  m_InstanceId: 95208
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
---- !u!61 &1144134432278954559
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1144134432278954544}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!1 &1144134432308921237
 GameObject:
   m_ObjectHideFlags: 0
@@ -3224,7 +3176,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209382
+  m_InstanceId: 95218
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -3594,7 +3546,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209416
+  m_InstanceId: 95252
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -3722,7 +3674,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209430
+  m_InstanceId: 95266
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -3850,7 +3802,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209446
+  m_InstanceId: 95282
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -3914,7 +3866,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   m_ShapePathHash: 160822549
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209454
+  m_InstanceId: 95290
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0}
@@ -4172,7 +4124,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209474
+  m_InstanceId: 95310
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -4300,7 +4252,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209488
+  m_InstanceId: 95324
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -4475,7 +4427,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   m_ShapePathHash: 160822549
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209500
+  m_InstanceId: 95336
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0}
@@ -4636,7 +4588,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   m_ShapePathHash: 160822549
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209516
+  m_InstanceId: 95352
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0}
@@ -5090,7 +5042,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   m_ShapePathHash: 160822549
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209568
+  m_InstanceId: 95404
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0}
@@ -5218,7 +5170,7 @@ MonoBehaviour:
   - {x: 0.4999997, y: -0.49999988, z: 0}
   m_ShapePathHash: 844499080
   m_Mesh: {fileID: 0}
-  m_InstanceId: 209578
+  m_InstanceId: 95414
   m_LocalBounds:
     m_Center: {x: -0.00000020861626, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
