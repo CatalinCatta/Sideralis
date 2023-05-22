@@ -4,71 +4,71 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private float zoomLerpSpeed = 10;
-
-    private Camera cam;
-    private Vector3 dragStartPos;
-
-    private bool isDragging;
+    private const float ZoomFactor = 3f;
+    private Camera _cam;
+    private Vector3 _dragStartPos;
+    private Vector3 _velocity = Vector3.zero;
+    private bool _isDragging;
+    private float _targetZoom;
     public bool isMouseOverUI;
-    private float targetZoom;
-
-    private Vector3 velocity = Vector3.zero;
-    private readonly float zoomFactor = 3f;
 
     private void Start()
     {
-        cam = Camera.main;
-        targetZoom = cam.orthographicSize;
+        _cam = Camera.main;
+        _targetZoom = _cam!.orthographicSize;
     }
 
     private void Update()
     {
         if (isMouseOverUI) return;
         var scrollData = Input.GetAxis("Mouse ScrollWheel");
-        targetZoom -= scrollData * zoomFactor;
-        targetZoom = Mathf.Clamp(targetZoom, 1f, 50f);
-        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerpSpeed);
+        _targetZoom -= scrollData * ZoomFactor;
+        _targetZoom = Mathf.Clamp(_targetZoom, 1f, 50f);
+        _cam.orthographicSize = Mathf.Lerp(_cam.orthographicSize, _targetZoom, Time.deltaTime * zoomLerpSpeed);
     }
 
     private void LateUpdate()
     {
         if (Input.GetMouseButtonDown(1))
         {
-            isDragging = true;
-            dragStartPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            StartCoroutine(StartDrag(dragStartPos));
+            _isDragging = true;
+            _dragStartPos = _cam.ScreenToWorldPoint(Input.mousePosition);
+            StartCoroutine(StartDrag(_dragStartPos));
         }
 
-        if (Input.GetMouseButtonUp(1))
-        {
-            isDragging = false;
-            StopAllCoroutines();
-        }
+        if (!Input.GetMouseButtonUp(1)) return;
+        _isDragging = false;
+        StopAllCoroutines();
     }
 
-    public void OnPointerEnterUI()
-    {
+
+    /// <summary>
+    /// Sets the isMouseOverUI flag to indicate whether the mouse is over a UI element.
+    /// </summary>
+    public void OnPointerEnterUI() => 
         isMouseOverUI = true;
-    }
 
-    public void OnPointerExitUI()
-    {
+    /// <summary>
+    /// Clears the isMouseOverUI flag to indicate that the mouse is not over a UI element.
+    /// </summary>
+    public void OnPointerExitUI() => 
         isMouseOverUI = false;
-    }
 
     private IEnumerator StartDrag(Vector3 startPos)
     {
-        yield return new WaitUntil(() => isDragging);
+        yield return new WaitUntil(() => _isDragging);
         var prevPos = startPos;
-        while (isDragging)
+        while (_isDragging)
         {
-            var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var pos = _cam.ScreenToWorldPoint(Input.mousePosition);
             var move = prevPos - pos;
             var dist = move.magnitude;
             var smooth = Mathf.Lerp(0.01f, 0.1f, dist / 50f);
-            var targetPos = Camera.main.transform.position + move;
-            Camera.main.transform.position = Vector3.SmoothDamp(Camera.main.transform.position, targetPos, ref velocity,
+            var position = _cam.transform.position;
+            var targetPos = position + move;
+            position = Vector3.SmoothDamp(position, targetPos, ref _velocity,
                 smooth, Mathf.Infinity, Time.deltaTime);
+            _cam.transform.position = position;
             prevPos = pos;
             yield return null;
         }

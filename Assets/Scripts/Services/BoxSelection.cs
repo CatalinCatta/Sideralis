@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class BoxSelection : MonoBehaviour
 {
-    private LineRenderer _lineRenderer;
-    private Vector3 _initialMousePosition, _currentMousePosition;
-    private BoxCollider2D _boxCollider;
     private ActorManager _actorManager;
+    private BoxCollider2D _boxCollider;
     private CameraController _camera;
+    private Vector3 _initialMousePosition, _currentMousePosition;
+    private LineRenderer _lineRenderer;
 
-    void Start()
+    private void Start()
     {
         _camera = FindObjectOfType<CameraController>();
         _actorManager = FindObjectOfType<ActorManager>();
@@ -16,12 +16,12 @@ public class BoxSelection : MonoBehaviour
         _lineRenderer.positionCount = 0;
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0) && _actorManager.selectedCrewNumber == 0 && !_camera.isMouseOverUI)
         {
             _lineRenderer.positionCount = 4;
-            _initialMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _initialMousePosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
             _lineRenderer.SetPosition(0, new Vector3(_initialMousePosition.x, _initialMousePosition.y, -8f));
             _lineRenderer.SetPosition(1, new Vector3(_initialMousePosition.x, _initialMousePosition.y, -8f));
             _lineRenderer.SetPosition(2, new Vector3(_initialMousePosition.x, _initialMousePosition.y, -8f));
@@ -29,12 +29,12 @@ public class BoxSelection : MonoBehaviour
 
             _boxCollider = gameObject.AddComponent<BoxCollider2D>();
             _boxCollider.isTrigger = true;
-            _boxCollider.offset = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            _boxCollider.offset = transform.position;
         }
 
         if (Input.GetMouseButton(0) && _lineRenderer.positionCount != 0)
         {
-            _currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _currentMousePosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
             _lineRenderer.SetPosition(0, new Vector3(_initialMousePosition.x, _initialMousePosition.y, -8f));
             _lineRenderer.SetPosition(1, new Vector3(_initialMousePosition.x, _currentMousePosition.y, -8f));
             _lineRenderer.SetPosition(2, new Vector3(_currentMousePosition.x, _currentMousePosition.y, -8f));
@@ -47,11 +47,11 @@ public class BoxSelection : MonoBehaviour
                 Mathf.Abs(_initialMousePosition.y - _currentMousePosition.y));
         }
 
-        if (Input.GetMouseButtonUp(0))
-        { 
-            _lineRenderer.positionCount = 0;
-            Destroy(_boxCollider);
-            transform.position = Vector3.zero;
-        }
+        if (!Input.GetMouseButtonUp(0)) 
+            return;
+        
+        _lineRenderer.positionCount = 0;
+        Destroy(_boxCollider);
+        transform.position = Vector3.zero;
     }
 }

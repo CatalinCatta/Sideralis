@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
@@ -8,9 +7,7 @@ using UnityEngine.UI;
 public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] private GameObject parent;
-
-    [FormerlySerializedAs("roomType")] [SerializeField] public ObjectType objectType;
-
+    [SerializeField] public ObjectType objectType;
     private GameObject _draggingClone;
     private Transform _draggingCloneTransform;
 
@@ -23,24 +20,23 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
         _draggingCloneTransform = _draggingClone.transform;
         _draggingCloneTransform.SetParent(parent.transform);
-        _draggingCloneTransform.SetAsLastSibling(); // Render on top
+        _draggingCloneTransform.SetAsLastSibling();
 
         var rb = _draggingClone.AddComponent<Rigidbody2D>();
         rb.isKinematic = true;
 
         var draggingImage = _draggingClone.AddComponent<SpriteRenderer>();
-
         draggingImage.sprite = GetComponent<Image>().sprite;
-        draggingImage.color = new Color(1f, 1f, 1f, 0.5f); // Semi-transparent
+        draggingImage.color = new Color(1f, 1f, 1f, 0.5f);
 
-        var cameraPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var cameraPosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
         _draggingCloneTransform.position = new Vector3(cameraPosition.x, cameraPosition.y, -5f);
         _draggingCloneTransform.localScale = new Vector3(5.5f, 5.5f, 1f);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        var cameraPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var cameraPosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
         _draggingCloneTransform.position = new Vector3(cameraPosition.x, cameraPosition.y, -5f);
     }
 
