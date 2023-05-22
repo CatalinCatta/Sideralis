@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class Crew : MonoBehaviour
@@ -6,7 +7,8 @@ public class Crew : MonoBehaviour
     private bool _crewSelected;
     private bool _selectingCrew;
     private ActorManager _actorManager;
-
+    public Room room;
+    
     void Start()
     {
         _actorManager = FindObjectOfType<ActorManager>();
@@ -33,7 +35,9 @@ public class Crew : MonoBehaviour
     {
         if (_crewSelected && Input.GetMouseButtonDown(0) && !_selectingCrew && _actorManager.curentRoom != null && _actorManager.curentRoom.CrewSpaceLeft>= _actorManager.selectedCrewNumber)
         {
-            Debug.Log(_actorManager.curentRoom.crews.Length);
+            room.crews = room.crews.Where(crew => crew != this).ToList();
+            _actorManager.curentRoom.crews.Add(this);
+            room = _actorManager.curentRoom;
             var screenToWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = new Vector3(screenToWorldPoint.x, screenToWorldPoint.y, -5f);
             _crewSelected = false;
