@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
@@ -8,7 +9,7 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
 {
     [SerializeField] private GameObject parent;
 
-    [SerializeField] public RoomType roomType;
+    [FormerlySerializedAs("roomType")] [SerializeField] public ObjectType objectType;
 
     private GameObject _draggingClone;
     private Transform _draggingCloneTransform;

@@ -436,7 +436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1055005839}
-  roomType: 10
+  objectType: 10
 --- !u!225 &188868090
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -513,6 +513,7 @@ MonoBehaviour:
   road: {fileID: 5301913628617156287, guid: 58a520c0f5e5f2145ba32422ef501eee, type: 3}
   crossRoad: {fileID: 4985443457942632628, guid: d78a21d6634420f43bcb42d680ed39be, type: 3}
   lRoad: {fileID: 5887852453952457717, guid: dfd36ec21469a8f49ba6fc25380e8dab, type: 3}
+  crew: {fileID: 4171901122111014050, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
   constructPlaceParent: {fileID: 1055005840}
   spaceSheep: {fileID: 1464754251}
   selectedCrewNumber: 0
@@ -736,7 +737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1055005839}
-  roomType: 6
+  objectType: 6
 --- !u!225 &325143530
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1120,7 +1121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1055005839}
-  roomType: 2
+  objectType: 2
 --- !u!225 &434859749
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1251,7 +1252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1055005839}
-  roomType: 7
+  objectType: 7
 --- !u!225 &440531998
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1976,7 +1977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1055005839}
-  roomType: 4
+  objectType: 4
 --- !u!225 &932632273
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2107,7 +2108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1055005839}
-  roomType: 8
+  objectType: 8
 --- !u!225 &978435119
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2333,7 +2334,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1464754251}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1242444779
 GameObject:
@@ -2823,7 +2824,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1862531358}
   - {fileID: 1055005840}
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -3498,7 +3498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1055005839}
-  roomType: 3
+  objectType: 3
 --- !u!225 &1651072660
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3959,7 +3959,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1055005839}
-  roomType: 9
+  objectType: 9
 --- !u!225 &1776878374
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4159,68 +4159,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1852076533}
   m_CullTransparentMesh: 0
---- !u!1001 &1862531357
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1464754251}
-    m_Modifications:
-    - target: {fileID: 4171901122111014050, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-      propertyPath: m_Name
-      value: Crew
-      objectReference: {fileID: 0}
-    - target: {fileID: 4171901122111014055, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4171901122111014055, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4171901122111014055, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.38
-      objectReference: {fileID: 0}
-    - target: {fileID: 4171901122111014055, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.42
-      objectReference: {fileID: 0}
-    - target: {fileID: 4171901122111014055, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4171901122111014055, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4171901122111014055, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4171901122111014055, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4171901122111014055, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4171901122111014055, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4171901122111014055, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
---- !u!4 &1862531358 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4171901122111014055, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-  m_PrefabInstance: {fileID: 1862531357}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1866846844
 GameObject:
   m_ObjectHideFlags: 0
@@ -4313,7 +4251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1055005839}
-  roomType: 5
+  objectType: 5
 --- !u!225 &1866846850
 CanvasGroup:
   m_ObjectHideFlags: 0

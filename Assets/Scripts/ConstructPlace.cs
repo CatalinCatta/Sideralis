@@ -12,7 +12,7 @@ public class ConstructPlace : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        _spaceShipManager.CreateRoom(eventData.pointerDrag.GetComponent<ConstructMaterial>().roomType,
+        _spaceShipManager.CreateRoom(eventData.pointerDrag.GetComponent<ConstructMaterial>().objectType,
             transform.position);
     }
 }

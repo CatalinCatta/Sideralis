@@ -5,7 +5,8 @@ public class Room : MonoBehaviour
 {
     public List<Crew> crews = new();
     private ActorManager _actorManager;
-    public const int MaxCrewNumber = 5;
+    private const int MaxCrewNumber = 5;
+    
     public int CrewSpaceLeft => MaxCrewNumber - crews.Count;
     
     void Start()

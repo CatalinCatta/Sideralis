@@ -1,4 +1,4 @@
-﻿public enum RoomType
+﻿public enum ObjectType
 {
     ConstructPlace,
     ConstructRotatedPlace,
@@ -12,5 +12,6 @@
     LRoad,
     LRoadRotated90,
     LRoadRotated180,
-    LRoadRotated270
+    LRoadRotated270,
+    Crew
 }

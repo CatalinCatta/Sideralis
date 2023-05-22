@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class ActorManager : MonoBehaviour
 {
@@ -16,6 +15,8 @@ public class ActorManager : MonoBehaviour
     [SerializeField] private GameObject crossRoad;
 
     [SerializeField] private GameObject lRoad;
+    
+    [SerializeField] private GameObject crew;
 
     [SerializeField] private Transform constructPlaceParent;
 
@@ -25,33 +26,35 @@ public class ActorManager : MonoBehaviour
 
     public Room curentRoom;
 
-    public GameObject CreateObject(Vector2 position, RoomType roomType) => roomType switch
+    public GameObject CreateObject(Vector2 position, ObjectType objectType) => objectType switch
     {
-        RoomType.ConstructPlace => Instantiate(constructPlace, position, transform.rotation, constructPlaceParent),
+        ObjectType.ConstructPlace => Instantiate(constructPlace, position, transform.rotation, constructPlaceParent),
 
-        RoomType.ConstructRotatedPlace => Instantiate(constructPlace, position, Quaternion.Euler(0f, 0f, 90f),
+        ObjectType.ConstructRotatedPlace => Instantiate(constructPlace, position, Quaternion.Euler(0f, 0f, 90f),
             constructPlaceParent),
 
-        RoomType.SmallRoom => Instantiate(smallRoom, position, transform.rotation, spaceSheep),
+        ObjectType.SmallRoom => Instantiate(smallRoom, position, transform.rotation, spaceSheep),
 
-        RoomType.MediumRoom => Instantiate(mediumRoom, position, transform.rotation, spaceSheep),
+        ObjectType.MediumRoom => Instantiate(mediumRoom, position, transform.rotation, spaceSheep),
 
-        RoomType.RotatedMediumRoom => Instantiate(mediumRoom, position, Quaternion.Euler(0f, 0f, 90f), spaceSheep),
+        ObjectType.RotatedMediumRoom => Instantiate(mediumRoom, position, Quaternion.Euler(0f, 0f, 90f), spaceSheep),
 
-        RoomType.BigRoom => Instantiate(bigRoom, position, transform.rotation, spaceSheep),
+        ObjectType.BigRoom => Instantiate(bigRoom, position, transform.rotation, spaceSheep),
 
-        RoomType.Road => Instantiate(road, position, transform.rotation, spaceSheep),
+        ObjectType.Road => Instantiate(road, position, transform.rotation, spaceSheep),
 
-        RoomType.RoadRotated => Instantiate(road, position, Quaternion.Euler(0f, 0f, 90f), spaceSheep),
+        ObjectType.RoadRotated => Instantiate(road, position, Quaternion.Euler(0f, 0f, 90f), spaceSheep),
 
-        RoomType.CrossRoad => Instantiate(crossRoad, position, transform.rotation, spaceSheep),
+        ObjectType.CrossRoad => Instantiate(crossRoad, position, transform.rotation, spaceSheep),
 
-        RoomType.LRoad => Instantiate(lRoad, position, transform.rotation, spaceSheep),
+        ObjectType.LRoad => Instantiate(lRoad, position, transform.rotation, spaceSheep),
 
-        RoomType.LRoadRotated90 => Instantiate(lRoad, position, Quaternion.Euler(0f, 0f, 90f), spaceSheep),
+        ObjectType.LRoadRotated90 => Instantiate(lRoad, position, Quaternion.Euler(0f, 0f, 90f), spaceSheep),
 
-        RoomType.LRoadRotated180 => Instantiate(lRoad, position, Quaternion.Euler(0f, 0f, 180f), spaceSheep),
+        ObjectType.LRoadRotated180 => Instantiate(lRoad, position, Quaternion.Euler(0f, 0f, 180f), spaceSheep),
 
-        RoomType.LRoadRotated270 => Instantiate(lRoad, position, Quaternion.Euler(0f, 0f, 270f), spaceSheep)
+        ObjectType.LRoadRotated270 => Instantiate(lRoad, position, Quaternion.Euler(0f, 0f, 270f), spaceSheep),
+        
+        ObjectType.Crew => Instantiate(crew, new Vector3(position.x, position.y, -5), transform.rotation, spaceSheep)
     };
 }
