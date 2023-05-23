@@ -16,7 +16,7 @@ public class Crew : MonoBehaviour
     [SerializeField] private List<Sprite> sprites;
     [SerializeField] private List<RuntimeAnimatorController> animations;
     public Room room;
-    private readonly float _movementDuration = 1;
+    private float _movementDuration = 1;
     private ActorManager _actorManager;
     private bool _crewSelected;
     private bool _isMoving;
@@ -24,6 +24,7 @@ public class Crew : MonoBehaviour
     private SpaceShipManager _spaceShipManager;
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
+    private GameObject _pointer;
 
     private void Start()
     {
@@ -37,12 +38,12 @@ public class Crew : MonoBehaviour
     private void Update()
     {
         if (_crewSelected && Input.GetMouseButtonDown(0) && !_selectingCrew && _actorManager.currentRoom != null &&
-            _actorManager.currentRoom.CrewSpaceLeft >= _actorManager.selectedCrewNumber && !_isMoving)
+            _actorManager.currentRoom.CrewSpaceLeft >= _actorManager.selectedCrewNumber && !_isMoving && _actorManager.currentRoom != room)
         {
             var finalRoomPosition = _spaceShipManager.FindRoomPosition(_actorManager.currentRoom);
             StartCoroutine(MoveCrew(
                 FindShortestPath(_spaceShipManager.FindRoomPosition(room),
-                    finalRoomPosition), _movementDuration));
+                    finalRoomPosition).Distinct().ToList(), _movementDuration));
             room.crews = room.crews.Where(crew => crew != this).ToList();
             _actorManager.currentRoom.crews.Add(this);
             room = _actorManager.currentRoom;
@@ -50,6 +51,7 @@ public class Crew : MonoBehaviour
             _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             _actorManager.selectedCrewNumber = 0;
             _spaceShipManager.CreateRoom(ObjectType.Pointer, GetPositionForCoordinate(finalRoomPosition.Item1, finalRoomPosition.Item2));
+            _pointer = _spaceShipManager.lastPointer;
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -86,7 +88,7 @@ public class Crew : MonoBehaviour
         _actorManager.selectedCrewNumber = 0;
     }
 
-    private List<(int x, int y)> FindShortestPath((int x, int y) startingRoom, (int x, int y) arriveRoom)
+    private IEnumerable<(int x, int y)> FindShortestPath((int x, int y) startingRoom, (int x, int y) arriveRoom)
     {
         var rows = _spaceShipManager.Ship.GetLength(0);
         var columns = _spaceShipManager.Ship.GetLength(1);
@@ -115,10 +117,20 @@ public class Crew : MonoBehaviour
             {
                 var newX = currentPosition.x + direction[0];
                 var newY = currentPosition.y + direction[1];
+                Room nextRoom = null;
 
-                if (!IsValidPosition(newX, newY, rows, columns) || _spaceShipManager.Ship[newX, newY] == null ||
+                if (!IsValidPosition(newX, newY, rows, columns) ||
                     visited[newX, newY] ||
-                    _spaceShipManager.Ship[newX, newY].TryGetComponent<ConstructPlace>(out _)) continue;
+                    _spaceShipManager.Ship[newX, newY] == null ||
+                    (!IsValidRoad(newX, newY, direction[0] * -1, direction[1] * -1) &&
+                     !_spaceShipManager.Ship[newX, newY].TryGetComponent(out nextRoom)) ||
+                    (!_spaceShipManager.Ship[currentPosition.x, currentPosition.y].TryGetComponent<Room>(out _) &&
+                     !IsValidRoad(currentPosition.x, currentPosition.y, direction[0], direction[1]))) 
+                    continue;
+            
+                if (nextRoom != null)
+                    parent[newX, newY] = currentPosition;
+            
                 visited[newX, newY] = true;
                 parent[newX, newY] = currentPosition;
                 queue.Enqueue((newX, newY));
@@ -128,20 +140,22 @@ public class Crew : MonoBehaviour
         return null;
     }
 
-    private IEnumerator MoveCrew(List<(int x, int y)> movements, float movementDuration)
+    private IEnumerator MoveCrew(IReadOnlyList<(int x, int y)> movements, float movementDuration)
     {
         _animator.enabled = true;
         _isMoving = true;
-        
+    
         var lastPosition = movements[0];
         var crewTransform = transform;
-    
+
         foreach (var move in movements.Skip(1).ToList())
         {
             var targetPosition = GetPositionForCoordinate(move.x, move.y);
             var elapsedTime = 0f;
             var crewPosition = crewTransform.position;
-  
+
+            _movementDuration = _spaceShipManager.Ship[move.x, move.y].TryGetComponent<Road>(out _) ? 0.5f : 1f;
+            
             if (move.y > lastPosition.y)
             {
                 _animator.runtimeAnimatorController = animations[(int) AnimationsTypes.RunSide];
@@ -170,7 +184,7 @@ public class Crew : MonoBehaviour
             lastPosition = move;
         }
 
-        Destroy(_spaceShipManager.LastPointer);
+        Destroy(_pointer);
         _spriteRenderer.sprite = sprites[(int) SpritesTypes.AfkStatus];
         _animator.enabled = false;
         _isMoving = false;
@@ -190,12 +204,35 @@ public class Crew : MonoBehaviour
         return path;
     }
 
+    private bool IsValidRoad(int x, int y, int directionX, int directionY)
+    {
+        var roadObject = _spaceShipManager.Ship[x, y];
+        var roadRotation = roadObject.transform.rotation;
+        
+        return roadObject.TryGetComponent<Road>(out var road) && 
+               (road is CrossRoad ||
+                (road is LinearRoad &&
+                 ((roadRotation == Quaternion.Euler(0f, 0f, 0f) &&
+                   directionX is -1 or +1)||
+                  (roadRotation == Quaternion.Euler(0f, 0f, 90f) &&
+                   directionY is -1 or +1))) ||
+                (road is LRoad &&
+                 ((directionX == -1 &&
+                   (roadRotation == Quaternion.Euler(0f, 0f, 0f) || roadRotation == Quaternion.Euler(0f, 0f, 90f))) ||
+                  (directionX == +1 &&
+                   (roadRotation == Quaternion.Euler(0f, 0f, 180f) || roadRotation == Quaternion.Euler(0f, 0f, 270f))) ||
+                  (directionY == -1 &&
+                   (roadRotation == Quaternion.Euler(0f, 0f, 90f) || roadRotation == Quaternion.Euler(0f, 0f, 180f))) ||
+                  (directionY == +1 &&
+                   (roadRotation == Quaternion.Euler(0f, 0f, 0f) || roadRotation == Quaternion.Euler(0f, 0f, 270f))))));
+    }
+
     private static Vector3 GetPositionForCoordinate(double x, double y) => 
         new ((float)((y - 24.5) * 10), (float)((24.5 - x) * 10), -5f);
 
     private static bool IsValidPosition(int x, int y, int rows, int columns) =>
         x >= 0 && x < rows && y >= 0 && y < columns;
-    
+
     private enum SpritesTypes
     {
         AfkStatus

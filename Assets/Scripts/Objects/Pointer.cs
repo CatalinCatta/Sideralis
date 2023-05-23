@@ -2,28 +2,29 @@ using UnityEngine;
 
 public class Pointer : MonoBehaviour
 {
-    private Transform arrowTransform;
-    private float counter = 1f;
-    private float speed = -0.025f;
+    private Transform _arrowTransform;
+    private float _counter = 1f;
+    private float _speed = -0.025f;
     private Vector3 _position;
     
     private void Start()
     {
         var pointerTransform = transform;
-        arrowTransform = pointerTransform.GetChild(0).transform;
+        _arrowTransform = pointerTransform.GetChild(0).transform;
         _position = pointerTransform.position;
     }
 
     private void Update()
     {
-        arrowTransform.position = new Vector3(_position.x, _position.y + counter, _position.z);
+        _arrowTransform.position = new Vector3(_position.x, _position.y + _counter, _position.z);
 
-        if (counter > 2f)
-            speed = -0.025f;
-            
-        if (counter < 1f)
-            speed = 0.025f;
-        
-        counter += speed;
+        _speed = _counter switch
+        {
+            > 2f => -0.025f,
+            < 1f => 0.025f,
+            _ => _speed
+        };
+
+        _counter += _speed;
     }
 }

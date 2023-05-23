@@ -1,13 +1,14 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SpaceShipManager : MonoBehaviour
 {
     private const int ShipDimension = 50;
     public readonly GameObject[,] Ship = new GameObject[ShipDimension, ShipDimension];
     private ActorManager _actorManager;
-    public GameObject LastPointer;
+    [FormerlySerializedAs("LastPointer")] public GameObject lastPointer;
     
     private void Start()
     {
@@ -128,7 +129,7 @@ public class SpaceShipManager : MonoBehaviour
                 break;
 
             case ObjectType.Pointer:
-                LastPointer = _actorManager.CreateObject(position, type);
+                lastPointer = _actorManager.CreateObject(position, type);
                 break;
             
             default:
@@ -190,8 +191,11 @@ public class SpaceShipManager : MonoBehaviour
                 }
             }
         );
-
-    private void PrintGameObjectGrid()
+    
+    /// <summary>
+    /// Only in emergency situations.
+    /// </summary>
+    public void PrintGameObjectGrid()
     {
         var output = "";
 
