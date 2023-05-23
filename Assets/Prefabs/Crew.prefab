@@ -162,7 +162,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4081949610635846821, guid: bdcf20ae532f4ef88d3b429b880553e3, type: 3}
+  m_Sprite: {fileID: 889771249726201494, guid: bdcf20ae532f4ef88d3b429b880553e3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -206,8 +206,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eef6fcdce148914c88f6e2d2f05bf9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 889771249726201494, guid: bdcf20ae532f4ef88d3b429b880553e3, type: 3}
+  animations:
+  - {fileID: 9100000, guid: be5c1c9a8091caf4eaf7f0618daaade4, type: 2}
+  - {fileID: 9100000, guid: c84f36d62ab20ff41be80a6a7e6a5291, type: 2}
+  - {fileID: 9100000, guid: 21863faa0741dc241ba965418a284afc, type: 2}
   room: {fileID: 0}
-  movementDuration: 1
 --- !u!50 &4171901122111014051
 Rigidbody2D:
   serializedVersion: 4

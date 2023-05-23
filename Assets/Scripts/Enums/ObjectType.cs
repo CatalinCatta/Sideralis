@@ -13,5 +13,6 @@
     LRoadRotated90,
     LRoadRotated180,
     LRoadRotated270,
-    Crew
+    Crew,
+    Pointer
 }

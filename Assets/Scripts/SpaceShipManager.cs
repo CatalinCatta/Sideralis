@@ -7,7 +7,8 @@ public class SpaceShipManager : MonoBehaviour
     private const int ShipDimension = 50;
     public readonly GameObject[,] Ship = new GameObject[ShipDimension, ShipDimension];
     private ActorManager _actorManager;
-
+    public GameObject LastPointer;
+    
     private void Start()
     {
         _actorManager = FindObjectOfType<ActorManager>();
@@ -125,6 +126,11 @@ public class SpaceShipManager : MonoBehaviour
                 crew.room = room;
                 room.crews.Add(crew);
                 break;
+
+            case ObjectType.Pointer:
+                LastPointer = _actorManager.CreateObject(position, type);
+                break;
+            
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, "This object cannot be created");
         }
@@ -177,6 +183,7 @@ public class SpaceShipManager : MonoBehaviour
                             CreateRoom(ObjectType.ConstructRotatedPlace,
                                 new Vector2(objectPosition.x, objectPosition.y - 10));
                         break;
+                    
                     default:
                         throw new ArgumentOutOfRangeException(nameof(direction), direction,
                             "This is not a valid direction");

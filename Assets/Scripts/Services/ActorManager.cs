@@ -11,6 +11,7 @@ public class ActorManager : MonoBehaviour
     [SerializeField] private GameObject crossRoad;              // Prefab for a crossroad object
     [SerializeField] private GameObject lRoad;                  // Prefab for an L-road object
     [SerializeField] private GameObject crew;                   // Prefab for a crew object
+    [SerializeField] private GameObject pointer;                // Prefab for a pointer object
     
     [SerializeField] private Transform constructPlaceParent;    // Parent transform for constructed places
     [SerializeField] private Transform spaceSheep;              // Parent transform for spawned objects
@@ -63,6 +64,9 @@ public class ActorManager : MonoBehaviour
             ObjectType.LRoadRotated270 => Instantiate(lRoad, position, Quaternion.Euler(0f, 0f, 270f), spaceSheep),
 
             ObjectType.Crew => Instantiate(crew, new Vector3(position.x, position.y, -5), transform.rotation,
+                spaceSheep),
+
+            ObjectType.Pointer => Instantiate(pointer, new Vector3(position.x, position.y, -5), transform.rotation,
                 spaceSheep),
 
             _ => throw new ArgumentOutOfRangeException(nameof(objectType), objectType, "This object cannot be created")

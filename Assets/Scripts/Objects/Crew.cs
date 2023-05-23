@@ -13,6 +13,8 @@ public class Crew : MonoBehaviour
         new[] { 0, 1 }           // Right
     };
 
+    [SerializeField] private List<Sprite> sprites;
+    [SerializeField] private List<RuntimeAnimatorController> animations;
     public Room room;
     private readonly float _movementDuration = 1;
     private ActorManager _actorManager;
@@ -21,12 +23,15 @@ public class Crew : MonoBehaviour
     private bool _selectingCrew;
     private SpaceShipManager _spaceShipManager;
     private SpriteRenderer _spriteRenderer;
+    private Animator _animator;
 
     private void Start()
     {
         _spaceShipManager = FindObjectOfType<SpaceShipManager>();
         _actorManager = FindObjectOfType<ActorManager>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
+        _animator.enabled = false;
     }
 
     private void Update()
@@ -34,15 +39,17 @@ public class Crew : MonoBehaviour
         if (_crewSelected && Input.GetMouseButtonDown(0) && !_selectingCrew && _actorManager.currentRoom != null &&
             _actorManager.currentRoom.CrewSpaceLeft >= _actorManager.selectedCrewNumber && !_isMoving)
         {
+            var finalRoomPosition = _spaceShipManager.FindRoomPosition(_actorManager.currentRoom);
             StartCoroutine(MoveCrew(
                 FindShortestPath(_spaceShipManager.FindRoomPosition(room),
-                    _spaceShipManager.FindRoomPosition(_actorManager.currentRoom)), _movementDuration));
+                    finalRoomPosition), _movementDuration));
             room.crews = room.crews.Where(crew => crew != this).ToList();
             _actorManager.currentRoom.crews.Add(this);
             room = _actorManager.currentRoom;
             _crewSelected = false;
             _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             _actorManager.selectedCrewNumber = 0;
+            _spaceShipManager.CreateRoom(ObjectType.Pointer, GetPositionForCoordinate(finalRoomPosition.Item1, finalRoomPosition.Item2));
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -123,26 +130,49 @@ public class Crew : MonoBehaviour
 
     private IEnumerator MoveCrew(List<(int x, int y)> movements, float movementDuration)
     {
+        _animator.enabled = true;
         _isMoving = true;
-        foreach (var move in movements)
+        
+        var lastPosition = movements[0];
+        var crewTransform = transform;
+    
+        foreach (var move in movements.Skip(1).ToList())
         {
             var targetPosition = GetPositionForCoordinate(move.x, move.y);
-            var startPosition = transform.position;
             var elapsedTime = 0f;
+            var crewPosition = crewTransform.position;
+  
+            if (move.y > lastPosition.y)
+            {
+                _animator.runtimeAnimatorController = animations[(int) AnimationsTypes.RunSide];
+                crewTransform.rotation = new Quaternion(0, 180, 0, 0);
+            }
+
+            if (move.y < lastPosition.y)
+                _animator.runtimeAnimatorController = animations[(int) AnimationsTypes.RunSide];
+
+            if (move.x < lastPosition.x)
+                _animator.runtimeAnimatorController = animations[(int) AnimationsTypes.RunUp];
+
+            if (move.x > lastPosition.x)
+                _animator.runtimeAnimatorController = animations[(int) AnimationsTypes.RunDown];
 
             while (elapsedTime < movementDuration)
             {
                 elapsedTime += Time.deltaTime;
-
-                var t = Mathf.Clamp01(elapsedTime / movementDuration);
-                transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+                crewTransform.position = Vector3.Lerp(crewPosition, targetPosition, Mathf.Clamp01(elapsedTime / movementDuration));
 
                 yield return null;
             }
 
-            transform.position = targetPosition;
+            crewTransform.position = targetPosition;
+            crewTransform.rotation = new Quaternion(0, 0, 0, 0);
+            lastPosition = move;
         }
 
+        Destroy(_spaceShipManager.LastPointer);
+        _spriteRenderer.sprite = sprites[(int) SpritesTypes.AfkStatus];
+        _animator.enabled = false;
         _isMoving = false;
     }
 
@@ -165,4 +195,15 @@ public class Crew : MonoBehaviour
 
     private static bool IsValidPosition(int x, int y, int rows, int columns) =>
         x >= 0 && x < rows && y >= 0 && y < columns;
+    
+    private enum SpritesTypes
+    {
+        AfkStatus
+    }
+    private enum AnimationsTypes
+    {
+        RunSide,
+        RunUp,
+        RunDown
+    }
 }

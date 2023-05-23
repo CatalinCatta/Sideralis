@@ -514,10 +514,11 @@ MonoBehaviour:
   crossRoad: {fileID: 4985443457942632628, guid: d78a21d6634420f43bcb42d680ed39be, type: 3}
   lRoad: {fileID: 5887852453952457717, guid: dfd36ec21469a8f49ba6fc25380e8dab, type: 3}
   crew: {fileID: 4171901122111014050, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
+  pointer: {fileID: 422574074387163017, guid: 15bb8d02c088c0540a3eb84d39c540a2, type: 3}
   constructPlaceParent: {fileID: 1055005840}
   spaceSheep: {fileID: 1464754251}
   selectedCrewNumber: 0
-  curentRoom: {fileID: 0}
+  currentRoom: {fileID: 0}
 --- !u!114 &260640488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2812,6 +2813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2514b85407a822940b38988a73b2b202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LastPointer: {fileID: 0}
 --- !u!4 &1464754251
 Transform:
   m_ObjectHideFlags: 0
