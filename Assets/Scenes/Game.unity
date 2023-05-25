@@ -2813,7 +2813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2514b85407a822940b38988a73b2b202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LastPointer: {fileID: 0}
+  lastPointer: {fileID: 0}
 --- !u!4 &1464754251
 Transform:
   m_ObjectHideFlags: 0

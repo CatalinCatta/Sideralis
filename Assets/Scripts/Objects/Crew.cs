@@ -5,18 +5,10 @@ using UnityEngine;
 
 public class Crew : MonoBehaviour
 {
-    private static readonly int[][] Directions =
-    {
-        new[] { -1, 0 },         // Up
-        new[] { 1, 0 },          // Down
-        new[] { 0, -1 },         // Left
-        new[] { 0, 1 }           // Right
-    };
-
     [SerializeField] private List<Sprite> sprites;
     [SerializeField] private List<RuntimeAnimatorController> animations;
     public Room room;
-    private float _movementDuration = 1;
+    private readonly float _speed = 1;
     private ActorManager _actorManager;
     private bool _crewSelected;
     private bool _isMoving;
@@ -43,7 +35,7 @@ public class Crew : MonoBehaviour
             var finalRoomPosition = _spaceShipManager.FindRoomPosition(_actorManager.currentRoom);
             StartCoroutine(MoveCrew(
                 FindShortestPath(_spaceShipManager.FindRoomPosition(room),
-                    finalRoomPosition).Distinct().ToList(), _movementDuration));
+                    finalRoomPosition).ToList()));
             room.crews = room.crews.Where(crew => crew != this).ToList();
             _actorManager.currentRoom.crews.Add(this);
             room = _actorManager.currentRoom;
@@ -113,23 +105,19 @@ public class Crew : MonoBehaviour
                 return path;
             }
 
-            foreach (var direction in Directions)
+            foreach (var direction in Utilities.Directions)
             {
                 var newX = currentPosition.x + direction[0];
                 var newY = currentPosition.y + direction[1];
-                Room nextRoom = null;
 
                 if (!IsValidPosition(newX, newY, rows, columns) ||
                     visited[newX, newY] ||
                     _spaceShipManager.Ship[newX, newY] == null ||
                     (!IsValidRoad(newX, newY, direction[0] * -1, direction[1] * -1) &&
-                     !_spaceShipManager.Ship[newX, newY].TryGetComponent(out nextRoom)) ||
+                     !_spaceShipManager.Ship[newX, newY].TryGetComponent<Room>(out _)) ||
                     (!_spaceShipManager.Ship[currentPosition.x, currentPosition.y].TryGetComponent<Room>(out _) &&
                      !IsValidRoad(currentPosition.x, currentPosition.y, direction[0], direction[1]))) 
                     continue;
-            
-                if (nextRoom != null)
-                    parent[newX, newY] = currentPosition;
             
                 visited[newX, newY] = true;
                 parent[newX, newY] = currentPosition;
@@ -140,7 +128,7 @@ public class Crew : MonoBehaviour
         return null;
     }
 
-    private IEnumerator MoveCrew(IReadOnlyList<(int x, int y)> movements, float movementDuration)
+    private IEnumerator MoveCrew(IReadOnlyList<(int x, int y)> movements)
     {
         _animator.enabled = true;
         _isMoving = true;
@@ -154,22 +142,26 @@ public class Crew : MonoBehaviour
             var elapsedTime = 0f;
             var crewPosition = crewTransform.position;
 
-            _movementDuration = _spaceShipManager.Ship[move.x, move.y].TryGetComponent<Road>(out _) ? 0.5f : 1f;
+            var isOnRoad = _spaceShipManager.Ship[move.x, move.y].TryGetComponent<Road>(out _);
+            
+            var movementDuration = isOnRoad? _speed / 2 : _speed;
+
+            _spaceShipManager.OpenDor(lastPosition, move);
             
             if (move.y > lastPosition.y)
             {
-                _animator.runtimeAnimatorController = animations[(int) AnimationsTypes.RunSide];
+                _animator.runtimeAnimatorController = animations[isOnRoad? (int) AnimationsTypes.SlideSide : (int) AnimationsTypes.RunSide];
                 crewTransform.rotation = new Quaternion(0, 180, 0, 0);
             }
 
             if (move.y < lastPosition.y)
-                _animator.runtimeAnimatorController = animations[(int) AnimationsTypes.RunSide];
+                _animator.runtimeAnimatorController = animations[isOnRoad? (int) AnimationsTypes.SlideSide : (int) AnimationsTypes.RunSide];
 
             if (move.x < lastPosition.x)
-                _animator.runtimeAnimatorController = animations[(int) AnimationsTypes.RunUp];
+                _animator.runtimeAnimatorController = animations[isOnRoad? (int) AnimationsTypes.SlideUp : (int) AnimationsTypes.RunUp];
 
             if (move.x > lastPosition.x)
-                _animator.runtimeAnimatorController = animations[(int) AnimationsTypes.RunDown];
+                _animator.runtimeAnimatorController = animations[isOnRoad? (int) AnimationsTypes.SlideDown : (int) AnimationsTypes.RunDown];
 
             while (elapsedTime < movementDuration)
             {
@@ -237,10 +229,14 @@ public class Crew : MonoBehaviour
     {
         AfkStatus
     }
+    
     private enum AnimationsTypes
     {
         RunSide,
         RunUp,
-        RunDown
+        RunDown,
+        SlideSide,
+        SlideUp,
+        SlideDown
     }
 }

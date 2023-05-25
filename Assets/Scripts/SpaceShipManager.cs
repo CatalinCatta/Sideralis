@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -242,8 +243,290 @@ public class SpaceShipManager : MonoBehaviour
     private enum Direction
     {
         Up,
+        Down,
         Left,
-        Right,
-        Down
+        Right
+    }
+
+    private IEnumerator DoorAnimation(GameObject door, Direction direction)
+    {
+        var isRotated = door.transform.parent.parent.parent.rotation == Quaternion.Euler(0, 0, 90);
+
+        (float x, float y) movement = direction switch
+        {
+            Direction.Up => (1f, 0),
+            Direction.Down => (1f, 0),
+            Direction.Left => (0, isRotated? 1f : -1f),
+            Direction.Right => (0, isRotated? 1f : -1f),
+            _ => (0, 0)
+        };
+
+        var wall1 = door.transform.GetChild(0).gameObject.transform;
+        var wall2 = door.transform.GetChild(1).gameObject.transform;
+
+        var wall1Position = wall1.position;
+
+        var elapsedTime = 0f;
+        const float movementDuration = 0.5f;
+        var wall2Position = wall2.position;
+        
+        while (elapsedTime < movementDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            wall1.position = Vector3.Lerp(wall1Position, new Vector3(wall1Position.x - movement.x, wall1Position.y - movement.y, wall1Position.z), Mathf.Clamp01(elapsedTime / movementDuration));
+            wall2.position = Vector3.Lerp(wall2Position, new Vector3(wall2Position.x + movement.x, wall2Position.y + movement.y, wall2Position.z), Mathf.Clamp01(elapsedTime / movementDuration));
+
+            yield return null;
+        }
+
+        if (elapsedTime >= movementDuration)
+            StartCoroutine(CloseDoorAnimation(wall1, wall2, wall1Position, wall2Position));
+    }
+
+    private static IEnumerator CloseDoorAnimation(Transform wall1, Transform wall2, Vector3 wall1InitialPosition, Vector2 wall2InitialPosition)
+    {
+        var elapsedTime = 0f;
+        const float movementDuration = 0.5f;
+        
+        while (elapsedTime < movementDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            wall1.position = Vector3.Lerp(wall1.position, wall1InitialPosition, Mathf.Clamp01(elapsedTime / movementDuration));
+            wall2.position = Vector3.Lerp(wall2.position, wall2InitialPosition, Mathf.Clamp01(elapsedTime / movementDuration));
+
+            yield return null;
+        }
+    }
+    
+    public void OpenDor((int x, int y)firstRoom, (int x, int y)secondRoom)
+    {
+        if (Ship[firstRoom.x, firstRoom.y] == Ship[secondRoom.x, secondRoom.y])
+            return;
+
+        var startingRoom = Ship[firstRoom.x, firstRoom.y];
+        var endRoom = Ship[secondRoom.x, secondRoom.y];
+        var startRoomRotation = startingRoom.transform.rotation;
+        var endRoomRotation = endRoom.transform.rotation;
+        
+        Room room;
+        GameObject walls;
+        GameObject wall;
+        
+        if (firstRoom.x < secondRoom.x)
+        {
+            if (startingRoom.TryGetComponent<Room>(out room))
+            {
+                walls = room.transform.GetChild(1).gameObject; 
+                wall = walls.gameObject.transform.GetChild(1).gameObject;
+                
+                switch (room)
+                {
+                    case SmallRoom:
+                        StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Up));
+                        break;
+                    case MediumRoom when startRoomRotation == Quaternion.Euler(0, 0, 0):
+                        StartCoroutine(startingRoom == Ship[firstRoom.x, firstRoom.y + 1]
+                            ? DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Up)
+                            : DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Up));
+                        break;
+                    case MediumRoom:
+                        StartCoroutine(DoorAnimation(walls.transform.GetChild(2).transform.GetChild(1).gameObject, Direction.Up));
+                        break;
+                    case BigRoom:
+                        StartCoroutine(startingRoom == Ship[firstRoom.x, firstRoom.y + 1]
+                            ? DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Up)
+                            : DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Up));
+                        break;
+                }
+            }
+            if (endRoom.TryGetComponent<Room>(out room))
+            {
+                walls = room.transform.GetChild(1).gameObject; 
+                wall = walls.gameObject.transform.GetChild(0).gameObject;
+                
+                switch (room)
+                {
+                    case SmallRoom:
+                        StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Up));
+                        break;
+                    case MediumRoom when endRoomRotation == Quaternion.Euler(0, 0, 0):
+                        StartCoroutine(endRoom == Ship[secondRoom.x, secondRoom.y + 1]
+                            ? DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Up)
+                            : DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Up));
+                        break;
+                    case MediumRoom:
+                        StartCoroutine(DoorAnimation(walls.transform.GetChild(3).transform.GetChild(1).gameObject, Direction.Up));
+                        break;
+                    case BigRoom:
+                        StartCoroutine(endRoom == Ship[secondRoom.x, secondRoom.y + 1]
+                            ? DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Up)
+                            : DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Up));
+                        break;
+                }
+            }
+        }
+        
+        if (firstRoom.x > secondRoom.x)
+        {
+            if (startingRoom.TryGetComponent<Room>(out room))
+            {
+                walls = room.transform.GetChild(1).gameObject; 
+                wall = walls.gameObject.transform.GetChild(0).gameObject;
+                
+                switch (room)
+                {
+                    case SmallRoom:
+                        StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Down));
+                        break;
+                    case MediumRoom when startRoomRotation == Quaternion.Euler(0, 0, 0):
+                        StartCoroutine(startingRoom == Ship[firstRoom.x, firstRoom.y + 1]
+                            ? DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Down)
+                            : DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Down));
+                        break;
+                    case MediumRoom:
+                        StartCoroutine(DoorAnimation(walls.transform.GetChild(3).transform.GetChild(1).gameObject, Direction.Up));
+                        break;
+                    case BigRoom:
+                        StartCoroutine(startingRoom == Ship[firstRoom.x, firstRoom.y + 1]
+                            ? DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Down)
+                            : DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Down));
+                        break;
+                }
+            }
+            if (endRoom.TryGetComponent<Room>(out room))
+            {
+                walls = room.transform.GetChild(1).gameObject; 
+                wall = walls.gameObject.transform.GetChild(1).gameObject;
+                
+                switch (room)
+                {
+                    case SmallRoom:
+                        StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Down));
+                        break;
+                    case MediumRoom when endRoomRotation == Quaternion.Euler(0, 0, 0):
+                        StartCoroutine(endRoom == Ship[secondRoom.x, secondRoom.y + 1]
+                            ? DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Down)
+                            : DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Down));
+                        break;
+                    case MediumRoom:
+                        StartCoroutine(DoorAnimation(walls.transform.GetChild(2).transform.GetChild(1).gameObject, Direction.Up));
+                        break;
+                    case BigRoom:
+                        StartCoroutine(endRoom == Ship[secondRoom.x, secondRoom.y + 1]
+                            ? DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Down)
+                            : DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Down));
+                        break;
+                }
+            }
+        }
+        
+        if (firstRoom.y > secondRoom.y)
+        {
+            if (startingRoom.TryGetComponent<Room>(out room))
+            {
+                walls = room.transform.GetChild(1).gameObject; 
+                wall = walls.gameObject.transform.GetChild(2).gameObject;
+                
+                switch (room)
+                {
+                    case SmallRoom:
+                        StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Right));
+                        break;
+                    case MediumRoom when startRoomRotation == Quaternion.Euler(0, 0, 90):
+                        StartCoroutine(startingRoom == Ship[firstRoom.x - 1, firstRoom.y]
+                            ? DoorAnimation(walls.transform.GetChild(0).transform.GetChild(1).gameObject, Direction.Right)
+                            : DoorAnimation(walls.transform.GetChild(0).transform.GetChild(3).gameObject, Direction.Right));
+                        break;
+                    case MediumRoom:
+                        StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Right));
+                        break;
+                    case BigRoom:
+                        StartCoroutine(startingRoom == Ship[firstRoom.x - 1, firstRoom.y]
+                            ? DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Right)
+                            : DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Right));
+                        break;
+                }
+            }
+            if (endRoom.TryGetComponent<Room>(out room))
+            {
+                walls = room.transform.GetChild(1).gameObject; 
+                wall = walls.gameObject.transform.GetChild(3).gameObject;
+                
+                switch (room)
+                {
+                    case SmallRoom:
+                        StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Right));
+                        break;
+                    case MediumRoom when endRoomRotation == Quaternion.Euler(0, 0, 90):
+                        StartCoroutine(endRoom == Ship[secondRoom.x - 1, secondRoom.y]
+                            ? DoorAnimation(walls.transform.GetChild(1).transform.GetChild(1).gameObject, Direction.Right)
+                            : DoorAnimation(walls.transform.GetChild(1).transform.GetChild(3).gameObject, Direction.Right));
+                        break;
+                    case MediumRoom:
+                        StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Right));
+                        break;
+                    case BigRoom:
+                        StartCoroutine(endRoom == Ship[secondRoom.x - 1, secondRoom.y]
+                            ? DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Right)
+                            : DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Right));
+                        break;
+                }
+            }
+        }
+        
+        if (firstRoom.y < secondRoom.y)
+        {
+            if (startingRoom.TryGetComponent<Room>(out room))
+            {
+                walls = room.transform.GetChild(1).gameObject; 
+                wall = walls.gameObject.transform.GetChild(3).gameObject;
+                
+                switch (room)
+                {
+                    case SmallRoom:
+                        StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Left));
+                        break;
+                    case MediumRoom when startRoomRotation == Quaternion.Euler(0, 0, 90):
+                        StartCoroutine(startingRoom == Ship[firstRoom.x, firstRoom.y - 1]
+                            ? DoorAnimation(walls.transform.GetChild(1).transform.GetChild(1).gameObject, Direction.Left)
+                            : DoorAnimation(walls.transform.GetChild(1).transform.GetChild(3).gameObject, Direction.Left));
+                        break;
+                    case MediumRoom:
+                        StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Left));
+                        break;
+                    case BigRoom:
+                        StartCoroutine(startingRoom == Ship[firstRoom.x, firstRoom.y - 1]
+                            ? DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Left)
+                            : DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Left));
+                        break;
+                }
+                
+            }
+            if (endRoom.TryGetComponent<Room>(out room))
+            {
+                walls = room.transform.GetChild(1).gameObject; 
+                wall = walls.gameObject.transform.GetChild(2).gameObject;
+                
+                switch (room)
+                {
+                    case SmallRoom:
+                        StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Left));
+                        break;
+                    case MediumRoom when endRoomRotation == Quaternion.Euler(0, 0, 90):
+                        StartCoroutine(endRoom == Ship[secondRoom.x, secondRoom.y - 1]
+                            ? DoorAnimation(walls.transform.GetChild(0).transform.GetChild(1).gameObject, Direction.Right)
+                            : DoorAnimation(walls.transform.GetChild(0).transform.GetChild(3).gameObject, Direction.Right));
+                        break;
+                    case MediumRoom:
+                        StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Right));
+                        break;
+                    case BigRoom:
+                        StartCoroutine(endRoom == Ship[secondRoom.x, secondRoom.y-1]
+                            ? DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Right)
+                            : DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Right));
+                        break;
+                }
+            }
+        }
     }
 }
