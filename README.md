@@ -19,7 +19,7 @@ The ultimate goal of Sideralis is to find a new home for humanity, whether it's 
 - Crew Control
 
 ### How to Run the Project?
-1. Clone the [Repo](https://github.com/CatalinCatta/DungeonCrawl.git).
+1. Clone the [Repo](https://github.com/CatalinCatta/Sideralis.git).
 2. Run test/Sideralis.exe
 3. Have Fun!
 
