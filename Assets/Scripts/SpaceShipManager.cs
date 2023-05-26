@@ -487,7 +487,7 @@ public class SpaceShipManager : MonoBehaviour
                         StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Left));
                         break;
                     case MediumRoom when startRoomRotation == Quaternion.Euler(0, 0, 90):
-                        StartCoroutine(startingRoom == Ship[firstRoom.x, firstRoom.y - 1]
+                        StartCoroutine(startingRoom == Ship[firstRoom.x - 1, firstRoom.y]
                             ? DoorAnimation(walls.transform.GetChild(1).transform.GetChild(1).gameObject, Direction.Left)
                             : DoorAnimation(walls.transform.GetChild(1).transform.GetChild(3).gameObject, Direction.Left));
                         break;
@@ -495,9 +495,9 @@ public class SpaceShipManager : MonoBehaviour
                         StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Left));
                         break;
                     case BigRoom:
-                        StartCoroutine(startingRoom == Ship[firstRoom.x, firstRoom.y - 1]
-                            ? DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Left)
-                            : DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Left));
+                        StartCoroutine(startingRoom == Ship[firstRoom.x - 1, firstRoom.y]
+                            ? DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Left)
+                            : DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Left));
                         break;
                 }
                 
@@ -506,14 +506,14 @@ public class SpaceShipManager : MonoBehaviour
             {
                 walls = room.transform.GetChild(1).gameObject; 
                 wall = walls.gameObject.transform.GetChild(2).gameObject;
-                
                 switch (room)
                 {
                     case SmallRoom:
                         StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Left));
                         break;
                     case MediumRoom when endRoomRotation == Quaternion.Euler(0, 0, 90):
-                        StartCoroutine(endRoom == Ship[secondRoom.x, secondRoom.y - 1]
+                        Debug.Log("VAR2");
+                        StartCoroutine(endRoom == Ship[secondRoom.x - 1, secondRoom.y]
                             ? DoorAnimation(walls.transform.GetChild(0).transform.GetChild(1).gameObject, Direction.Right)
                             : DoorAnimation(walls.transform.GetChild(0).transform.GetChild(3).gameObject, Direction.Right));
                         break;
@@ -521,9 +521,9 @@ public class SpaceShipManager : MonoBehaviour
                         StartCoroutine(DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Right));
                         break;
                     case BigRoom:
-                        StartCoroutine(endRoom == Ship[secondRoom.x, secondRoom.y-1]
-                            ? DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Right)
-                            : DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Right));
+                        StartCoroutine(endRoom == Ship[secondRoom.x - 1, secondRoom.y]
+                            ? DoorAnimation(wall.transform.GetChild(3).gameObject, Direction.Right)
+                            : DoorAnimation(wall.transform.GetChild(1).gameObject, Direction.Right));
                         break;
                 }
             }
