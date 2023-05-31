@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 public class Crew : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class Crew : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
         _animator.enabled = false;
+        _spriteRenderer.sprite = sprites[(int) SpritesTypes.AfkStatus];
     }
 
     private void Update()
@@ -32,18 +34,22 @@ public class Crew : MonoBehaviour
         if (_crewSelected && Input.GetMouseButtonDown(0) && !_selectingCrew && _actorManager.currentRoom != null &&
             _actorManager.currentRoom.CrewSpaceLeft >= _actorManager.selectedCrewNumber && !_isMoving && _actorManager.currentRoom != room)
         {
-            var finalRoomPosition = _spaceShipManager.FindRoomPosition(_actorManager.currentRoom);
+            var finalRoomPosition = _spaceShipManager.FindRoomPosition(_actorManager.currentRoom, false, this);
+            var startRoomPosition = _spaceShipManager.FindRoomPosition(room, true, this);
+
             StartCoroutine(MoveCrew(
-                FindShortestPath(_spaceShipManager.FindRoomPosition(room),
-                    finalRoomPosition).ToList()));
-            room.crews = room.crews.Where(crew => crew != this).ToList();
-            _actorManager.currentRoom.crews.Add(this);
-            room = _actorManager.currentRoom;
+                FindShortestPath(startRoomPosition,
+                    finalRoomPosition)));
+
+            room.crews[Array.IndexOf(room.crews, this)] = null;
+            _actorManager.currentRoom.crews[Array.IndexOf(_actorManager.currentRoom.crews, null)] = (this);
             _crewSelected = false;
             _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             _actorManager.selectedCrewNumber = 0;
-            _spaceShipManager.CreateRoom(ObjectType.Pointer, GetPositionForCoordinate(finalRoomPosition.Item1, finalRoomPosition.Item2));
+            _spaceShipManager.CreateObject(ObjectType.Pointer, GetPositionForCoordinate(finalRoomPosition.Item1, finalRoomPosition.Item2));
             _pointer = _spaceShipManager.lastPointer;
+            room = _actorManager.currentRoom;
+
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -80,11 +86,10 @@ public class Crew : MonoBehaviour
         _actorManager.selectedCrewNumber = 0;
     }
 
-    private IEnumerable<(int x, int y)> FindShortestPath((int x, int y) startingRoom, (int x, int y) arriveRoom)
+    private List<(int x, int y)> FindShortestPath((int x, int y) startingRoom, (int x, int y) arriveRoom)
     {
         var rows = _spaceShipManager.Ship.GetLength(0);
         var columns = _spaceShipManager.Ship.GetLength(1);
-
         var visited = new bool[rows, columns];
         visited[startingRoom.x, startingRoom.y] = true;
 

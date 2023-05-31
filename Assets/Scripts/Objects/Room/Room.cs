@@ -1,17 +1,26 @@
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class Room : MonoBehaviour
+public abstract class Room : MonoBehaviour
 {
-    private const int MaxCrewNumber = 5;
-    public List<Crew> crews = new();
+    protected static int MaxCrewNumber;
+    public Crew[] crews;
     private ActorManager _actorManager;
 
     public int CrewSpaceLeft => 
-        MaxCrewNumber - crews.Count;
-
-    private void Start() => 
+        crews.Count(crew => crew == null);
+    
+    public int CrewsNumber() =>
+        crews.Count(crew => crew != null);
+    
+    protected abstract void Initialize();
+    
+    private void Start()
+    {
         _actorManager = FindObjectOfType<ActorManager>();
+        Initialize();
+        crews = new Crew[MaxCrewNumber];
+    }
 
     public void AddMeToActorManager() =>
         _actorManager.currentRoom = this;

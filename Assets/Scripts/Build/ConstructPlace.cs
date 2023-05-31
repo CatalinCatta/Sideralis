@@ -14,6 +14,6 @@ public class ConstructPlace : MonoBehaviour, IDropHandler
     /// </summary>
     /// <param name="eventData">The pointer event data for the drop event.</param>
     public void OnDrop(PointerEventData eventData) =>
-        _spaceShipManager.CreateRoom(eventData.pointerDrag.GetComponent<ConstructMaterial>().objectType,
+        _spaceShipManager.CreateObject(eventData.pointerDrag.GetComponent<ConstructMaterial>().objectType,
             transform.position);
 }
