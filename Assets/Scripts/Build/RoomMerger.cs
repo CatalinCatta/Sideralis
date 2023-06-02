@@ -35,9 +35,11 @@ public class RoomMerger : MonoBehaviour
             for (var j = 0; j < cols; j++)
             {
                 var currentRoom = _shipManager.Ship[i, j];
+                
+                if (currentRoom == null || !currentRoom.TryGetComponent<Room>(out _)) continue;
+
                 var rightRoom = j < cols - 1 ? _shipManager.Ship[i, j + 1] : null;
                 var bottomRoom = i < rows - 1 ? _shipManager.Ship[i + 1, j] : null;
-                if (currentRoom == null || !currentRoom.TryGetComponent<Room>(out _)) continue;
 
                 if (j < cols - 1 && rightRoom != null && rightRoom.TryGetComponent<Room>(out var room)
                     && currentRoom.GetComponent<Room>().Lvl == room.Lvl &&
@@ -45,27 +47,16 @@ public class RoomMerger : MonoBehaviour
                 {
                     if (currentRoom.TryGetComponent<SmallRoom>(out _)
                         && rightRoom.TryGetComponent<SmallRoom>(out _))
-                    {
                         result.Add(Utilities.GetInGameCoordinateForPosition(i, j + 0.5, -7f));
-                    }
+
                     else if (currentRoom.TryGetComponent<MediumRoom>(out _) &&
                              rightRoom.TryGetComponent<MediumRoom>(out _) &&
                              currentRoom.transform.rotation == rightRoom.transform.rotation &&
-                             currentRoom.transform.rotation == Quaternion.Euler(0, 0, 90))
-                    {
-                        if (i == 0 ||
-                            (_shipManager.Ship[i - 1, j] == currentRoom &&
-                             _shipManager.Ship[i - 1, j + 1] == rightRoom))
-                        {
-                            result.Add(Utilities.GetInGameCoordinateForPosition(i - 0.5, j + 0.5, -7f));
-                        }
-                        else if (i == rows - 1 ||
-                                 (_shipManager.Ship[i + 1, j] == currentRoom &&
-                                  _shipManager.Ship[i + 1, j + 1] == rightRoom))
-                        {
-                            result.Add(Utilities.GetInGameCoordinateForPosition(i + 0.5, j + 0.5, -7f));
-                        }
-                    }
+                             currentRoom.transform.rotation == Quaternion.Euler(0, 0, 90)
+                             && i < rows - 1 && j < cols - 1 &&
+                                 _shipManager.Ship[i + 1, j] == currentRoom &&
+                                 _shipManager.Ship[i + 1, j + 1] == rightRoom)
+                        result.Add(Utilities.GetInGameCoordinateForPosition(i + 0.5, j + 0.5, -7f));
                 }
 
                 if (i >= rows - 1 || bottomRoom == null || !bottomRoom.TryGetComponent<Room>(out var room2)
@@ -75,27 +66,16 @@ public class RoomMerger : MonoBehaviour
                 
                 if (currentRoom.TryGetComponent<SmallRoom>(out _)
                     && bottomRoom.TryGetComponent<SmallRoom>(out _))
-                {
                     result.Add(Utilities.GetInGameCoordinateForPosition(i + 0.5, j, -7f));
-                }
+                
                 else if (currentRoom.TryGetComponent<MediumRoom>(out _) &&
                          bottomRoom.TryGetComponent<MediumRoom>(out _) &&
                          currentRoom.transform.rotation == bottomRoom.transform.rotation &&
-                         currentRoom.transform.rotation == Quaternion.Euler(0, 0, 0))
-                {
-                    if (i == 0 ||
-                        (_shipManager.Ship[i, j - 1] == currentRoom &&
-                         _shipManager.Ship[i + 1, j - 1] == bottomRoom))
-                    {
-                        result.Add(Utilities.GetInGameCoordinateForPosition(i - 0.5, j + 0.5, -7f));
-                    }
-                    else if (i == rows - 1 ||
-                             (_shipManager.Ship[i, j + 1] == currentRoom &&
-                              _shipManager.Ship[i + 1, j + 1] == bottomRoom))
-                    {
+                         currentRoom.transform.rotation == Quaternion.Euler(0, 0, 0) &&
+                         j < cols - 1 && i < rows - 1 &&
+                             _shipManager.Ship[i, j + 1] == currentRoom &&
+                             _shipManager.Ship[i + 1, j + 1] == bottomRoom)
                         result.Add(Utilities.GetInGameCoordinateForPosition(i + 0.5, j + 0.5, -7f));
-                    }
-                }
             }
         }
 
@@ -105,9 +85,6 @@ public class RoomMerger : MonoBehaviour
     public void MergeRoom(Transform mergePoint)
     {
         var (x, y) = Utilities.GetPositionInArrayOfCoordinate(mergePoint.position);
-
-        Debug.Log((x,y));
-        Debug.Log(((int)x, (int)y));
 
         if (Math.Round(x) == x)
         {
