@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
+using System.Collections;
 
 public class RoomMerger : MonoBehaviour
 {
@@ -85,6 +87,8 @@ public class RoomMerger : MonoBehaviour
     public void MergeRoom(Transform mergePoint)
     {
         var (x, y) = Utilities.GetPositionInArrayOfCoordinate(mergePoint.position);
+        var oldRoom1 = _shipManager.Ship[(int)x, (int)y].GetComponent<Room>();
+        var oldRoom2 = _shipManager.Ship[(int)(x + 0.5), (int)(y + 0.5)].GetComponent<Room>();
 
         if (Math.Round(x) == x)
         {
@@ -98,5 +102,19 @@ public class RoomMerger : MonoBehaviour
         {
             _shipManager.CreateObject(ObjectType.BigRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0));
         }
+        
+        var newRoom = _shipManager.Ship[(int)x, (int)y].GetComponent<Room>();
+
+        StartCoroutine(MoveCrew(newRoom, oldRoom1, oldRoom2));
+        
+        newRoom.ActualCapacity = oldRoom1.ActualCapacity + oldRoom2.ActualCapacity;
+        newRoom.Lvl = oldRoom1.Lvl;
+    }
+
+    private static IEnumerator MoveCrew(Room newRoom, Room oldRoom1, Room oldRoom2)
+    {
+        yield return new WaitForSeconds(0.1f);
+        newRoom.crews = oldRoom1.crews.Concat(oldRoom2.crews).ToArray();
+        newRoom.crews.Where(c => c != null).ToList().ForEach(crew => crew.room = newRoom);
     }
 }

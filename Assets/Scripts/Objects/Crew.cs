@@ -42,7 +42,7 @@ public class Crew : MonoBehaviour
                     finalRoomPosition)));
 
             room.crews[Array.IndexOf(room.crews, this)] = null;
-            _actorManager.currentRoom.crews[Array.IndexOf(_actorManager.currentRoom.crews, null)] = (this);
+            _actorManager.currentRoom.crews[Array.IndexOf(_actorManager.currentRoom.crews, null)] = this;
             _crewSelected = false;
             _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             _actorManager.selectedCrewNumber = 0;
