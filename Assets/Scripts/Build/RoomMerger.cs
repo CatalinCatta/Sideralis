@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class RoomMerger : MonoBehaviour
 {
     private SpaceShipManager _shipManager;
     [SerializeField] private GameObject mergeButton;
-    [SerializeField] private GameObject _parent;
+    [SerializeField] private GameObject parent;
     
     public void Start()
     {
@@ -19,7 +20,7 @@ public class RoomMerger : MonoBehaviour
 
         foreach (var mergingPoint in mergingPoints)
         {
-            Instantiate(mergeButton, mergingPoint, transform.rotation, _parent.transform);
+            Instantiate(mergeButton, mergingPoint, transform.rotation, parent.transform);
         }
     }
     
@@ -99,5 +100,26 @@ public class RoomMerger : MonoBehaviour
         }
 
         return result;
+    }
+
+    public void MergeRoom(Transform mergePoint)
+    {
+        var (x, y) = Utilities.GetPositionInArrayOfCoordinate(mergePoint.position);
+
+        Debug.Log((x,y));
+        Debug.Log(((int)x, (int)y));
+
+        if (Math.Round(x) == x)
+        {
+            _shipManager.CreateObject(ObjectType.MediumRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0));
+        }
+        else if (Math.Round(y) == y)
+        {
+            _shipManager.CreateObject(ObjectType.RotatedMediumRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0));
+        }
+        else
+        {
+            _shipManager.CreateObject(ObjectType.BigRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0));
+        }
     }
 }

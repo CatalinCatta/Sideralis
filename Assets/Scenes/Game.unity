@@ -3175,7 +3175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mergeButton: {fileID: 1703000592169971722, guid: 30eae52af78d811439fe2464da55204d, type: 3}
-  _parent: {fileID: 778372651}
+  parent: {fileID: 778372651}
 --- !u!1 &1500204375
 GameObject:
   m_ObjectHideFlags: 0
