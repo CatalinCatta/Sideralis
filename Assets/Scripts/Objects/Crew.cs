@@ -46,7 +46,7 @@ public class Crew : MonoBehaviour
             _crewSelected = false;
             _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             _actorManager.selectedCrewNumber = 0;
-            _spaceShipManager.CreateObject(ObjectType.Pointer, GetPositionForCoordinate(finalRoomPosition.Item1, finalRoomPosition.Item2));
+            _spaceShipManager.CreateObject(ObjectType.Pointer, Utilities.GetInGameCoordinateForPosition(finalRoomPosition.Item1, finalRoomPosition.Item2, -5f));
             _pointer = _spaceShipManager.lastPointer;
             room = _actorManager.currentRoom;
 
@@ -143,7 +143,7 @@ public class Crew : MonoBehaviour
 
         foreach (var move in movements.Skip(1).ToList())
         {
-            var targetPosition = GetPositionForCoordinate(move.x, move.y);
+            var targetPosition = Utilities.GetInGameCoordinateForPosition(move.x, move.y, -5f);
             var elapsedTime = 0f;
             var crewPosition = crewTransform.position;
 
@@ -223,9 +223,6 @@ public class Crew : MonoBehaviour
                   (directionY == +1 &&
                    (roadRotation == Quaternion.Euler(0f, 0f, 0f) || roadRotation == Quaternion.Euler(0f, 0f, 270f))))));
     }
-
-    private static Vector3 GetPositionForCoordinate(double x, double y) => 
-        new ((float)((y - 24.5) * 10), (float)((24.5 - x) * 10), -5f);
 
     private static bool IsValidPosition(int x, int y, int rows, int columns) =>
         x >= 0 && x < rows && y >= 0 && y < columns;

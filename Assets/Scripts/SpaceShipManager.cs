@@ -38,9 +38,8 @@ public class SpaceShipManager : MonoBehaviour
     /// <param name="position">The position of the room.</param>
     public void CreateObject(ObjectType type, Vector2 position)
     {
-        var x = GetXCoordinate(position);
-        var y = GetYCoordinate(position);
-
+        var (x, y) = Utilities.GetPositionInArrayOfCoordinate(position);
+        
         switch (type)
         {
             case ObjectType.ConstructPlace:
@@ -156,12 +155,6 @@ public class SpaceShipManager : MonoBehaviour
     private void AddToShip(GameObject construction, params (double x, double y)[] coords) => 
         coords.ToList().ForEach(
             coord => Ship[(int)coord.x, (int)coord.y] = construction);
-
-    private static double GetXCoordinate(Vector2 position) => 
-        (double)-Mathf.RoundToInt(position.y) / 10 + 24.5;
-
-    private static double GetYCoordinate(Vector2 position) => 
-        (double)Mathf.RoundToInt(position.x) / 10 + 24.5;
 
     private void RemoveRoom(params (int x, int y)[] coords) =>
         coords.ToList().ForEach(coord =>

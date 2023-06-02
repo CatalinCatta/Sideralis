@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Linq;
 
 public class ActorManager : MonoBehaviour
 {
@@ -76,4 +77,7 @@ public class ActorManager : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException(nameof(objectType), objectType, "This object cannot be created")
         };
     }
+
+    public void DestroyAllChildrensOf(GameObject parent) =>
+        parent.transform.Cast<Transform>().ToList().ForEach(child => Destroy(child.gameObject));
 }

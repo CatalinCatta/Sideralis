@@ -16,10 +16,3 @@
     Crew,
     Pointer
 }
-
-public enum Resources
-{
-    Oxigen,
-    Energy,
-    Produce
-}
