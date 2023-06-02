@@ -8,7 +8,7 @@ public class RoomMerger : MonoBehaviour
 {
     private SpaceShipManager _shipManager;
     [SerializeField] private GameObject mergeButton;
-    [SerializeField] private GameObject parent;
+    [SerializeField] public GameObject parent;
     
     public void Start()
     {

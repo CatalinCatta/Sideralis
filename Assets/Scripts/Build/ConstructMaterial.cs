@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(BoxCollider2D))]
 public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [SerializeField] private GameObject parent;
+    [SerializeField] public GameObject parent;
     [SerializeField] public ObjectType objectType;
     private GameObject _draggingClone;
     private Transform _draggingCloneTransform;
