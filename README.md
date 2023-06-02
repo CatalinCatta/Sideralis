@@ -17,6 +17,7 @@ The ultimate goal of Sideralis is to find a new home for humanity, whether it's 
 ### Project Features:
 - Building System
 - Crew Control
+- Room Manipulation
 
 ### How to Run the Project?
 1. Clone the [Repo](https://github.com/CatalinCatta/Sideralis.git).
@@ -25,3 +26,4 @@ The ultimate goal of Sideralis is to find a new home for humanity, whether it's 
 
 ![Start](Images/Start.png)
 ![Build](Images/Build.png)
+![Merge](Images/Merge.jpg)
