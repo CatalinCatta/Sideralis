@@ -296,21 +296,26 @@ public class SpaceShipManager : MonoBehaviour
         }
         
         _doorsInAction.Add(door,
-            (OpenDoorAnimation(half1, half2, half1Position, half2Position, newHalf1Position, newHalf2Position), (half1Position, half2Position)));
+            (OpenDoorAnimation(half1, half2, half1Position, half2Position, newHalf1Position, newHalf2Position, door), (half1Position, half2Position)));
 
         StartCoroutine(_doorsInAction[door].Item1);
     }
 
 
-    private IEnumerator OpenDoorAnimation(Transform half1, Transform half2, Vector3 half1Position, Vector3 half2Position, Vector3 newHalf1Position, Vector3 newHalf2Position)
+    private IEnumerator OpenDoorAnimation(Transform half1, Transform half2, Vector3 half1Position, Vector3 half2Position, Vector3 newHalf1Position, Vector3 newHalf2Position, GameObject parent)
     {
         var elapsedTime = 0f;
         const float movementDuration = 0.5f;
         var actualHalf1Position = half1.position;
         var actualHalf2Position = half2.position;
-        
+
         while (elapsedTime < movementDuration)
         {
+            if (half1 == null)
+            {
+                _doorsInAction.Remove(parent);
+                yield break;
+            }
             elapsedTime += Time.deltaTime;
             half1.position = Vector3.Lerp(actualHalf1Position, newHalf1Position, Mathf.Clamp01(elapsedTime / movementDuration));
             half2.position = Vector3.Lerp(actualHalf2Position, newHalf2Position, Mathf.Clamp01(elapsedTime / movementDuration));
@@ -318,18 +323,23 @@ public class SpaceShipManager : MonoBehaviour
             yield return null;
         }
 
-        var parent = half1.parent.gameObject;
-        _doorsInAction[parent] = (CloseDoorAnimation(half1, half2, half1Position, half2Position),(half1Position ,half2Position));
+        _doorsInAction[parent] = (CloseDoorAnimation(half1, half2, half1Position, half2Position, parent),(half1Position ,half2Position));
         StartCoroutine(_doorsInAction[parent].Item1);
     }
     
-    private IEnumerator CloseDoorAnimation(Transform wall1, Transform wall2, Vector3 wall1InitialPosition, Vector2 wall2InitialPosition)
+    private IEnumerator CloseDoorAnimation(Transform wall1, Transform wall2, Vector3 wall1InitialPosition, Vector2 wall2InitialPosition, GameObject parent)
     {
         var elapsedTime = 0f;
         const float movementDuration = 0.5f;
         
         while (elapsedTime < movementDuration)
         {
+            if (wall1 == null)
+            {
+                _doorsInAction.Remove(parent);
+                yield break;
+            }
+            
             elapsedTime += Time.deltaTime;
             wall1.position = Vector3.Lerp(wall1.position, wall1InitialPosition, Mathf.Clamp01(elapsedTime / movementDuration));
             wall2.position = Vector3.Lerp(wall2.position, wall2InitialPosition, Mathf.Clamp01(elapsedTime / movementDuration));
@@ -337,7 +347,7 @@ public class SpaceShipManager : MonoBehaviour
             yield return null;
         }
         
-        _doorsInAction.Remove(wall1.parent.gameObject);
+        _doorsInAction.Remove(parent);
     }
     
     public void OpenDor((int x, int y)firstRoom, (int x, int y)secondRoom)

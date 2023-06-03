@@ -13,6 +13,9 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+        
         var canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.interactable = false;
         canvasGroup.alpha = 0;
@@ -36,12 +39,18 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+        
         var cameraPosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
         _draggingCloneTransform.position = new Vector3(cameraPosition.x, cameraPosition.y, -5f);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+        
         var canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.interactable = true;
         canvasGroup.alpha = 1;

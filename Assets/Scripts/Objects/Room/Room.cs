@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using System.Collections;
@@ -30,8 +31,11 @@ public abstract class Room : MonoBehaviour
         StartCoroutine(Farm());
     }
 
-    public void AddMeToActorManager() =>
-        _actorManager.currentRoom = this;
+    public void AddMeToActorManager()
+    {
+        if (_actorManager != null)
+            _actorManager.currentRoom = this;
+    }
 
     public void RemoveMeFromActorManager() =>
         _actorManager.currentRoom = null;

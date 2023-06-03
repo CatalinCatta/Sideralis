@@ -13,7 +13,10 @@ public class ConstructPlace : MonoBehaviour, IDropHandler
     /// Creates a room based on the dropped object's type at the position of this construct place.
     /// </summary>
     /// <param name="eventData">The pointer event data for the drop event.</param>
-    public void OnDrop(PointerEventData eventData) =>
-        _spaceShipManager.CreateObject(eventData.pointerDrag.GetComponent<ConstructMaterial>().objectType,
-            transform.position);
+    public void OnDrop(PointerEventData eventData)
+    {
+        if (eventData.pointerDrag.TryGetComponent<ConstructMaterial>(out var constructMaterial))
+            _spaceShipManager.CreateObject(constructMaterial.objectType, transform.position);
+    }
+
 }

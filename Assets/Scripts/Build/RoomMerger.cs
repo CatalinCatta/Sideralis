@@ -87,8 +87,8 @@ public class RoomMerger : MonoBehaviour
     public void MergeRoom(Transform mergePoint)
     {
         var (x, y) = Utilities.GetPositionInArrayOfCoordinate(mergePoint.position);
-        var oldRoom1 = _shipManager.Ship[(int)x, (int)y].GetComponent<Room>();
-        var oldRoom2 = _shipManager.Ship[(int)(x + 0.5), (int)(y + 0.5)].GetComponent<Room>();
+        var (oldRoom1, oldRoom2) = FixCrewsPosition(_shipManager.Ship[(int)x, (int)y],
+            _shipManager.Ship[(int)(x + 0.5), (int)(y + 0.5)]); 
 
         if (Math.Round(x) == x)
         {
@@ -116,5 +116,16 @@ public class RoomMerger : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         newRoom.crews = oldRoom1.crews.Concat(oldRoom2.crews).ToArray();
         newRoom.crews.Where(c => c != null).ToList().ForEach(crew => crew.room = newRoom);
+    }
+
+    private static (Room, Room) FixCrewsPosition(GameObject room1, GameObject room2)
+    {
+        var oldRoom1 = room1.GetComponent<Room>();
+        var oldRoom2 = room2.GetComponent<Room>();
+
+        if (room1.transform.rotation != Quaternion.Euler(0, 0, 0))
+            (oldRoom1.crews[1], oldRoom2.crews[0]) = (oldRoom2.crews[0], oldRoom1.crews[1]);
+
+        return (oldRoom1, oldRoom2);
     }
 }
