@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-
 public static class Utilities
 {
     public static readonly int[][] Directions =

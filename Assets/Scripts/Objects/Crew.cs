@@ -38,8 +38,8 @@ public class Crew : MonoBehaviour
             var startRoomPosition = _spaceShipManager.FindRoomPosition(room, true, this);
 
             StartCoroutine(MoveCrew(
-                FindShortestPath(startRoomPosition,
-                    finalRoomPosition)));
+                BreadthFirstSearch.GetShortestPath(startRoomPosition,
+                    finalRoomPosition, _spaceShipManager.Ship)));
 
             room.crews[Array.IndexOf(room.crews, this)] = null;
             _actorManager.currentRoom.crews[Array.IndexOf(_actorManager.currentRoom.crews, null)] = this;
@@ -115,14 +115,6 @@ public class Crew : MonoBehaviour
                 var newX = currentPosition.x + direction[0];
                 var newY = currentPosition.y + direction[1];
 
-                if (!IsValidPosition(newX, newY, rows, columns) ||
-                    visited[newX, newY] ||
-                    _spaceShipManager.Ship[newX, newY] == null ||
-                    (!IsValidRoad(newX, newY, direction[0] * -1, direction[1] * -1) &&
-                     !_spaceShipManager.Ship[newX, newY].TryGetComponent<Room>(out _)) ||
-                    (!_spaceShipManager.Ship[currentPosition.x, currentPosition.y].TryGetComponent<Room>(out _) &&
-                     !IsValidRoad(currentPosition.x, currentPosition.y, direction[0], direction[1]))) 
-                    continue;
             
                 visited[newX, newY] = true;
                 parent[newX, newY] = currentPosition;
@@ -200,33 +192,6 @@ public class Crew : MonoBehaviour
 
         return path;
     }
-
-    private bool IsValidRoad(int x, int y, int directionX, int directionY)
-    {
-        var roadObject = _spaceShipManager.Ship[x, y];
-        var roadRotation = roadObject.transform.rotation;
-        
-        return roadObject.TryGetComponent<Road>(out var road) && 
-               (road is CrossRoad ||
-                (road is LinearRoad &&
-                 ((roadRotation == Quaternion.Euler(0f, 0f, 0f) &&
-                   directionX is -1 or +1)||
-                  (roadRotation == Quaternion.Euler(0f, 0f, 90f) &&
-                   directionY is -1 or +1))) ||
-                (road is LRoad &&
-                 ((directionX == -1 &&
-                   (roadRotation == Quaternion.Euler(0f, 0f, 0f) || roadRotation == Quaternion.Euler(0f, 0f, 90f))) ||
-                  (directionX == +1 &&
-                   (roadRotation == Quaternion.Euler(0f, 0f, 180f) || roadRotation == Quaternion.Euler(0f, 0f, 270f))) ||
-                  (directionY == -1 &&
-                   (roadRotation == Quaternion.Euler(0f, 0f, 90f) || roadRotation == Quaternion.Euler(0f, 0f, 180f))) ||
-                  (directionY == +1 &&
-                   (roadRotation == Quaternion.Euler(0f, 0f, 0f) || roadRotation == Quaternion.Euler(0f, 0f, 270f))))));
-    }
-
-    private static bool IsValidPosition(int x, int y, int rows, int columns) =>
-        x >= 0 && x < rows && y >= 0 && y < columns;
-
     private enum SpritesTypes
     {
         AfkStatus
