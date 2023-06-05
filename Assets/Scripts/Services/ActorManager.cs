@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Serialization;
 
 public class ActorManager : MonoBehaviour
 {
@@ -27,20 +28,25 @@ public class ActorManager : MonoBehaviour
     /// </summary>
     public Room currentRoom;
 
-    public bool MoveRoomMode;
+    /// <summary>
+    /// The current object(Road/Room) where the mouse is positioned.
+    /// </summary>
+    public GameObject currentObject;
     
-    public bool DeleteRoomMode;
+    public bool moveRoomMode;
+    
+    public bool deleteRoomMode;
 
     public void EnterMoveRoomMode() =>
-        MoveRoomMode = true;
+        moveRoomMode = true;
     
     public void EnterDeleteRoomMode() =>
-        DeleteRoomMode = true;
+        deleteRoomMode = true;
 
     public void StopEditor()
     {
-        MoveRoomMode = false;
-        DeleteRoomMode = false;
+        moveRoomMode = false;
+        deleteRoomMode = false;
     }
     
     /// <summary>

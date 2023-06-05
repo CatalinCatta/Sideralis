@@ -15,23 +15,23 @@ public class RoomEditor : MonoBehaviour
 
     private void Update()
     {
-        if (!Input.GetMouseButtonDown(0) || _actorManager.currentRoom == null) 
+        if (!Input.GetMouseButtonDown(0) || _actorManager.currentObject == null) 
             return;
         
-        if (_actorManager.MoveRoomMode)
+        if (_actorManager.moveRoomMode)
             MoveRoom();
 
-        if (_actorManager.DeleteRoomMode)
+        if (_actorManager.deleteRoomMode)
             DeleteRoom();
     }
 
     private void MoveRoom()
     {
-        Debug.Log(_depthFirstSearch.IsSafeToRemove(_actorManager.currentRoom.transform.gameObject, _shipManager.Ship));
+        Debug.Log(_depthFirstSearch.IsSafeToRemove(_actorManager.currentObject, _shipManager.Ship));
     }
 
     private void DeleteRoom()
     {
-        _depthFirstSearch.IsSafeToRemove(_actorManager.currentRoom.transform.gameObject, _shipManager.Ship);
+        _depthFirstSearch.IsSafeToRemove(_actorManager.currentObject, _shipManager.Ship);
     }
 }

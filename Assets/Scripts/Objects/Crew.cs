@@ -34,7 +34,7 @@ public class Crew : MonoBehaviour
     private void Update()
     {
         if (_crewSelected && Input.GetMouseButtonDown(0) && !_selectingCrew && _actorManager.currentRoom != null &&
-            _actorManager.currentRoom.CrewSpaceLeft >= _actorManager.selectedCrewNumber && !_isMoving && _actorManager.currentRoom != room && !_actorManager.MoveRoomMode && !_actorManager.DeleteRoomMode)
+            _actorManager.currentRoom.CrewSpaceLeft >= _actorManager.selectedCrewNumber && !_isMoving && _actorManager.currentRoom != room && !_actorManager.moveRoomMode && !_actorManager.deleteRoomMode)
         {
             var finalRoomPosition = _spaceShipManager.FindRoomPosition(_actorManager.currentRoom, false, this);
             var startRoomPosition = _spaceShipManager.FindRoomPosition(room, true, this);

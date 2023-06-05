@@ -2,16 +2,17 @@ using System;
 using System.Linq;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Serialization;
 
 public abstract class Room : MonoBehaviour
 {
     protected static int MaxCrewNumber;
     public Crew[] crews;
     private ActorManager _actorManager;
-    public int Lvl;
-    public int MaxCapacity;
-    public int FarmingRatePerCrew;
-    public double ActualCapacity;
+    public int lvl;
+    public int maxCapacity;
+    public int farmingRatePerCrew;
+    public double actualCapacity;
     
     public int CrewSpaceLeft => 
         crews.Count(crew => crew == null);
@@ -24,8 +25,8 @@ public abstract class Room : MonoBehaviour
     private void Start()
     {
         _actorManager = FindObjectOfType<ActorManager>();
-        Lvl = 0;
-        ActualCapacity = 0;
+        lvl = 0;
+        actualCapacity = 0;
         Initialize();
         crews = new Crew[MaxCrewNumber];
         StartCoroutine(Farm());
@@ -33,18 +34,27 @@ public abstract class Room : MonoBehaviour
 
     public void AddMeToActorManager()
     {
-        if (_actorManager != null)
-            _actorManager.currentRoom = this;
+        if (_actorManager == null)
+            return;
+        
+        _actorManager.currentRoom = this;
+        _actorManager.currentObject = transform.gameObject;
     }
 
-    public void RemoveMeFromActorManager() =>
+    public void RemoveMeFromActorManager()
+    {
+        if (_actorManager == null)
+            return;
+
         _actorManager.currentRoom = null;
+        _actorManager.currentObject = null;
+    }
 
     private IEnumerator Farm()
     {
-        while (ActualCapacity < MaxCapacity * Lvl)
+        while (actualCapacity < maxCapacity * lvl)
         {
-            ActualCapacity += FarmingRatePerCrew * Lvl * CrewsNumber() * 0.01;
+            actualCapacity += farmingRatePerCrew * lvl * CrewsNumber() * 0.01;
             yield return new WaitForSeconds(0.5f);
         }
     } 

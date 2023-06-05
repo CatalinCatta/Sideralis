@@ -44,7 +44,7 @@ public class RoomMerger : MonoBehaviour
                 var bottomRoom = i < rows - 1 ? _shipManager.Ship[i + 1, j] : null;
 
                 if (j < cols - 1 && rightRoom != null && rightRoom.TryGetComponent<Room>(out var room)
-                    && currentRoom.GetComponent<Room>().Lvl == room.Lvl &&
+                    && currentRoom.GetComponent<Room>().lvl == room.lvl &&
                     currentRoom != rightRoom)
                 {
                     if (currentRoom.TryGetComponent<SmallRoom>(out _)
@@ -62,7 +62,7 @@ public class RoomMerger : MonoBehaviour
                 }
 
                 if (i >= rows - 1 || bottomRoom == null || !bottomRoom.TryGetComponent<Room>(out var room2)
-                    || currentRoom.GetComponent<Room>().Lvl != room2.Lvl ||
+                    || currentRoom.GetComponent<Room>().lvl != room2.lvl ||
                     currentRoom == bottomRoom) 
                     continue;
                 
@@ -107,8 +107,8 @@ public class RoomMerger : MonoBehaviour
 
         StartCoroutine(MoveCrew(newRoom, oldRoom1, oldRoom2));
         
-        newRoom.ActualCapacity = oldRoom1.ActualCapacity + oldRoom2.ActualCapacity;
-        newRoom.Lvl = oldRoom1.Lvl;
+        newRoom.actualCapacity = oldRoom1.actualCapacity + oldRoom2.actualCapacity;
+        newRoom.lvl = oldRoom1.lvl;
     }
 
     private static IEnumerator MoveCrew(Room newRoom, Room oldRoom1, Room oldRoom2)
