@@ -1,15 +1,19 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-[RequireComponent(typeof(Image))]
 [RequireComponent(typeof(BoxCollider2D))]
 public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] public GameObject parent;
     [SerializeField] public ObjectType objectType;
+    
     private GameObject _draggingClone;
     private Transform _draggingCloneTransform;
+    private PrefabStorage _prefabStorage;
+
+    private void Start() =>
+        _prefabStorage = FindObjectOfType<PrefabStorage>();
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -29,7 +33,7 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         rb.isKinematic = true;
 
         var draggingImage = _draggingClone.AddComponent<SpriteRenderer>();
-        draggingImage.sprite = GetComponent<Image>().sprite;
+        draggingImage.sprite = GetImageForClone();
         draggingImage.color = new Color(1f, 1f, 1f, 0.5f);
 
         var cameraPosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
@@ -57,4 +61,43 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
         Destroy(_draggingClone);
     }
+
+    private Sprite GetImageForClone() =>
+        objectType switch
+        {
+            ObjectType.SmallRoom =>
+                _prefabStorage.smallRoomSprite,
+
+            ObjectType.MediumRoom =>
+                _prefabStorage.mediumRoomSprite,
+
+            ObjectType.RotatedMediumRoom =>
+                _prefabStorage.mediumRotatedRoomSprite,
+
+            ObjectType.BigRoom =>
+                _prefabStorage.bigRoomSprite,
+
+            ObjectType.Road =>
+                _prefabStorage.roadSprite,
+
+            ObjectType.RoadRotated =>
+                _prefabStorage.roadRotatedSprite,
+
+            ObjectType.CrossRoad =>
+                _prefabStorage.crossRoadSprite,
+
+            ObjectType.LRoad =>
+                _prefabStorage.lRoadSprite,
+
+            ObjectType.LRoadRotated90 =>
+                _prefabStorage.lRoadRotated90Sprite,
+
+            ObjectType.LRoadRotated180 =>
+                _prefabStorage.lRoadRotated180Sprite,
+
+            ObjectType.LRoadRotated270 =>
+                _prefabStorage.lRoadRotated270Sprite,
+
+            _ => throw new Exception("Invalid object type")
+        };
 }

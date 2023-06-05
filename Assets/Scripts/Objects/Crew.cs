@@ -6,8 +6,7 @@ using System;
 
 public class Crew : MonoBehaviour
 {
-    [SerializeField] private List<Sprite> sprites;
-    [SerializeField] private List<RuntimeAnimatorController> animations;
+    private PrefabStorage _prefabStorage;
     public Room room;
     private readonly float _speed = 1;
     private ActorManager _actorManager;
@@ -22,12 +21,13 @@ public class Crew : MonoBehaviour
 
     private void Start()
     {
+        _prefabStorage = FindObjectOfType<PrefabStorage>();
         _spaceShipManager = FindObjectOfType<SpaceShipManager>();
         _actorManager = FindObjectOfType<ActorManager>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
         _animator.enabled = false;
-        _spriteRenderer.sprite = sprites[(int) SpritesTypes.AfkStatus];
+        _spriteRenderer.sprite = _prefabStorage.crewSprites[(int) SpritesTypes.AfkStatus];
         _breadthFirstSearch = new BreadthFirstSearch();
     }
 
@@ -149,18 +149,18 @@ public class Crew : MonoBehaviour
             
             if (move.y > lastPosition.y)
             {
-                _animator.runtimeAnimatorController = animations[isOnRoad? (int) AnimationsTypes.SlideSide : (int) AnimationsTypes.RunSide];
+                _animator.runtimeAnimatorController = _prefabStorage.crewAnimations[isOnRoad? (int) AnimationsTypes.SlideSide : (int) AnimationsTypes.RunSide];
                 crewTransform.rotation = new Quaternion(0, 180, 0, 0);
             }
 
             if (move.y < lastPosition.y)
-                _animator.runtimeAnimatorController = animations[isOnRoad? (int) AnimationsTypes.SlideSide : (int) AnimationsTypes.RunSide];
+                _animator.runtimeAnimatorController = _prefabStorage.crewAnimations[isOnRoad? (int) AnimationsTypes.SlideSide : (int) AnimationsTypes.RunSide];
 
             if (move.x < lastPosition.x)
-                _animator.runtimeAnimatorController = animations[isOnRoad? (int) AnimationsTypes.SlideUp : (int) AnimationsTypes.RunUp];
+                _animator.runtimeAnimatorController = _prefabStorage.crewAnimations[isOnRoad? (int) AnimationsTypes.SlideUp : (int) AnimationsTypes.RunUp];
 
             if (move.x > lastPosition.x)
-                _animator.runtimeAnimatorController = animations[isOnRoad? (int) AnimationsTypes.SlideDown : (int) AnimationsTypes.RunDown];
+                _animator.runtimeAnimatorController = _prefabStorage.crewAnimations[isOnRoad? (int) AnimationsTypes.SlideDown : (int) AnimationsTypes.RunDown];
 
             while (elapsedTime < movementDuration)
             {
@@ -176,7 +176,7 @@ public class Crew : MonoBehaviour
         }
 
         Destroy(_pointer);
-        _spriteRenderer.sprite = sprites[(int) SpritesTypes.AfkStatus];
+        _spriteRenderer.sprite = _prefabStorage.crewSprites[(int) SpritesTypes.AfkStatus];
         _animator.enabled = false;
         _isMoving = false;
     }

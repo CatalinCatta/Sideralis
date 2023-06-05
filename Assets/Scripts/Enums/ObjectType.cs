@@ -14,5 +14,6 @@
     LRoadRotated180,
     LRoadRotated270,
     Crew,
-    Pointer
+    Pointer,
+    MergeButton
 }

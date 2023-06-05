@@ -7,26 +7,23 @@ using System.Collections;
 public class RoomMerger : MonoBehaviour
 {
     private SpaceShipManager _shipManager;
-    [SerializeField] private GameObject mergeButton;
+    private ActorManager _actorManager;
+    
     [SerializeField] public GameObject parent;
     
     public void Start()
     {
         _shipManager = transform.GetComponent<SpaceShipManager>();
+        _actorManager = transform.GetComponent<ActorManager>();
     }
 
     public void CreateMergingPoints()
     {
-
-        var mergingPoints = GetAllMergingPoints();
-
-        foreach (var mergingPoint in mergingPoints)
-        {
-            Instantiate(mergeButton, mergingPoint, transform.rotation, parent.transform);
-        }
+        foreach (var mergingPoint in GetAllMergingPoints())
+            _actorManager.CreateObject(mergingPoint, ObjectType.MergeButton, parent.transform);
     }
-    
-    private List<Vector3> GetAllMergingPoints()
+
+    private IEnumerable<Vector3> GetAllMergingPoints()
     {
         var rows = _shipManager.Ship.GetLength(0);
         var cols = _shipManager.Ship.GetLength(1);

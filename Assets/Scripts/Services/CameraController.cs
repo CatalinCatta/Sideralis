@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private float zoomLerpSpeed = 10;
+    private float zoomLerpSpeed = 10;
     private const float ZoomFactor = 3f;
     private Camera _cam;
     private Vector3 _dragStartPos;

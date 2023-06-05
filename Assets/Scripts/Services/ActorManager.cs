@@ -1,23 +1,14 @@
 using System;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.Serialization;
 
 public class ActorManager : MonoBehaviour
 {
-    [SerializeField] private GameObject bigRoom;                // Prefab for a big room object
-    [SerializeField] private GameObject mediumRoom;             // Prefab for a medium room object
-    [SerializeField] private GameObject smallRoom;              // Prefab for a small room object
-    [SerializeField] private GameObject constructPlace;         // Prefab for a construct place object
-    [SerializeField] private GameObject road;                   // Prefab for a road object
-    [SerializeField] private GameObject crossRoad;              // Prefab for a crossroad object
-    [SerializeField] private GameObject lRoad;                  // Prefab for an L-road object
-    [SerializeField] private GameObject crew;                   // Prefab for a crew object
-    [SerializeField] private GameObject pointer;                // Prefab for a pointer object
-    
     [SerializeField] private Transform constructPlaceParent;    // Parent transform for constructed places
     [SerializeField] private Transform spaceSheep;              // Parent transform for spawned objects
-
+    
+    private PrefabStorage _prefabStorage;
+    
     /// <summary>
     /// Currently selected crew number.
     /// </summary>
@@ -43,6 +34,9 @@ public class ActorManager : MonoBehaviour
     public void EnterDeleteRoomMode() =>
         deleteRoomMode = true;
 
+    private void Start() =>
+        _prefabStorage = transform.GetComponent<PrefabStorage>();
+    
     public void StopEditor()
     {
         moveRoomMode = false;
@@ -55,46 +49,50 @@ public class ActorManager : MonoBehaviour
     /// <param name="position">The position where the object will be created.</param>
     /// <param name="objectType">The type of object to be created.</param>
     /// <returns>The created game object.</returns>
-    public GameObject CreateObject(Vector2 position, ObjectType objectType)
+    public GameObject CreateObject(Vector3 position, ObjectType objectType, Transform? parentLocation = null)
     {
         var rotation = transform.rotation;
+        parentLocation = parentLocation == null ? spaceSheep : parentLocation;
         
         return objectType switch
         {
-            ObjectType.ConstructPlace => Instantiate(constructPlace, position, rotation,
+            ObjectType.ConstructPlace => Instantiate(_prefabStorage.constructPlace, position, rotation,
                 constructPlaceParent),
 
-            ObjectType.ConstructRotatedPlace => Instantiate(constructPlace, position, Quaternion.Euler(0f, 0f, 90f),
+            ObjectType.ConstructRotatedPlace => Instantiate(_prefabStorage.constructPlace, position, Quaternion.Euler(0f, 0f, 90f),
                 constructPlaceParent),
 
-            ObjectType.SmallRoom => Instantiate(smallRoom, position, rotation, spaceSheep),
+            ObjectType.SmallRoom => Instantiate(_prefabStorage.smallRoom, position, rotation, parentLocation),
 
-            ObjectType.MediumRoom => Instantiate(mediumRoom, position, rotation, spaceSheep),
+            ObjectType.MediumRoom => Instantiate(_prefabStorage.mediumRoom, position, rotation, parentLocation),
 
-            ObjectType.RotatedMediumRoom => Instantiate(mediumRoom, position, Quaternion.Euler(0f, 0f, 90f),
-                spaceSheep),
+            ObjectType.RotatedMediumRoom => Instantiate(_prefabStorage.mediumRoom, position, Quaternion.Euler(0f, 0f, 90f),
+                parentLocation),
 
-            ObjectType.BigRoom => Instantiate(bigRoom, position, rotation, spaceSheep),
+            ObjectType.BigRoom => Instantiate(_prefabStorage.bigRoom, position, rotation, parentLocation),
 
-            ObjectType.Road => Instantiate(road, position, rotation, spaceSheep),
+            ObjectType.Road => Instantiate(_prefabStorage.road, position, rotation, parentLocation),
 
-            ObjectType.RoadRotated => Instantiate(road, position, Quaternion.Euler(0f, 0f, 90f), spaceSheep),
+            ObjectType.RoadRotated => Instantiate(_prefabStorage.road, position, Quaternion.Euler(0f, 0f, 90f), parentLocation),
 
-            ObjectType.CrossRoad => Instantiate(crossRoad, position, rotation, spaceSheep),
+            ObjectType.CrossRoad => Instantiate(_prefabStorage.crossRoad, position, rotation, parentLocation),
 
-            ObjectType.LRoad => Instantiate(lRoad, position, rotation, spaceSheep),
+            ObjectType.LRoad => Instantiate(_prefabStorage.lRoad, position, rotation, parentLocation),
 
-            ObjectType.LRoadRotated90 => Instantiate(lRoad, position, Quaternion.Euler(0f, 0f, 90f), spaceSheep),
+            ObjectType.LRoadRotated90 => Instantiate(_prefabStorage.lRoad, position, Quaternion.Euler(0f, 0f, 90f), parentLocation),
 
-            ObjectType.LRoadRotated180 => Instantiate(lRoad, position, Quaternion.Euler(0f, 0f, 180f), spaceSheep),
+            ObjectType.LRoadRotated180 => Instantiate(_prefabStorage.lRoad, position, Quaternion.Euler(0f, 0f, 180f), parentLocation),
 
-            ObjectType.LRoadRotated270 => Instantiate(lRoad, position, Quaternion.Euler(0f, 0f, 270f), spaceSheep),
+            ObjectType.LRoadRotated270 => Instantiate(_prefabStorage.lRoad, position, Quaternion.Euler(0f, 0f, 270f), parentLocation),
 
-            ObjectType.Crew => Instantiate(crew, new Vector3(position.x, position.y, -5), rotation,
-                spaceSheep),
+            ObjectType.Crew => Instantiate(_prefabStorage.crew, new Vector3(position.x, position.y, -5), rotation,
+                parentLocation),
 
-            ObjectType.Pointer => Instantiate(pointer, new Vector3(position.x, position.y, -5), rotation,
-                spaceSheep),
+            ObjectType.Pointer => Instantiate(_prefabStorage.pointer, new Vector3(position.x, position.y, -5), rotation,
+                parentLocation),
+
+            ObjectType.MergeButton => Instantiate(_prefabStorage.mergeButton, position, rotation,
+                parentLocation),
 
             _ => throw new ArgumentOutOfRangeException(nameof(objectType), objectType, "This object cannot be created")
         };

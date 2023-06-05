@@ -486,7 +486,6 @@ GameObject:
   - component: {fileID: 260640490}
   - component: {fileID: 260640489}
   - component: {fileID: 260640488}
-  - component: {fileID: 260640487}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -494,34 +493,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &260640487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 260640486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aee9f1554aa19084ea9f21792ef4ec82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bigRoom: {fileID: 5404955537889227050, guid: 8884ebd76e973f34ca22b282a24f7285, type: 3}
-  mediumRoom: {fileID: 726400634961921773, guid: 418fd3382e14c8348a46b9282d8c6cdf, type: 3}
-  smallRoom: {fileID: 1144134431469425386, guid: 0483aa087ff55e949bd30cc9a8145569, type: 3}
-  constructPlace: {fileID: 1703000592169971722, guid: 7103f60cdaf40d045bacdbad95a1ff81, type: 3}
-  road: {fileID: 5301913628617156287, guid: 58a520c0f5e5f2145ba32422ef501eee, type: 3}
-  crossRoad: {fileID: 4985443457942632628, guid: d78a21d6634420f43bcb42d680ed39be, type: 3}
-  lRoad: {fileID: 5887852453952457717, guid: dfd36ec21469a8f49ba6fc25380e8dab, type: 3}
-  crew: {fileID: 4171901122111014050, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
-  pointer: {fileID: 422574074387163017, guid: 15bb8d02c088c0540a3eb84d39c540a2, type: 3}
-  constructPlaceParent: {fileID: 1055005840}
-  spaceSheep: {fileID: 1464754251}
-  selectedCrewNumber: 0
-  currentRoom: {fileID: 0}
-  currentObject: {fileID: 0}
-  moveRoomMode: 0
-  deleteRoomMode: 0
 --- !u!114 &260640488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -966,7 +937,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
-      - m_Target: {fileID: 260640487}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ActorManager, Assembly-CSharp
         m_MethodName: EnterMoveRoomMode
         m_Mode: 1
@@ -2925,7 +2896,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8c7b773e7da8634e8f52b55f268c0e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomLerpSpeed: 10
   isMouseOverUI: 0
 --- !u!114 &1274209538
 MonoBehaviour:
@@ -3027,7 +2997,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 260640487}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ActorManager, Assembly-CSharp
         m_MethodName: DestroyAllChildrenOf
         m_Mode: 2
@@ -3038,10 +3008,10 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 260640487}
-        m_TargetAssemblyTypeName: ActorManager, Assembly-CSharp
-        m_MethodName: StopEditor
+        m_CallState: 1
+      - m_Target: {fileID: 1464754253}
+        m_TargetAssemblyTypeName: RoomEditor, Assembly-CSharp
+        m_MethodName: DeactivateAllHighLights
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3050,7 +3020,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
       - m_Target: {fileID: 1288785215}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -3062,7 +3032,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
 --- !u!114 &1288785218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3402,6 +3372,8 @@ GameObject:
   - component: {fileID: 1464754250}
   - component: {fileID: 1464754252}
   - component: {fileID: 1464754253}
+  - component: {fileID: 1464754255}
+  - component: {fileID: 1464754254}
   m_Layer: 0
   m_Name: SpaceSheep
   m_TagString: Untagged
@@ -3451,7 +3423,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce7ab8d5e26d4b9c8ad01a83f7251ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mergeButton: {fileID: 1703000592169971722, guid: 30eae52af78d811439fe2464da55204d, type: 3}
   parent: {fileID: 778372651}
 --- !u!114 &1464754253
 MonoBehaviour:
@@ -3465,6 +3436,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dec3e44b63afc840b13cba5c29512d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1464754254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464754249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c56ceac59f8e58a439cbb320d3ade71c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bigRoom: {fileID: 5404955537889227050, guid: 8884ebd76e973f34ca22b282a24f7285, type: 3}
+  mediumRoom: {fileID: 726400634961921773, guid: 418fd3382e14c8348a46b9282d8c6cdf, type: 3}
+  smallRoom: {fileID: 1144134431469425386, guid: 0483aa087ff55e949bd30cc9a8145569, type: 3}
+  constructPlace: {fileID: 1703000592169971722, guid: 7103f60cdaf40d045bacdbad95a1ff81, type: 3}
+  road: {fileID: 5301913628617156287, guid: 58a520c0f5e5f2145ba32422ef501eee, type: 3}
+  crossRoad: {fileID: 4985443457942632628, guid: d78a21d6634420f43bcb42d680ed39be, type: 3}
+  lRoad: {fileID: 5887852453952457717, guid: dfd36ec21469a8f49ba6fc25380e8dab, type: 3}
+  crew: {fileID: 4171901122111014050, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
+  pointer: {fileID: 422574074387163017, guid: 15bb8d02c088c0540a3eb84d39c540a2, type: 3}
+  mergeButton: {fileID: 1703000592169971722, guid: 30eae52af78d811439fe2464da55204d, type: 3}
+  bigRoomSprite: {fileID: 21300000, guid: e32729391f9b43a46b3d071b5bc95582, type: 3}
+  mediumRoomSprite: {fileID: 21300000, guid: 81e369dfa602b6645a835cb1943970de, type: 3}
+  mediumRotatedRoomSprite: {fileID: 21300000, guid: 21db57ba46cc0e748b93fc4d5dc0ab6d, type: 3}
+  smallRoomSprite: {fileID: 21300000, guid: a12ad14e8a559c947a420cd5aacecc90, type: 3}
+  roadSprite: {fileID: 21300000, guid: 0f0c0709e6757224cb6874d732090de2, type: 3}
+  roadRotatedSprite: {fileID: 21300000, guid: 654c5ce8960917847a84b9f0f1b29ac6, type: 3}
+  crossRoadSprite: {fileID: 21300000, guid: 61fc687a64f163e4eadc6b496fa76f55, type: 3}
+  lRoadSprite: {fileID: 21300000, guid: a3ad4d7a3ce627c44a674c10f3aa2457, type: 3}
+  lRoadRotated90Sprite: {fileID: 21300000, guid: c5eeaf51abddf89428a088fe4400ec3f, type: 3}
+  lRoadRotated180Sprite: {fileID: 21300000, guid: 106d2a7b281220e43ba87bce38209dd9, type: 3}
+  lRoadRotated270Sprite: {fileID: 21300000, guid: efce1bc26dba43b47bd798cad87cb3f0, type: 3}
+  crewSprites:
+  - {fileID: 8793639957104055765, guid: 9c447c54c8e0416e9446cadb88c48fd3, type: 3}
+  crewAnimations:
+  - {fileID: 9100000, guid: be5c1c9a8091caf4eaf7f0618daaade4, type: 2}
+  - {fileID: 9100000, guid: c84f36d62ab20ff41be80a6a7e6a5291, type: 2}
+  - {fileID: 9100000, guid: 21863faa0741dc241ba965418a284afc, type: 2}
+  - {fileID: 9100000, guid: 1f219a2b919ede949a6179487ef6fa28, type: 2}
+  - {fileID: 9100000, guid: cb4be51aa5829fd428c93306c160b82f, type: 2}
+  - {fileID: 9100000, guid: 2d0946100a320db40b8f1f91f06b9950, type: 2}
+--- !u!114 &1464754255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464754249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aee9f1554aa19084ea9f21792ef4ec82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  constructPlaceParent: {fileID: 1055005840}
+  spaceSheep: {fileID: 1464754251}
+  selectedCrewNumber: 0
+  currentRoom: {fileID: 0}
+  currentObject: {fileID: 0}
+  moveRoomMode: 0
+  deleteRoomMode: 0
 --- !u!1 &1500204375
 GameObject:
   m_ObjectHideFlags: 0
@@ -3882,7 +3914,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
-      - m_Target: {fileID: 260640487}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ActorManager, Assembly-CSharp
         m_MethodName: DestroyAllChildrenOf
         m_Mode: 2
@@ -3894,9 +3926,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
-      - m_Target: {fileID: 260640487}
-        m_TargetAssemblyTypeName: ActorManager, Assembly-CSharp
-        m_MethodName: StopEditor
+      - m_Target: {fileID: 1464754253}
+        m_TargetAssemblyTypeName: RoomEditor, Assembly-CSharp
+        m_MethodName: DeactivateAllHighLights
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
