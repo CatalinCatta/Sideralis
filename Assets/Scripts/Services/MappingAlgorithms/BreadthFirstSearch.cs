@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class BreadthFirstSearch
+public class BreadthFirstSearch
 {
-    private static int[,] _distances;
-    private static (int, int)[,] _prev;
-    private static MappingHelper _mappingHelper;
+    private int[,] _distances;
+    private (int, int)[,] _prev;
+    private MappingHelper _mappingHelper;
 
-    public static List<(int, int)> GetShortestPath((int, int) startingPosition,(int, int) endingPosition, GameObject[,] ship)
+    public List<(int, int)> GetShortestPath((int, int) startingPosition,(int, int) endingPosition, GameObject[,] ship)
     {
         _mappingHelper = new MappingHelper(ship);
         _distances = new int[_mappingHelper.Rows, _mappingHelper.Columns];
@@ -21,7 +21,7 @@ public static class BreadthFirstSearch
         return shortestPath;
     }
 
-    private static int FindShortestPath((int x, int y) startingPosition, (int x, int y) endingPosition, out List<(int, int)> shortestPath)
+    private int FindShortestPath((int x, int y) startingPosition, (int x, int y) endingPosition, out List<(int, int)> shortestPath)
     {
         for (var i = 0; i < _distances.GetLength(0); i++)
         {
@@ -51,7 +51,7 @@ public static class BreadthFirstSearch
         return _distances[endingPosition.x, endingPosition.y];
     }
 
-    private static void ExploreNeighbor((int x, int y) startingPosition, (int x, int y) endingPosition, Queue<(int, int)> queue,IReadOnlyList<int> direction)
+    private void ExploreNeighbor((int x, int y) startingPosition, (int x, int y) endingPosition, Queue<(int, int)> queue,IReadOnlyList<int> direction)
     {
         if (_mappingHelper.IsNotValid(endingPosition, startingPosition, direction) || _distances[endingPosition.x, endingPosition.y] != int.MaxValue)
             return;
@@ -61,7 +61,7 @@ public static class BreadthFirstSearch
         queue.Enqueue(endingPosition);
     }
 
-    private static List<(int, int)> ReconstructPath((int x, int y) startingPosition, (int x, int y) endingPosition)
+    private List<(int, int)> ReconstructPath((int x, int y) startingPosition, (int x, int y) endingPosition)
     {
         var path = new List<(int, int)>();
         

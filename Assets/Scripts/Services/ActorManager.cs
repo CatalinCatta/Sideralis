@@ -27,6 +27,22 @@ public class ActorManager : MonoBehaviour
     /// </summary>
     public Room currentRoom;
 
+    public bool MoveRoomMode;
+    
+    public bool DeleteRoomMode;
+
+    public void EnterMoveRoomMode() =>
+        MoveRoomMode = true;
+    
+    public void EnterDeleteRoomMode() =>
+        DeleteRoomMode = true;
+
+    public void StopEditor()
+    {
+        MoveRoomMode = false;
+        DeleteRoomMode = false;
+    }
+    
     /// <summary>
     /// Creates and returns a game object based on the provided position and object type.
     /// </summary>
@@ -78,6 +94,6 @@ public class ActorManager : MonoBehaviour
         };
     }
 
-    public void DestroyAllChildrensOf(GameObject parent) =>
+    public void DestroyAllChildrenOf(GameObject parent) =>
         parent.transform.Cast<Transform>().ToList().ForEach(child => Destroy(child.gameObject));
 }

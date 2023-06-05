@@ -14,7 +14,7 @@ public class MergeButton : MonoBehaviour
     private void OnMouseDown()
     {
         _roomMerger.MergeRoom(transform);
-        _actorManager.DestroyAllChildrensOf(_roomMerger.parent);
+        _actorManager.DestroyAllChildrenOf(_roomMerger.parent);
         _roomMerger.CreateMergingPoints();
     }
 }
