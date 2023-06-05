@@ -30,6 +30,31 @@ public class RoomEditor : MonoBehaviour
         Debug.Log(_depthFirstSearch.IsSafeToRemove(_actorManager.currentObject, _shipManager.Ship));
     }
 
+    public void HighlightMovableObjects()
+    {
+        if (_shipManager == null)
+            return;
+        
+        for (var i = 0; i < _shipManager.Ship.GetLength(0); i++)
+            for (var j = 0; j < _shipManager.Ship.GetLength(1); j++)
+                if (_shipManager.Ship[i, j] != null && !_shipManager.Ship[i, j].TryGetComponent<ConstructPlace>(out _))
+                    if (_depthFirstSearch.IsSafeToRemove(_shipManager.Ship[i, j], _shipManager.Ship))
+                        _shipManager.Ship[i, j].transform.GetChild(2).gameObject.SetActive(true);
+    }
+
+    public void DeactivateAllHighLights()
+    {
+        if (_shipManager == null)
+            return;
+        
+        for (var i = 0; i < _shipManager.Ship.GetLength(0); i++) 
+            for (var j = 0; j < _shipManager.Ship.GetLength(1); j++)
+                if (_shipManager.Ship[i, j] != null && !_shipManager.Ship[i, j].TryGetComponent<ConstructPlace>(out _))
+                    _shipManager.Ship[i, j].transform.GetChild(2).gameObject.SetActive(false);
+   
+        _actorManager.StopEditor();
+    }
+    
     private void DeleteRoom()
     {
         _depthFirstSearch.IsSafeToRemove(_actorManager.currentObject, _shipManager.Ship);
