@@ -19,6 +19,7 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         _actorManager = FindObjectOfType<ActorManager>();
         _roomEditor = FindObjectOfType<RoomEditor>();
     }
+    
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left)
@@ -67,8 +68,8 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
             return;
         
         if (_actorManager.moveRoomMode)
-            _roomEditor.EndMoveRoom();
-        
+            _roomEditor.EndMoveRoom(transform.parent, objectType);
+
         if (TryGetComponent<CanvasGroup>(out var canvasGroup))
         {
             canvasGroup.interactable = true;

@@ -16,34 +16,17 @@ public static class Utilities
     public static (double, double) GetPositionInArrayOfCoordinate(Vector2 position) => 
         ((double)-Mathf.RoundToInt(position.y) / 10 + 24.5, (double)Mathf.RoundToInt(position.x) / 10 + 24.5);
     
-    public static void SetTransparencyRecursive(Transform currentTransform, float transparency)
+    public static void SetTransparency(Transform currentTransform, float transparency)
     {
-        
-        Renderer renderer = currentTransform.GetComponent<Renderer>();
-
-        if (renderer != null)
+        foreach (Transform child in currentTransform)
         {
-            Material[] materials = renderer.materials;
-            foreach (Material material in materials)
+            if (child.TryGetComponent<SpriteRenderer>(out var spriteRenderer))
             {
-                material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                material.SetInt("_ZWrite", 0);
-                material.DisableKeyword("_ALPHATEST_ON");
-                material.EnableKeyword("_ALPHABLEND_ON");
-                material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-
-                Color color = material.color;
-                color.a = transparency;
-                material.color = color;
+                var currentColor = spriteRenderer.color;
+                spriteRenderer.color =  new Color(currentColor.r, currentColor.g, currentColor.b, transparency);
             }
-        }
 
-        for (int i = 0; i < currentTransform.childCount; i++)
-        {
-            Transform child = currentTransform.GetChild(i);
-            SetTransparencyRecursive(child, transparency);
+            SetTransparency(child, transparency);
         }
     }
 }

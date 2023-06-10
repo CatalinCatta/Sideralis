@@ -51,20 +51,20 @@ public class SpaceShipManager : MonoBehaviour
                 break;
 
             case ObjectType.SmallRoom:
-                RemoveRoom(((int)x, (int)y));
+                RemoveObjectFrom((x, y), ObjectType.SmallRoom);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
                 AddConstructPlace((position, ((int)x, (int)y)));
                 break;
 
             case ObjectType.MediumRoom:
-                RemoveRoom(((int)x, (int)(y - 0.5)), ((int)x, (int)(y + 0.5)));
+                RemoveObjectFrom((x, y), ObjectType.MediumRoom);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y - 0.5), (x, y + 0.5));
                 AddConstructPlace((new Vector2(position.x - 5, position.y), ((int)x, (int)(y - 0.5))),
                     (new Vector2(position.x + 5, position.y), ((int)x, (int)(y + 0.5))));
                 break;
 
             case ObjectType.RotatedMediumRoom:
-                RemoveRoom(((int)(x - 0.5), (int)y), ((int)(x + 0.5), (int)y));
+                RemoveObjectFrom((x, y), ObjectType.RotatedMediumRoom);
                 AddToShip(_actorManager.CreateObject(position, type), (x - 0.5, y),
                     (x + 0.5, y));
                 AddConstructPlace((new Vector2(position.x, position.y + 5), ((int)(x - 0.5), (int)y)),
@@ -72,8 +72,7 @@ public class SpaceShipManager : MonoBehaviour
                 break;
 
             case ObjectType.BigRoom:
-                RemoveRoom(((int)(x - 0.5), (int)(y - 0.5)), ((int)(x - 0.5), (int)(y + 0.5)),
-                    ((int)(x + 0.5), (int)(y - 0.5)), ((int)(x + 0.5), (int)(y + 0.5)));
+                RemoveObjectFrom((x, y), ObjectType.BigRoom);
                 AddToShip(_actorManager.CreateObject(position, type), (x - 0.5, y - 0.5),
                     (x - 0.5, y + 0.5), (x + 0.5, y - 0.5), (x + 0.5, y + 0.5));
                 AddConstructPlace((new Vector2(position.x - 5, position.y + 5), ((int)(x - 0.5), (int)(y - 0.5))),
@@ -85,7 +84,7 @@ public class SpaceShipManager : MonoBehaviour
             case ObjectType.Road:
                 if (IsBlocked(Ship[(int)x - 1, (int)y], 0f, 180f, 270f) &&
                     IsBlocked(Ship[(int)x + 1, (int)y], 0f, 90f, 0f)) return;
-                RemoveRoom(((int)x, (int)y));
+                RemoveObjectFrom((x, y), ObjectType.Road);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
                 AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Up, Direction.Down);
                 break;
@@ -93,13 +92,13 @@ public class SpaceShipManager : MonoBehaviour
             case ObjectType.RoadRotated:
                 if (IsBlocked(Ship[(int)x, (int)y - 1], 90f, 0f, 270f) &&
                     IsBlocked(Ship[(int)x, (int)y + 1], 90f, 90f, 180f)) return;
-                RemoveRoom(((int)x, (int)y));
+                RemoveObjectFrom((x, y), ObjectType.RoadRotated);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
                 AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Left, Direction.Right);
                 break;
 
             case ObjectType.CrossRoad:
-                RemoveRoom(((int)x, (int)y));
+                RemoveObjectFrom((x, y), ObjectType.CrossRoad);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
                 AddConstructPlace((position, ((int)x, (int)y)));
                 break;
@@ -107,7 +106,7 @@ public class SpaceShipManager : MonoBehaviour
             case ObjectType.LRoad:
                 if (IsBlocked(Ship[(int)x - 1, (int)y], 0f, 180f, 270f) &&
                     IsBlocked(Ship[(int)x, (int)y + 1], 90f, 90f, 180f)) return;
-                RemoveRoom(((int)x, (int)y));
+                RemoveObjectFrom((x, y), ObjectType.LRoad);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
                 AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Up, Direction.Right);
                 break;
@@ -115,7 +114,7 @@ public class SpaceShipManager : MonoBehaviour
             case ObjectType.LRoadRotated90:
                 if (IsBlocked(Ship[(int)x - 1, (int)y], 0f, 180f, 270f) &&
                     IsBlocked(Ship[(int)x, (int)y - 1], 90f, 0f, 270f)) return;
-                RemoveRoom(((int)x, (int)y));
+                RemoveObjectFrom((x, y), ObjectType.LRoadRotated90);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
                 AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Up, Direction.Left);
                 break;
@@ -123,7 +122,7 @@ public class SpaceShipManager : MonoBehaviour
             case ObjectType.LRoadRotated180:
                 if (IsBlocked(Ship[(int)x + 1, (int)y], 0f, 90f, 0f) &&
                     IsBlocked(Ship[(int)x, (int)y - 1], 90f, 0f, 270f)) return;
-                RemoveRoom(((int)x, (int)y));
+                RemoveObjectFrom((x, y), ObjectType.LRoadRotated180);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
                 AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Left, Direction.Down);
                 break;
@@ -131,7 +130,7 @@ public class SpaceShipManager : MonoBehaviour
             case ObjectType.LRoadRotated270:
                 if (IsBlocked(Ship[(int)x + 1, (int)y], 0f, 90f, 0f) &&
                     IsBlocked(Ship[(int)x, (int)y + 1], 90f, 90f, 180f)) return;
-                RemoveRoom(((int)x, (int)y));
+                RemoveObjectFrom((x, y), ObjectType.LRoadRotated270);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
                 AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Down, Direction.Right);
                 break;
@@ -162,6 +161,29 @@ public class SpaceShipManager : MonoBehaviour
             Destroy(Ship[coord.x, coord.y]);
             Ship[coord.x, coord.y] = null;
         });
+
+    public void RemoveObjectFrom((double x, double y) position, ObjectType type)
+    {
+        switch (type)
+        {
+            case ObjectType.MediumRoom:
+                RemoveRoom(((int)position.x, (int)(position.y - 0.5)), ((int)position.x, (int)(position.y + 0.5)));
+                break;
+
+            case ObjectType.RotatedMediumRoom:
+                RemoveRoom(((int)(position.x - 0.5), (int)position.y), ((int)(position.x + 0.5), (int)position.y));
+                break;
+
+            case ObjectType.BigRoom:
+                RemoveRoom(((int)(position.x - 0.5), (int)(position.y - 0.5)), ((int)(position.x - 0.5), (int)(position.y + 0.5)),
+                    ((int)(position.x + 0.5), (int)(position.y - 0.5)), ((int)(position.x + 0.5), (int)(position.y + 0.5)));
+                break;
+
+            default:
+                RemoveRoom(((int)position.x, (int)position.y));
+                break;
+        }
+    }
 
     private void AddConstructPlace(params (Vector2 inGamePosition, (int x, int y) arrayPositions)[] positions) => positions.ToList().ForEach(arrayPosition =>
             AddIndividualConstructPlace(arrayPosition.arrayPositions, arrayPosition.inGamePosition, Direction.Up, Direction.Left,
