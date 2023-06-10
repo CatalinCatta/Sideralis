@@ -11,7 +11,7 @@ public class RoomMerger : MonoBehaviour
     
     [SerializeField] public GameObject parent;
     
-    public void Start()
+    public void Awake()
     {
         _shipManager = transform.GetComponent<SpaceShipManager>();
         _actorManager = transform.GetComponent<ActorManager>();

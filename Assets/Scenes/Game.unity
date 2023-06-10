@@ -435,7 +435,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 1055005839}
   objectType: 10
 --- !u!225 &188868090
 CanvasGroup:
@@ -711,7 +710,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 1055005839}
   objectType: 6
 --- !u!225 &325143530
 CanvasGroup:
@@ -1355,7 +1353,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 1055005839}
   objectType: 2
 --- !u!225 &434859749
 CanvasGroup:
@@ -1486,7 +1483,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 1055005839}
   objectType: 7
 --- !u!225 &440531998
 CanvasGroup:
@@ -2244,7 +2240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 1055005839}
   objectType: 12
 --- !u!225 &932632273
 CanvasGroup:
@@ -2375,7 +2370,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 1055005839}
   objectType: 8
 --- !u!225 &978435119
 CanvasGroup:
@@ -2764,6 +2758,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1253507543
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1253507544}
+  m_Layer: 0
+  m_Name: Colnes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1253507544
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1253507543}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.9205649, y: 2.3407354, z: 35.451073}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1274209532
 GameObject:
   m_ObjectHideFlags: 0
@@ -3369,11 +3394,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1464754251}
-  - component: {fileID: 1464754250}
+  - component: {fileID: 1464754254}
+  - component: {fileID: 1464754255}
   - component: {fileID: 1464754252}
   - component: {fileID: 1464754253}
-  - component: {fileID: 1464754255}
-  - component: {fileID: 1464754254}
+  - component: {fileID: 1464754250}
   m_Layer: 0
   m_Name: SpaceSheep
   m_TagString: Untagged
@@ -3478,6 +3503,8 @@ MonoBehaviour:
   - {fileID: 9100000, guid: 1f219a2b919ede949a6179487ef6fa28, type: 2}
   - {fileID: 9100000, guid: cb4be51aa5829fd428c93306c160b82f, type: 2}
   - {fileID: 9100000, guid: 2d0946100a320db40b8f1f91f06b9950, type: 2}
+  constructMaterialCloneParent: {fileID: 1253507543}
+  constructPlacesParent: {fileID: 1055005839}
 --- !u!114 &1464754255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3491,7 +3518,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   constructPlaceParent: {fileID: 1055005840}
-  spaceSheep: {fileID: 1464754251}
   selectedCrewNumber: 0
   currentRoom: {fileID: 0}
   currentObject: {fileID: 0}
@@ -4203,7 +4229,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 1055005839}
   objectType: 11
 --- !u!225 &1651072660
 CanvasGroup:
@@ -4822,7 +4847,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 1055005839}
   objectType: 9
 --- !u!225 &1776878374
 CanvasGroup:

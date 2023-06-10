@@ -5,28 +5,36 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(BoxCollider2D))]
 public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [SerializeField] public GameObject parent;
     [SerializeField] public ObjectType objectType;
     
     private GameObject _draggingClone;
     private Transform _draggingCloneTransform;
     private PrefabStorage _prefabStorage;
+    private ActorManager _actorManager;
+    private RoomEditor _roomEditor;
 
-    private void Start() =>
+    private void Awake()
+    { 
         _prefabStorage = FindObjectOfType<PrefabStorage>();
-
+        _actorManager = FindObjectOfType<ActorManager>();
+        _roomEditor = FindObjectOfType<RoomEditor>();
+    }
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
-        
-        var canvasGroup = GetComponent<CanvasGroup>();
-        canvasGroup.interactable = false;
-        canvasGroup.alpha = 0;
+
+        CheckIntegrity();
+        if (TryGetComponent<CanvasGroup>(out var canvasGroup))
+        {
+            canvasGroup.interactable = false;
+            canvasGroup.alpha = 0;
+        }
+
         _draggingClone = new GameObject("Dragging Clone");
 
         _draggingCloneTransform = _draggingClone.transform;
-        _draggingCloneTransform.SetParent(parent.transform);
+        _draggingCloneTransform.SetParent(_prefabStorage.constructMaterialCloneParent.transform);
         _draggingCloneTransform.SetAsLastSibling();
 
         var rb = _draggingClone.AddComponent<Rigidbody2D>();
@@ -45,7 +53,10 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
     {
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
-        
+
+        if (_actorManager.moveRoomMode)
+            _roomEditor.StartMoveRoom(transform.parent);
+                
         var cameraPosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
         _draggingCloneTransform.position = new Vector3(cameraPosition.x, cameraPosition.y, -5f);
     }
@@ -55,9 +66,14 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
         
-        var canvasGroup = GetComponent<CanvasGroup>();
-        canvasGroup.interactable = true;
-        canvasGroup.alpha = 1;
+        if (_actorManager.moveRoomMode)
+            _roomEditor.EndMoveRoom();
+        
+        if (TryGetComponent<CanvasGroup>(out var canvasGroup))
+        {
+            canvasGroup.interactable = true;
+            canvasGroup.alpha = 1;
+        }
 
         Destroy(_draggingClone);
     }
@@ -100,4 +116,27 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
             _ => throw new Exception("Invalid object type")
         };
+
+    private void CheckIntegrity()
+    {
+        switch (objectType)
+        {
+            case ObjectType.Road :
+                if (transform.rotation == Quaternion.Euler(0, 0, 90))
+                    objectType = ObjectType.RoadRotated;
+                break;
+            case ObjectType.LRoad :
+                if (transform.rotation == Quaternion.Euler(0, 0, 90))
+                    objectType = ObjectType.LRoadRotated90;
+                else if (transform.rotation == Quaternion.Euler(0, 0, 180))
+                    objectType = ObjectType.LRoadRotated180;
+                else if (transform.rotation == Quaternion.Euler(0, 0, 270))
+                    objectType = ObjectType.LRoadRotated270;
+                break;
+            case ObjectType.MediumRoom:
+                if (transform.rotation == Quaternion.Euler(0, 0, 90))
+                    objectType = ObjectType.RotatedMediumRoom;
+                break;
+        }
+    }
 }

@@ -7,7 +7,7 @@ public class Pointer : MonoBehaviour
     private float _speed = -0.025f;
     private Vector3 _position;
     
-    private void Start()
+    private void Awake()
     {
         var pointerTransform = transform;
         _arrowTransform = pointerTransform.GetChild(0).transform;

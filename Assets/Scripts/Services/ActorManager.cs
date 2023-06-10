@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using System.Linq;
@@ -5,7 +6,6 @@ using System.Linq;
 public class ActorManager : MonoBehaviour
 {
     [SerializeField] private Transform constructPlaceParent;    // Parent transform for constructed places
-    [SerializeField] private Transform spaceSheep;              // Parent transform for spawned objects
     
     private PrefabStorage _prefabStorage;
     
@@ -17,12 +17,12 @@ public class ActorManager : MonoBehaviour
     /// <summary>
     /// The current room where the mouse is positioned.
     /// </summary>
-    public Room currentRoom;
+    public Room? currentRoom;
 
     /// <summary>
     /// The current object(Road/Room) where the mouse is positioned.
     /// </summary>
-    public GameObject currentObject;
+    public GameObject? currentObject;
     
     public bool moveRoomMode;
     
@@ -34,7 +34,7 @@ public class ActorManager : MonoBehaviour
     public void EnterDeleteRoomMode() =>
         deleteRoomMode = true;
 
-    private void Start() =>
+    private void Awake() => 
         _prefabStorage = transform.GetComponent<PrefabStorage>();
     
     public void StopEditor()
@@ -48,11 +48,12 @@ public class ActorManager : MonoBehaviour
     /// </summary>
     /// <param name="position">The position where the object will be created.</param>
     /// <param name="objectType">The type of object to be created.</param>
+    /// <param name="parentLocation">*Optional parameter*. Represent other location for spawn.</param>
     /// <returns>The created game object.</returns>
     public GameObject CreateObject(Vector3 position, ObjectType objectType, Transform? parentLocation = null)
     {
         var rotation = transform.rotation;
-        parentLocation = parentLocation == null ? spaceSheep : parentLocation;
+        parentLocation = parentLocation == null ? transform : parentLocation;
         
         return objectType switch
         {

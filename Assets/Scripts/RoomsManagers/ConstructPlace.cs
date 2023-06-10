@@ -5,7 +5,7 @@ public class ConstructPlace : MonoBehaviour, IDropHandler
 {
     private SpaceShipManager _spaceShipManager;
 
-    private void Start() =>
+    private void Awake() =>
         _spaceShipManager = FindObjectOfType<SpaceShipManager>();
 
     /// <summary>

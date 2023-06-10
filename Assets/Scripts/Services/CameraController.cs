@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     private float _targetZoom;
     public bool isMouseOverUI;
 
-    private void Start()
+    private void Awake()
     {
         _cam = Camera.main;
         _targetZoom = _cam!.orthographicSize;

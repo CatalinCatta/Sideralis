@@ -4,7 +4,7 @@ public abstract class Road : MonoBehaviour
 {
     private ActorManager _actorManager;
 
-    private void Start() =>
+    private void Awake() =>
         _actorManager = FindObjectOfType<ActorManager>();
 
     public void AddMeToActorManager()

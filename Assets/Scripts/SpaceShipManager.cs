@@ -10,11 +10,11 @@ public class SpaceShipManager : MonoBehaviour
     public readonly GameObject[,] Ship = new GameObject[ShipDimension, ShipDimension];
     private ActorManager _actorManager;
     public GameObject lastPointer;
-    private Dictionary<GameObject, (IEnumerator, (Vector3 half1, Vector3 half2))> _doorsInAction = new();
+    private readonly Dictionary<GameObject, (IEnumerator, (Vector3 half1, Vector3 half2))> _doorsInAction = new();
     
     private void Start()
     {
-        _actorManager = FindObjectOfType<ActorManager>();
+        _actorManager = transform.GetComponent<ActorManager>();
         StartCoroutine(Constructor());
     }
 

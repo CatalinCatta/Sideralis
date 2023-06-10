@@ -19,7 +19,7 @@ public class Crew : MonoBehaviour
     private GameObject _pointer;
     private BreadthFirstSearch _breadthFirstSearch;
 
-    private void Start()
+    private void Awake()
     {
         _prefabStorage = FindObjectOfType<PrefabStorage>();
         _spaceShipManager = FindObjectOfType<SpaceShipManager>();

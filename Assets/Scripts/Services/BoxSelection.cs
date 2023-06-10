@@ -8,7 +8,7 @@ public class BoxSelection : MonoBehaviour
     private Vector3 _initialMousePosition, _currentMousePosition;
     private LineRenderer _lineRenderer;
 
-    private void Start()
+    private void Awake()
     {
         _camera = FindObjectOfType<CameraController>();
         _actorManager = FindObjectOfType<ActorManager>();
@@ -18,7 +18,7 @@ public class BoxSelection : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && _actorManager.selectedCrewNumber == 0 && !_camera.isMouseOverUI)
+        if (Input.GetMouseButtonDown(0) && _actorManager.selectedCrewNumber == 0 && !_camera.isMouseOverUI && !_actorManager.moveRoomMode && !_actorManager.deleteRoomMode)
         {
             _lineRenderer.positionCount = 4;
             _initialMousePosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);

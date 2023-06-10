@@ -5,10 +5,11 @@ public class MergeButton : MonoBehaviour
     private RoomMerger _roomMerger;
     private ActorManager _actorManager;
     
-    private void Start()
+    private void Awake()
     {
-        _actorManager = FindObjectOfType<ActorManager>();
-        _roomMerger = transform.parent.parent.GetComponent<RoomMerger>();
+        var grandParent = transform.parent.parent;
+        _actorManager = grandParent.GetComponent<ActorManager>();
+        _roomMerger = grandParent.GetComponent<RoomMerger>();
     }
     
     private void OnMouseDown()

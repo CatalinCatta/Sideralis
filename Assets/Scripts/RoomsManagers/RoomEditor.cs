@@ -5,33 +5,31 @@ public class RoomEditor : MonoBehaviour
     private ActorManager _actorManager;
     private SpaceShipManager _shipManager;
     private DepthFirstSearch _depthFirstSearch;
+    private PrefabStorage _prefabStorage;
 
-    private void Start()
+    private void Awake()
     {
-        _actorManager = FindObjectOfType<ActorManager>();
+        _actorManager = transform.GetComponent<ActorManager>();
         _shipManager = transform.GetComponent<SpaceShipManager>();
+        _prefabStorage = transform.GetComponent<PrefabStorage>();
         _depthFirstSearch = new DepthFirstSearch();
     }
 
-    private void Update()
+    public void StartMoveRoom(Transform transformObject)
     {
-        if (!Input.GetMouseButtonDown(0) || _actorManager.currentObject == null) 
-            return;
-        
-        if (_actorManager.moveRoomMode)
-            MoveRoom();
-
-        if (_actorManager.deleteRoomMode)
-            DeleteRoom();
+        _prefabStorage.constructPlacesParent.SetActive(true);
+        Utilities.SetTransparencyRecursive(transformObject, 5);
     }
 
-    private void MoveRoom()
+    public void EndMoveRoom()
     {
-        Debug.Log(_depthFirstSearch.IsSafeToRemove(_actorManager.currentObject, _shipManager.Ship));
+        _prefabStorage.constructPlacesParent.SetActive(false);
     }
 
     public void HighlightMovableObjects()
     {
+        _actorManager.moveRoomMode = true;
+        
         if (_shipManager == null)
             return;
         

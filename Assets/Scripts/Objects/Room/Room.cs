@@ -22,7 +22,7 @@ public abstract class Room : MonoBehaviour
     
     protected abstract void Initialize();
     
-    private void Start()
+    private void Awake()
     {
         _actorManager = FindObjectOfType<ActorManager>();
         lvl = 0;
