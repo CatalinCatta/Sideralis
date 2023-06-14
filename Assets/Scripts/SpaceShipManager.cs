@@ -337,14 +337,13 @@ public class SpaceShipManager : MonoBehaviour
         return (-1, -1);
     }
     
-    private static bool IsBlocked(GameObject gameObject, float linearRoadRotationDeg, float lRoadRotation1Deg,
-        float lRoadRotation2Deg) => 
-        gameObject == null || gameObject.TryGetComponent<ConstructPlace>(out _) ||
-               (gameObject.TryGetComponent<LinearRoad>(out var linearRoad) &&
-                linearRoad.transform.rotation != Quaternion.Euler(0f, 0f, linearRoadRotationDeg)) ||
-               (gameObject.TryGetComponent<LRoad>(out var lRoad) &&
-                lRoad.transform.rotation != Quaternion.Euler(0f, 0f, lRoadRotation1Deg) &&
-                lRoad.transform.rotation != Quaternion.Euler(0f, 0f, lRoadRotation2Deg));
+    private static bool IsBlocked(GameObject gameObject, float linearRoadRotationDeg, float lRoadRotation1Deg, float lRoadRotation2Deg) => 
+        gameObject == null ||
+        (gameObject.TryGetComponent<LinearRoad>(out var linearRoad) &&
+         linearRoad.transform.rotation != Quaternion.Euler(0f, 0f, linearRoadRotationDeg)) ||
+        (gameObject.TryGetComponent<LRoad>(out var lRoad) &&
+         lRoad.transform.rotation != Quaternion.Euler(0f, 0f, lRoadRotation1Deg) &&
+         lRoad.transform.rotation != Quaternion.Euler(0f, 0f, lRoadRotation2Deg));
 
     private enum Direction
     {

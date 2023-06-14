@@ -57,9 +57,8 @@ public class RoomEditor : MonoBehaviour
         
         for (var i = 0; i < _shipManager.Ship.GetLength(0); i++)
             for (var j = 0; j < _shipManager.Ship.GetLength(1); j++)
-                if (_shipManager.Ship[i, j] != null && !_shipManager.Ship[i, j].TryGetComponent<ConstructPlace>(out _))
-                    if (_depthFirstSearch.IsSafeToRemove(_shipManager.Ship[i, j], _shipManager.Ship))
-                        _shipManager.Ship[i, j].transform.GetChild(2).gameObject.SetActive(true);
+                if (_shipManager.Ship[i, j] != null && _depthFirstSearch.IsSafeToRemove(_shipManager.Ship[i, j], _shipManager.Ship))
+                    _shipManager.Ship[i, j].transform.GetChild(2).gameObject.SetActive(true);
     }
 
     public void DeactivateHighlights() =>
@@ -73,7 +72,7 @@ public class RoomEditor : MonoBehaviour
         for (var i = 0; i < _shipManager.Ship.GetLength(0); i++)
         for (var j = 0; j < _shipManager.Ship.GetLength(1); j++)
         {
-            if (_shipManager.Ship[i, j] == null || _shipManager.Ship[i, j].TryGetComponent<ConstructPlace>(out _)) 
+            if (_shipManager.Ship[i, j] == null) 
                 continue;
             
             if (exception != null && _shipManager.Ship[i, j] == exception)

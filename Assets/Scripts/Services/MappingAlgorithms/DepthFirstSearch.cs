@@ -64,17 +64,11 @@ public class DepthFirstSearch
     private (int, int) GetFirstPosition()
     {
         for (var i = 0; i < _mappingHelper.Rows; i++)
-        {
             for (var j = 0; j < _mappingHelper.Columns; j++)
-            {
-                if (_mappingHelper.Ship[i, j] != null && !_mappingHelper.Ship[i, j].TryGetComponent<ConstructPlace>(out _))
-                {
+                if (_mappingHelper.Ship[i, j] != null)
                     return (i, j);
-                }
-            }
-        }
 
-        throw new Exception("Unexpected error while trying to find rooms and roads in ship.");
+        throw new Exception("Cannot find any rooms or road in the Ship.");
     }
 
     private void ConnectionMapper(int x, int y)
