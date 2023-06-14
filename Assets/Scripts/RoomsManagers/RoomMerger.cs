@@ -88,17 +88,13 @@ public class RoomMerger : MonoBehaviour
             _shipManager.Ship[(int)(x + 0.5), (int)(y + 0.5)]); 
 
         if (Math.Round(x) == x)
-        {
             _shipManager.CreateObject(ObjectType.MediumRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0));
-        }
+        
         else if (Math.Round(y) == y)
-        {
             _shipManager.CreateObject(ObjectType.RotatedMediumRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0));
-        }
+        
         else
-        {
             _shipManager.CreateObject(ObjectType.BigRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0));
-        }
         
         var newRoom = _shipManager.Ship[(int)x, (int)y].GetComponent<Room>();
 
