@@ -6,7 +6,6 @@ public class RoomEditor : MonoBehaviour
     private ActorManager _actorManager;
     private SpaceShipManager _shipManager;
     private DepthFirstSearch _depthFirstSearch;
-    private PrefabStorage _prefabStorage;
     public Vector2 lastConstructedObjectPosition;
     public bool successfullyMoved;
     
@@ -14,13 +13,11 @@ public class RoomEditor : MonoBehaviour
     {
         _actorManager = transform.GetComponent<ActorManager>();
         _shipManager = transform.GetComponent<SpaceShipManager>();
-        _prefabStorage = transform.GetComponent<PrefabStorage>();
         _depthFirstSearch = new DepthFirstSearch();
     }
 
     public void StartMoveRoom(Transform transformObject)
     {
-        Utilities.SetTransparency(transformObject, 0.5f);
         DeactivateAllHighlights(transformObject.gameObject);
         successfullyMoved = false;
     }
@@ -57,8 +54,12 @@ public class RoomEditor : MonoBehaviour
         
         for (var i = 0; i < _shipManager.Ship.GetLength(0); i++)
             for (var j = 0; j < _shipManager.Ship.GetLength(1); j++)
-                if (_shipManager.Ship[i, j] != null && _depthFirstSearch.IsSafeToRemove(_shipManager.Ship[i, j], _shipManager.Ship))
+                if (_shipManager.Ship[i, j] != null &&
+                    _depthFirstSearch.IsSafeToRemove(_shipManager.Ship[i, j], _shipManager.Ship))
+                {
                     _shipManager.Ship[i, j].transform.GetChild(2).gameObject.SetActive(true);
+                    Utilities.SetColor(_shipManager.Ship[i, j].transform, new Color(0.35f, 1, 0.35f, 1));
+                }
     }
 
     public void DeactivateHighlights() =>
@@ -70,17 +71,21 @@ public class RoomEditor : MonoBehaviour
             return;
         
         for (var i = 0; i < _shipManager.Ship.GetLength(0); i++)
-        for (var j = 0; j < _shipManager.Ship.GetLength(1); j++)
-        {
-            if (_shipManager.Ship[i, j] == null) 
-                continue;
-            
-            if (exception != null && _shipManager.Ship[i, j] == exception)
-                Utilities.SetTransparency(exception.transform.GetChild(2).transform, 0);
-            
-            else
-                _shipManager.Ship[i, j].transform.GetChild(2).gameObject.SetActive(false);
-        }
+            for (var j = 0; j < _shipManager.Ship.GetLength(1); j++)
+            {
+                if (_shipManager.Ship[i, j] == null) 
+                    continue;
+                
+                Utilities.SetColor(_shipManager.Ship[i, j].transform, new Color(1, 1, 1, 1));
+              
+                if (exception != null && _shipManager.Ship[i, j] == exception)
+                {
+                    Utilities.SetTransparency(exception.transform, 0.5f);
+                    Utilities.SetTransparency(exception.transform.GetChild(2).transform, 0);
+                }
+                else
+                    _shipManager.Ship[i, j].transform.GetChild(2).gameObject.SetActive(false);
+            }
 
         if (exception == null)
             _actorManager.StopEditor();

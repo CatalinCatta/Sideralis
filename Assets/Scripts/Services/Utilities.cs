@@ -33,6 +33,17 @@ public static class Utilities
             SetTransparency(child, transparency);
         }
     }
+    
+    public static void SetColor(Transform currentTransform, Color newColor)
+    {
+        foreach (Transform child in currentTransform)
+        {
+            if (child.TryGetComponent<SpriteRenderer>(out var spriteRenderer))
+                spriteRenderer.color =  newColor;
+
+            SetColor(child, newColor);
+        }
+    }
 
     public static ObjectSize GetSizeOfObject(ObjectType objectType) => objectType switch
         {

@@ -46,14 +46,6 @@ public class SpaceShipManager : MonoBehaviour
         
         switch (type)
         {
-            case ObjectType.ConstructPlace:
-                AddToShip(_actorManager.CreateObject(position, type), (x, y));
-                break;
-
-            case ObjectType.ConstructRotatedPlace:
-                AddToShip(_actorManager.CreateObject(position, type), (x, y));
-                break;
-
             case ObjectType.SmallRoom:
                 RemoveObjectFrom((x, y), ObjectType.SmallRoom);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
@@ -130,10 +122,8 @@ public class SpaceShipManager : MonoBehaviour
     public void CreateConstructPlacesFor(ObjectSize objectSize, ObjectType objectType, [CanBeNull] GameObject movingObject = null)
     {
         foreach (var (x, y) in GetListOfConstructPlacesPositionsFor(objectSize, objectType, movingObject))
-        {
-            CreateObject(ObjectType.ConstructRotatedPlace,
-                Utilities.GetInGameCoordinateForPosition(x, y, 0));
-        }
+            _actorManager.CreateObject(Utilities.GetInGameCoordinateForPosition(x, y, 0),
+                ObjectType.ConstructRotatedPlace);
     }
     
     private List<(double, double)> GetListOfConstructPlacesPositionsFor(ObjectSize objectSize, ObjectType objectType, [CanBeNull] Object movingObject)
