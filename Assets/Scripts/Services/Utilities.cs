@@ -65,4 +65,21 @@ public static class Utilities
             ObjectType.MergeButton => ObjectSize.Small,
             _ => throw new ArgumentOutOfRangeException(nameof(objectType), objectType, null)
         };
+    
+    public static ObjectType CheckObjectTypeIntegrity(ObjectType objectType, Quaternion rotation) =>  objectType switch
+        {
+            ObjectType.Road => rotation == Quaternion.Euler(0, 0, 90) ? ObjectType.RoadRotated : objectType,
+
+            ObjectType.LRoad => rotation.eulerAngles.z switch
+            {
+                90 => ObjectType.LRoadRotated90,
+                180 => ObjectType.LRoadRotated180,
+                270 => ObjectType.LRoadRotated270,
+                _ => objectType
+            },
+
+            ObjectType.MediumRoom => rotation == Quaternion.Euler(0, 0, 90) ? ObjectType.RotatedMediumRoom : objectType,
+
+            _ => objectType
+        };
 }

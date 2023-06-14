@@ -3,9 +3,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
-using System.Diagnostics;
 using JetBrains.Annotations;
-using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
 public class SpaceShipManager : MonoBehaviour
@@ -58,7 +56,11 @@ public class SpaceShipManager : MonoBehaviour
 
             case ObjectType.RotatedMediumRoom:
                 RemoveObjectFrom((x, y), ObjectType.RotatedMediumRoom);
-                AddToShip(_actorManager.CreateObject(position, type), (x - 0.5, y),
+                var rotatedMediumRoom = _actorManager.CreateObject(position, type);
+                rotatedMediumRoom.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
+                rotatedMediumRoom.transform.GetChild(3).transform.GetChild(0).transform.localScale =
+                    new Vector3(0.3f, 0.15f, 1);
+                AddToShip(rotatedMediumRoom, (x - 0.5, y),
                     (x + 0.5, y));
                 break;
 
@@ -75,7 +77,11 @@ public class SpaceShipManager : MonoBehaviour
 
             case ObjectType.RoadRotated:
                 RemoveObjectFrom((x, y), ObjectType.RoadRotated);
-                AddToShip(_actorManager.CreateObject(position, type), (x, y));
+                var rotatedRoad = _actorManager.CreateObject(position, type);
+                rotatedRoad.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
+                rotatedRoad.transform.GetChild(3).transform.GetChild(0).transform.localScale =
+                    new Vector3(0.15f, 0.5f, 1);
+                AddToShip(rotatedRoad, (x, y));
                 break;
 
             case ObjectType.CrossRoad:
@@ -90,17 +96,23 @@ public class SpaceShipManager : MonoBehaviour
 
             case ObjectType.LRoadRotated90:
                 RemoveObjectFrom((x, y), ObjectType.LRoadRotated90);
-                AddToShip(_actorManager.CreateObject(position, type), (x, y));
+                var rotatedLRoad90 = _actorManager.CreateObject(position, type);
+                rotatedLRoad90.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
+                AddToShip(rotatedLRoad90, (x, y));
                 break;
 
             case ObjectType.LRoadRotated180:
                 RemoveObjectFrom((x, y), ObjectType.LRoadRotated180);
-                AddToShip(_actorManager.CreateObject(position, type), (x, y));
+                var rotatedLRoad180 = _actorManager.CreateObject(position, type);
+                rotatedLRoad180.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
+                AddToShip(rotatedLRoad180, (x, y));
                 break;
 
             case ObjectType.LRoadRotated270:
                 RemoveObjectFrom((x, y), ObjectType.LRoadRotated270);
-                AddToShip(_actorManager.CreateObject(position, type), (x, y));
+                var rotatedLRoad270 = _actorManager.CreateObject(position, type);
+                rotatedLRoad270.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
+                AddToShip(rotatedLRoad270, (x, y));
                 break;
 
             case ObjectType.Crew:

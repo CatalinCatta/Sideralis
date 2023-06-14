@@ -61,6 +61,23 @@ public class RoomEditor : MonoBehaviour
                     Utilities.SetColor(_shipManager.Ship[i, j].transform, new Color(0.35f, 1, 0.35f, 1));
                 }
     }
+    
+    public void HighlightRemovableObjects()
+    {
+        _actorManager.deleteRoomMode = true;
+        
+        if (_shipManager == null)
+            return;
+        
+        for (var i = 0; i < _shipManager.Ship.GetLength(0); i++)
+            for (var j = 0; j < _shipManager.Ship.GetLength(1); j++)
+                if (_shipManager.Ship[i, j] != null &&
+                    _depthFirstSearch.IsSafeToRemove(_shipManager.Ship[i, j], _shipManager.Ship))
+                {
+                    _shipManager.Ship[i, j].transform.GetChild(3).gameObject.SetActive(true);
+                    Utilities.SetColor(_shipManager.Ship[i, j].transform, new Color(1f, 0.35f, 0.35f, 1));
+                }
+    }
 
     public void DeactivateHighlights() =>
         DeactivateAllHighlights();
@@ -84,15 +101,21 @@ public class RoomEditor : MonoBehaviour
                     Utilities.SetTransparency(exception.transform.GetChild(2).transform, 0);
                 }
                 else
+                {
                     _shipManager.Ship[i, j].transform.GetChild(2).gameObject.SetActive(false);
+                    _shipManager.Ship[i, j].transform.GetChild(3).gameObject.SetActive(false);
+                }
             }
 
         if (exception == null)
             _actorManager.StopEditor();
     }
-    
-    private void DeleteRoom()
+
+    public void RemoveRoom(Transform objectTransform, ObjectType objectType)
     {
-        _depthFirstSearch.IsSafeToRemove(_actorManager.currentObject, _shipManager.Ship);
-    }
+        _shipManager.RemoveObjectFrom(Utilities.GetPositionInArrayOfCoordinate(objectTransform.position),
+            objectType);
+        DeactivateAllHighlights();
+        HighlightRemovableObjects();
+    } 
 }

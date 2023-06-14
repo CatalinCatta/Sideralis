@@ -28,7 +28,7 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
-        CheckIntegrity();
+        objectType = Utilities.CheckObjectTypeIntegrity(objectType, transform.rotation);
         if (TryGetComponent<CanvasGroup>(out var canvasGroup))
         {
             canvasGroup.interactable = false;
@@ -131,26 +131,4 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
             _ => throw new Exception("Invalid object type")
         };
 
-    private void CheckIntegrity()
-    {
-        switch (objectType)
-        {
-            case ObjectType.Road :
-                if (transform.rotation == Quaternion.Euler(0, 0, 90))
-                    objectType = ObjectType.RoadRotated;
-                break;
-            case ObjectType.LRoad :
-                if (transform.rotation == Quaternion.Euler(0, 0, 90))
-                    objectType = ObjectType.LRoadRotated90;
-                else if (transform.rotation == Quaternion.Euler(0, 0, 180))
-                    objectType = ObjectType.LRoadRotated180;
-                else if (transform.rotation == Quaternion.Euler(0, 0, 270))
-                    objectType = ObjectType.LRoadRotated270;
-                break;
-            case ObjectType.MediumRoom:
-                if (transform.rotation == Quaternion.Euler(0, 0, 90))
-                    objectType = ObjectType.RotatedMediumRoom;
-                break;
-        }
-    }
 }
