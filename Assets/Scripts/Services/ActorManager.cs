@@ -5,7 +5,6 @@ using System.Linq;
 
 public class ActorManager : MonoBehaviour
 {
-    [SerializeField] private Transform constructPlaceParent;    // Parent transform for constructed places
     
     private PrefabStorage _prefabStorage;
     
@@ -58,10 +57,10 @@ public class ActorManager : MonoBehaviour
         return objectType switch
         {
             ObjectType.ConstructPlace => Instantiate(_prefabStorage.constructPlace, position, rotation,
-                constructPlaceParent),
+                _prefabStorage.constructPlacesParent),
 
             ObjectType.ConstructRotatedPlace => Instantiate(_prefabStorage.constructPlace, position, Quaternion.Euler(0f, 0f, 90f),
-                constructPlaceParent),
+                _prefabStorage.constructPlacesParent),
 
             ObjectType.SmallRoom => Instantiate(_prefabStorage.smallRoom, position, rotation, parentLocation),
 

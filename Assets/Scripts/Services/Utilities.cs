@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public static class Utilities
 {
@@ -16,6 +17,9 @@ public static class Utilities
     public static (double, double) GetPositionInArrayOfCoordinate(Vector2 position) => 
         ((double)-Mathf.RoundToInt(position.y) / 10 + 24.5, (double)Mathf.RoundToInt(position.x) / 10 + 24.5);
     
+    public static bool CheckIfValid(int x, int y, int rows, int columns) =>
+        x >= 0 && x < rows && y >= 0 && y < columns;
+    
     public static void SetTransparency(Transform currentTransform, float transparency)
     {
         foreach (Transform child in currentTransform)
@@ -29,4 +33,25 @@ public static class Utilities
             SetTransparency(child, transparency);
         }
     }
+
+    public static ObjectSize GetSizeOfObject(ObjectType objectType) => objectType switch
+        {
+            ObjectType.ConstructPlace => ObjectSize.Small,
+            ObjectType.ConstructRotatedPlace => ObjectSize.Small,
+            ObjectType.SmallRoom => ObjectSize.Small,
+            ObjectType.MediumRoom => ObjectSize.Medium,
+            ObjectType.RotatedMediumRoom => ObjectSize.MediumRotated,
+            ObjectType.BigRoom => ObjectSize.Large,
+            ObjectType.Road => ObjectSize.Small,
+            ObjectType.RoadRotated => ObjectSize.Small,
+            ObjectType.CrossRoad => ObjectSize.Small,
+            ObjectType.LRoad => ObjectSize.Small,
+            ObjectType.LRoadRotated90 => ObjectSize.Small,
+            ObjectType.LRoadRotated180 => ObjectSize.Small,
+            ObjectType.LRoadRotated270 => ObjectSize.Small,
+            ObjectType.Crew => ObjectSize.Small,
+            ObjectType.Pointer => ObjectSize.Small,
+            ObjectType.MergeButton => ObjectSize.Small,
+            _ => throw new ArgumentOutOfRangeException(nameof(objectType), objectType, null)
+        };
 }

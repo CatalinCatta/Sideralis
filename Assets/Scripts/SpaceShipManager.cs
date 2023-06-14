@@ -3,6 +3,10 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Diagnostics;
+using JetBrains.Annotations;
+using Debug = UnityEngine.Debug;
+using Object = UnityEngine.Object;
 
 public class SpaceShipManager : MonoBehaviour
 {
@@ -53,86 +57,58 @@ public class SpaceShipManager : MonoBehaviour
             case ObjectType.SmallRoom:
                 RemoveObjectFrom((x, y), ObjectType.SmallRoom);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
-                AddConstructPlace((position, ((int)x, (int)y)));
                 break;
 
             case ObjectType.MediumRoom:
                 RemoveObjectFrom((x, y), ObjectType.MediumRoom);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y - 0.5), (x, y + 0.5));
-                AddConstructPlace((new Vector2(position.x - 5, position.y), ((int)x, (int)(y - 0.5))),
-                    (new Vector2(position.x + 5, position.y), ((int)x, (int)(y + 0.5))));
                 break;
 
             case ObjectType.RotatedMediumRoom:
                 RemoveObjectFrom((x, y), ObjectType.RotatedMediumRoom);
                 AddToShip(_actorManager.CreateObject(position, type), (x - 0.5, y),
                     (x + 0.5, y));
-                AddConstructPlace((new Vector2(position.x, position.y + 5), ((int)(x - 0.5), (int)y)),
-                    (new Vector2(position.x, position.y - 5), ((int)(x + 0.5), (int)y)));
                 break;
 
             case ObjectType.BigRoom:
                 RemoveObjectFrom((x, y), ObjectType.BigRoom);
                 AddToShip(_actorManager.CreateObject(position, type), (x - 0.5, y - 0.5),
                     (x - 0.5, y + 0.5), (x + 0.5, y - 0.5), (x + 0.5, y + 0.5));
-                AddConstructPlace((new Vector2(position.x - 5, position.y + 5), ((int)(x - 0.5), (int)(y - 0.5))),
-                    (new Vector2(position.x + 5, position.y + 5), ((int)(x - 0.5), (int)(y + 0.5))),
-                    (new Vector2(position.x - 5, position.y - 5), ((int)(x + 0.5), (int)(y - 0.5))),
-                    (new Vector2(position.x + 5, position.y - 5), ((int)(x + 0.5), (int)(y + 0.5))));
                 break;
 
             case ObjectType.Road:
-                if (IsBlocked(Ship[(int)x - 1, (int)y], 0f, 180f, 270f) &&
-                    IsBlocked(Ship[(int)x + 1, (int)y], 0f, 90f, 0f)) return;
                 RemoveObjectFrom((x, y), ObjectType.Road);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
-                AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Up, Direction.Down);
                 break;
 
             case ObjectType.RoadRotated:
-                if (IsBlocked(Ship[(int)x, (int)y - 1], 90f, 0f, 270f) &&
-                    IsBlocked(Ship[(int)x, (int)y + 1], 90f, 90f, 180f)) return;
                 RemoveObjectFrom((x, y), ObjectType.RoadRotated);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
-                AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Left, Direction.Right);
                 break;
 
             case ObjectType.CrossRoad:
                 RemoveObjectFrom((x, y), ObjectType.CrossRoad);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
-                AddConstructPlace((position, ((int)x, (int)y)));
                 break;
 
             case ObjectType.LRoad:
-                if (IsBlocked(Ship[(int)x - 1, (int)y], 0f, 180f, 270f) &&
-                    IsBlocked(Ship[(int)x, (int)y + 1], 90f, 90f, 180f)) return;
                 RemoveObjectFrom((x, y), ObjectType.LRoad);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
-                AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Up, Direction.Right);
                 break;
 
             case ObjectType.LRoadRotated90:
-                if (IsBlocked(Ship[(int)x - 1, (int)y], 0f, 180f, 270f) &&
-                    IsBlocked(Ship[(int)x, (int)y - 1], 90f, 0f, 270f)) return;
                 RemoveObjectFrom((x, y), ObjectType.LRoadRotated90);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
-                AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Up, Direction.Left);
                 break;
 
             case ObjectType.LRoadRotated180:
-                if (IsBlocked(Ship[(int)x + 1, (int)y], 0f, 90f, 0f) &&
-                    IsBlocked(Ship[(int)x, (int)y - 1], 90f, 0f, 270f)) return;
                 RemoveObjectFrom((x, y), ObjectType.LRoadRotated180);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
-                AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Left, Direction.Down);
                 break;
 
             case ObjectType.LRoadRotated270:
-                if (IsBlocked(Ship[(int)x + 1, (int)y], 0f, 90f, 0f) &&
-                    IsBlocked(Ship[(int)x, (int)y + 1], 90f, 90f, 180f)) return;
                 RemoveObjectFrom((x, y), ObjectType.LRoadRotated270);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
-                AddIndividualConstructPlace(((int)x, (int)y), position, Direction.Down, Direction.Right);
                 break;
 
             case ObjectType.Crew:
@@ -151,6 +127,160 @@ public class SpaceShipManager : MonoBehaviour
         }
     }
 
+    public void CreateConstructPlacesFor(ObjectSize objectSize, ObjectType objectType, [CanBeNull] GameObject movingObject = null)
+    {
+        foreach (var (x, y) in GetListOfConstructPlacesPositionsFor(objectSize, objectType, movingObject))
+        {
+            CreateObject(ObjectType.ConstructRotatedPlace,
+                Utilities.GetInGameCoordinateForPosition(x, y, 0));
+        }
+    }
+    
+    private List<(double, double)> GetListOfConstructPlacesPositionsFor(ObjectSize objectSize, ObjectType objectType, [CanBeNull] Object movingObject)
+    {
+        var places = new List<(double, double)>();
+        var mappingHelper = new MappingHelper(Ship);
+        
+        for (var i = 0; i < ShipDimension; i++)
+        {
+            for (var j = 0; j < ShipDimension; j++)
+            {
+                if (Ship[i, j] == null) continue;
+
+                foreach (var direction in Utilities.Directions)
+                {
+                    var newDirectionI = i + direction[0];
+                    var newDirectionJ = j + direction[1];
+
+                    if (Utilities.CheckIfValid(newDirectionI, newDirectionJ, ShipDimension, ShipDimension) &&
+                        Ship[newDirectionI, newDirectionJ] == null &&
+                        (Ship[i, j].TryGetComponent<Room>(out _) ||
+                         mappingHelper.IsValidRoad(i, j, direction[0], direction[1])) &&
+                        (movingObject == null ||
+                         Ship[i, j] != movingObject))
+                    {
+                        switch (objectSize)
+                        {
+                            case ObjectSize.Small:
+                                if (!places.Contains((newDirectionI, newDirectionJ)))
+                                {
+                                    switch (objectType)
+                                    {
+                                        case ObjectType.SmallRoom:
+                                        case ObjectType.CrossRoad:
+                                            places.Add((newDirectionI, newDirectionJ));
+                                            break;
+                                        
+                                        case ObjectType.Road:
+                                            if (!IsBlocked(Ship[newDirectionI - 1, newDirectionJ], 0f, 180f, 270f) ||
+                                                !IsBlocked(Ship[newDirectionI + 1, newDirectionJ], 0f, 90f, 0f)) 
+                                                places.Add((newDirectionI, newDirectionJ));
+                                            break;
+                                        
+                                        case ObjectType.RoadRotated:
+                                            if (!IsBlocked(Ship[newDirectionI, newDirectionJ - 1], 90f, 0f, 270f) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ + 1], 90f, 90f, 180f)) 
+                                                places.Add((newDirectionI, newDirectionJ));
+                                            break;
+                                        
+                                        case ObjectType.LRoad:
+                                            if (!IsBlocked(Ship[newDirectionI - 1, newDirectionJ], 0f, 180f, 270f) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ + 1], 90f, 90f, 180f)) 
+                                                places.Add((newDirectionI, newDirectionJ));
+                                            break;
+                                        
+                                        case ObjectType.LRoadRotated90:
+                                            if (!IsBlocked(Ship[newDirectionI - 1, newDirectionJ], 0f, 180f, 270f) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ - 1], 90f, 0f, 270f)) 
+                                                places.Add((newDirectionI, newDirectionJ));
+                                            break;
+                                        
+                                        case ObjectType.LRoadRotated180:
+                                            if (!IsBlocked(Ship[newDirectionI + 1, newDirectionJ], 0f, 90f, 0f) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ - 1], 90f, 0f, 270f)) 
+                                                places.Add((newDirectionI, newDirectionJ));
+                                            break;
+                                        
+                                        case ObjectType.LRoadRotated270:
+                                            if (!IsBlocked(Ship[newDirectionI + 1, newDirectionJ], 0f, 90f, 0f) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ + 1], 90f, 90f, 180f))
+                                                places.Add((newDirectionI, newDirectionJ));
+                                            break;
+                                    }
+                                }
+                                break;
+                        
+                            case ObjectSize.Medium:
+                                if (Utilities.CheckIfValid(newDirectionI, newDirectionJ + 1, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI, newDirectionJ + 1] == null &&
+                                    !places.Contains((newDirectionI, newDirectionJ + 0.5)))
+                                    places.Add((newDirectionI, newDirectionJ + 0.5));
+                                
+                                if (Utilities.CheckIfValid(newDirectionI, newDirectionJ - 1, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI, newDirectionJ - 1] == null &&
+                                    !places.Contains((newDirectionI, newDirectionJ - 0.5)))
+                                    places.Add((newDirectionI, newDirectionJ - 0.5));
+                                break;
+                        
+                            case ObjectSize.MediumRotated:
+                                if (Utilities.CheckIfValid(newDirectionI + 1, newDirectionJ, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI + 1, newDirectionJ] == null &&
+                                    !places.Contains((newDirectionI + 0.5, newDirectionJ)))
+                                    places.Add((newDirectionI + 0.5, newDirectionJ));
+                                
+                                if (Utilities.CheckIfValid(newDirectionI - 1, newDirectionJ, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI - 1, newDirectionJ] == null &&
+                                    !places.Contains((newDirectionI - 0.5, newDirectionJ)))
+                                    places.Add((newDirectionI - 0.5, newDirectionJ));
+                                break;
+                    
+                            case ObjectSize.Large:
+                                if (Utilities.CheckIfValid(newDirectionI + 1, newDirectionJ, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI + 1, newDirectionJ] == null &&
+                                    Utilities.CheckIfValid(newDirectionI, newDirectionJ + 1, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI, newDirectionJ + 1] == null &&
+                                    Utilities.CheckIfValid(newDirectionI + 1, newDirectionJ + 1, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI + 1, newDirectionJ + 1] == null &&
+                                    !places.Contains((newDirectionI + 0.5, newDirectionJ + 0.5)))
+                                    places.Add((newDirectionI + 0.5, newDirectionJ + 0.5));
+                               
+                                if (Utilities.CheckIfValid(newDirectionI - 1, newDirectionJ, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI - 1, newDirectionJ] == null &&
+                                    Utilities.CheckIfValid(newDirectionI, newDirectionJ - 1, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI, newDirectionJ - 1] == null &&
+                                    Utilities.CheckIfValid(newDirectionI - 1, newDirectionJ - 1, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI - 1, newDirectionJ - 1] == null &&
+                                    !places.Contains((newDirectionI - 0.5, newDirectionJ - 0.5)))
+                                    places.Add((newDirectionI - 0.5, newDirectionJ - 0.5));
+                               
+                                if (Utilities.CheckIfValid(newDirectionI + 1, newDirectionJ, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI + 1, newDirectionJ] == null &&
+                                    Utilities.CheckIfValid(newDirectionI, newDirectionJ - 1, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI, newDirectionJ - 1] == null &&
+                                    Utilities.CheckIfValid(newDirectionI + 1, newDirectionJ - 1, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI + 1, newDirectionJ - 1] == null &&
+                                    !places.Contains((newDirectionI + 0.5, newDirectionJ - 0.5)))
+                                    places.Add((newDirectionI + 0.5, newDirectionJ - 0.5));
+                               
+                                if (Utilities.CheckIfValid(newDirectionI - 1, newDirectionJ, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI - 1, newDirectionJ] == null &&
+                                    Utilities.CheckIfValid(newDirectionI, newDirectionJ + 1, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI, newDirectionJ + 1] == null &&
+                                    Utilities.CheckIfValid(newDirectionI - 1, newDirectionJ + 1, ShipDimension, ShipDimension) &&
+                                    Ship[newDirectionI - 1, newDirectionJ + 1] == null &&
+                                    !places.Contains((newDirectionI - 0.5, newDirectionJ + 0.5)))
+                                    places.Add((newDirectionI - 0.5, newDirectionJ + 0.5));
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return places;
+    }
+    
+    
     private void AddToShip(GameObject construction, params (double x, double y)[] coords) => 
         coords.ToList().ForEach(
             coord => Ship[(int)coord.x, (int)coord.y] = construction);
@@ -183,68 +313,6 @@ public class SpaceShipManager : MonoBehaviour
                 RemoveRoom(((int)position.x, (int)position.y));
                 break;
         }
-    }
-
-    private void AddConstructPlace(params (Vector2 inGamePosition, (int x, int y) arrayPositions)[] positions) => positions.ToList().ForEach(arrayPosition =>
-            AddIndividualConstructPlace(arrayPosition.arrayPositions, arrayPosition.inGamePosition, Direction.Up, Direction.Left,
-                Direction.Right, Direction.Down));
-
-    private void AddIndividualConstructPlace((int x, int y) arrayPosition, Vector2 objectPosition,
-        params Direction[] directions) => directions.ToList().ForEach(direction =>
-            {
-                switch (direction)
-                {
-                    case Direction.Up:
-                        if (Ship[arrayPosition.x - 1, arrayPosition.y] == null)
-                            CreateObject(ObjectType.ConstructRotatedPlace,
-                                new Vector2(objectPosition.x, objectPosition.y + 10));
-                        break;
-
-                    case Direction.Left:
-                        if (Ship[arrayPosition.x, arrayPosition.y - 1] == null)
-                            CreateObject(ObjectType.ConstructPlace, new Vector2(objectPosition.x - 10, objectPosition.y));
-                        break;
-
-                    case Direction.Right:
-                        if (Ship[arrayPosition.x, arrayPosition.y + 1] == null)
-                            CreateObject(ObjectType.ConstructPlace, new Vector2(objectPosition.x + 10, objectPosition.y));
-                        break;
-
-                    case Direction.Down:
-                        if (Ship[arrayPosition.x + 1, arrayPosition.y] == null)
-                            CreateObject(ObjectType.ConstructRotatedPlace,
-                                new Vector2(objectPosition.x, objectPosition.y - 10));
-                        break;
-                    
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(direction), direction,
-                            "This is not a valid direction");
-                }
-            }
-        );
-    
-    /// <summary>
-    /// Only in emergency situations.
-    /// This method will print ship in its original format.
-    /// </summary>
-    public void PrintGameObjectGrid()
-    {
-        var output = "";
-
-        for (var y = 20; y < 30; y++)
-        {
-            for (var x = 20; x < 30; x++)
-            {
-                var element = Ship[y, x];
-                var elementString = element != null ? element.name : "  null  ";
-                elementString = elementString.PadRight(20, ' ');
-                output += "[" + y.ToString("D2") + " / " + x.ToString("D2") + ": " + elementString + "] ";
-            }
-
-            output += "\n";
-        }
-
-        Debug.Log(output);
     }
 
     /// <summary>

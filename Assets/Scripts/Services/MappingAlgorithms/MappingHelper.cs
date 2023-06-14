@@ -24,14 +24,14 @@ public class MappingHelper
     }
      
      public bool IsNotValid((int x, int y) nextPosition, (int x, int y) currentPosition, IReadOnlyList<int> direction) =>
-        !IsValidPosition(nextPosition.x, nextPosition.y, Rows, Columns) ||
+        !Utilities.CheckIfValid(nextPosition.x, nextPosition.y, Rows, Columns) ||
         Ship[nextPosition.x, nextPosition.y] == null ||
               (!IsValidRoad(nextPosition.x, nextPosition.y, direction[0] * -1, direction[1] * -1) &&
                !Ship[nextPosition.x, nextPosition.y].TryGetComponent<Room>(out _)) ||
               (!Ship[currentPosition.x, currentPosition.y].TryGetComponent<Room>(out _) &&
                !IsValidRoad(currentPosition.x, currentPosition.y, direction[0], direction[1]));
      
-    private bool IsValidRoad(int x, int y, int directionX, int directionY)
+    public bool IsValidRoad(int x, int y, int directionX, int directionY)
     {
         var roadObject = Ship[x, y];
         var roadRotation = roadObject.transform.rotation;
@@ -54,6 +54,4 @@ public class MappingHelper
                    (roadRotation == Quaternion.Euler(0f, 0f, 0f) || roadRotation == Quaternion.Euler(0f, 0f, 270f))))));
     }
 
-    private static bool IsValidPosition(int x, int y, int rows, int columns) =>
-        x >= 0 && x < rows && y >= 0 && y < columns;
 }

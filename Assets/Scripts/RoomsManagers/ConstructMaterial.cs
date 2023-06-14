@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,12 +13,14 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
     private PrefabStorage _prefabStorage;
     private ActorManager _actorManager;
     private RoomEditor _roomEditor;
+    private SpaceShipManager _spaceShip;
 
     private void Awake()
     { 
         _prefabStorage = FindObjectOfType<PrefabStorage>();
         _actorManager = FindObjectOfType<ActorManager>();
         _roomEditor = FindObjectOfType<RoomEditor>();
+        _spaceShip = FindObjectOfType<SpaceShipManager>();
     }
     
     public void OnBeginDrag(PointerEventData eventData)
@@ -35,7 +38,7 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         _draggingClone = new GameObject("Dragging Clone");
 
         _draggingCloneTransform = _draggingClone.transform;
-        _draggingCloneTransform.SetParent(_prefabStorage.constructMaterialCloneParent.transform);
+        _draggingCloneTransform.SetParent(_prefabStorage.constructMaterialCloneParent);
         _draggingCloneTransform.SetAsLastSibling();
 
         var rb = _draggingClone.AddComponent<Rigidbody2D>();
@@ -48,15 +51,24 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         var cameraPosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
         _draggingCloneTransform.position = new Vector3(cameraPosition.x, cameraPosition.y, -5f);
         _draggingCloneTransform.localScale = new Vector3(5.5f, 5.5f, 1f);
+
+        GameObject movingObject = null;
+        
+        if (_actorManager.moveRoomMode)
+        {
+            var parent = transform.parent;
+            
+            _roomEditor.StartMoveRoom(parent);
+            movingObject = parent.gameObject;
+        }
+        
+        _spaceShip.CreateConstructPlacesFor(Utilities.GetSizeOfObject(objectType), objectType , movingObject);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
-
-        if (_actorManager.moveRoomMode)
-            _roomEditor.StartMoveRoom(transform.parent);
                 
         var cameraPosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
         _draggingCloneTransform.position = new Vector3(cameraPosition.x, cameraPosition.y, -5f);
@@ -75,7 +87,8 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
             canvasGroup.interactable = true;
             canvasGroup.alpha = 1;
         }
-
+        
+        _actorManager.DestroyAllChildrenOf(_prefabStorage.constructPlacesParent.gameObject);
         Destroy(_draggingClone);
     }
 

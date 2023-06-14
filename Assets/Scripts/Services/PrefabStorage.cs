@@ -29,6 +29,6 @@ public class PrefabStorage : MonoBehaviour
     [SerializeField] public List<Sprite> crewSprites;
     [SerializeField] public List<RuntimeAnimatorController> crewAnimations;
     
-    [SerializeField] public GameObject constructMaterialCloneParent;
-    [SerializeField] public GameObject constructPlacesParent;
+    [SerializeField] public Transform constructMaterialCloneParent;
+    [SerializeField] public Transform constructPlacesParent;
 }

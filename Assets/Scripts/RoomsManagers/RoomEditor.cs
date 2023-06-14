@@ -20,7 +20,6 @@ public class RoomEditor : MonoBehaviour
 
     public void StartMoveRoom(Transform transformObject)
     {
-        _prefabStorage.constructPlacesParent.SetActive(true);
         Utilities.SetTransparency(transformObject, 0.5f);
         DeactivateAllHighlights(transformObject.gameObject);
         successfullyMoved = false;
@@ -43,7 +42,6 @@ public class RoomEditor : MonoBehaviour
                 objectType);
         }
         
-        _prefabStorage.constructPlacesParent.SetActive(false);
         Utilities.SetTransparency(transformObject, 1);
         transformObject.GetChild(2).gameObject.SetActive(false);
         HighlightMovableObjects();
