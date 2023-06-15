@@ -3,40 +3,58 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private float zoomLerpSpeed = 10;
+    private const float _zoomLerpSpeed = 10;
     private const float ZoomFactor = 3f;
     private Camera _cam;
     private Vector3 _dragStartPos;
     private Vector3 _velocity = Vector3.zero;
     private bool _isDragging;
+    private bool _hasStartedDragging;
     private float _targetZoom;
     public bool isMouseOverUI;
-
+    private Controls _controls;
+    
+    
     private void Awake()
     {
         _cam = Camera.main;
         _targetZoom = _cam!.orthographicSize;
+        _controls = new Controls();
     }
 
+    private void OnEnable()
+    {
+        _controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _controls.Disable();
+    }
+    
     private void Update()
     {
         if (isMouseOverUI) return;
-        var scrollData = Input.GetAxis("Mouse ScrollWheel");
+
+        var scrollData = _controls.InGame.Zoom.ReadValue<Vector2>().y;
         _targetZoom -= scrollData * ZoomFactor;
-        _targetZoom = Mathf.Clamp(_targetZoom, 1f, 50f);
-        _cam.orthographicSize = Mathf.Lerp(_cam.orthographicSize, _targetZoom, Time.deltaTime * zoomLerpSpeed);
+        _targetZoom = Mathf.Clamp(_targetZoom, 1f, 100f);
+        _cam.orthographicSize = Mathf.Lerp(_cam.orthographicSize, _targetZoom, Time.deltaTime * _zoomLerpSpeed);
     }
 
     private void LateUpdate()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (_controls.InGame.Move.triggered)
+            _hasStartedDragging = !_hasStartedDragging;
+        
+        if (_hasStartedDragging)
         {
             _isDragging = true;
             _dragStartPos = _cam.ScreenToWorldPoint(Input.mousePosition);
             StartCoroutine(StartDrag(_dragStartPos));
+            return;
         }
 
-        if (!Input.GetMouseButtonUp(1)) return;
         _isDragging = false;
         StopAllCoroutines();
     }

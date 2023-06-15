@@ -18,7 +18,8 @@ public class Crew : MonoBehaviour
     private Animator _animator;
     private GameObject _pointer;
     private BreadthFirstSearch _breadthFirstSearch;
-
+    private Controls _controls;
+    
     private void Awake()
     {
         _prefabStorage = FindObjectOfType<PrefabStorage>();
@@ -29,11 +30,22 @@ public class Crew : MonoBehaviour
         _animator.enabled = false;
         _spriteRenderer.sprite = _prefabStorage.crewSprites[(int) SpritesTypes.AfkStatus];
         _breadthFirstSearch = new BreadthFirstSearch();
+        _controls = new Controls();
+    }
+
+    private void OnEnable()
+    {
+        _controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _controls.Disable();
     }
 
     private void Update()
     {
-        if (_crewSelected && Input.GetMouseButtonDown(0) && !_selectingCrew && _actorManager.currentRoom != null &&
+        if (_crewSelected && _controls.InGame.Interact.triggered && !_selectingCrew && _actorManager.currentRoom != null &&
             _actorManager.currentRoom.CrewSpaceLeft >= _actorManager.selectedCrewNumber && !_isMoving && _actorManager.currentRoom != room && !_actorManager.moveRoomMode && !_actorManager.deleteRoomMode)
         {
             var finalRoomPosition = _spaceShipManager.FindRoomPosition(_actorManager.currentRoom, false, this);
@@ -54,7 +66,7 @@ public class Crew : MonoBehaviour
 
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (_controls.InGame.Cancel.triggered)
         {
             _crewSelected = false;
             _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
@@ -82,7 +94,7 @@ public class Crew : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!collision.gameObject.GetComponent<BoxSelection>() || !Input.GetMouseButton(0)) return;
+        if (!collision.gameObject.GetComponent<BoxSelection>() || !_controls.InGame.Interact.triggered) return;
         _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         _crewSelected = false;
         _actorManager.selectedCrewNumber = 0;
