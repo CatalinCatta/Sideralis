@@ -31,16 +31,6 @@ public class CameraController : MonoBehaviour
     {
         _controls.Disable();
     }
-    
-    private void Update()
-    {
-        if (isMouseOverUI) return;
-
-        var scrollData = _controls.InGame.Zoom.ReadValue<Vector2>().y;
-        _targetZoom -= scrollData * ZoomFactor;
-        _targetZoom = Mathf.Clamp(_targetZoom, 1f, 100f);
-        _cam.orthographicSize = Mathf.Lerp(_cam.orthographicSize, _targetZoom, Time.deltaTime * _zoomLerpSpeed);
-    }
 
     private void LateUpdate()
     {

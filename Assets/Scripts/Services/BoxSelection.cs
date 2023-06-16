@@ -58,7 +58,7 @@ public class BoxSelection : MonoBehaviour
                 Mathf.Abs(_initialMousePosition.y - _currentMousePosition.y));
         }
 
-        if (!Input.GetMouseButtonUp(0)) 
+        if (!Input.GetMouseButtonUp(0) && !_controls.InGame.Move.triggered) 
             return;
         
         _lineRenderer.positionCount = 0;

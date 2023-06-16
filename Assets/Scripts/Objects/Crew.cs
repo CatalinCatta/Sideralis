@@ -66,7 +66,7 @@ public class Crew : MonoBehaviour
 
         }
 
-        if (_controls.InGame.Cancel.triggered)
+        if (_controls.InGame.Move.triggered)
         {
             _crewSelected = false;
             _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
