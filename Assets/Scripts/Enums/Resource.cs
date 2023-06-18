@@ -1,6 +1,7 @@
 ﻿public enum Resource
 {
-    Oxigen,
     Energy,
-    Produce
+    Oxygen,
+    Water,
+    Food
 }
