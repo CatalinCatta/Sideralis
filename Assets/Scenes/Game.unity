@@ -5769,7 +5769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d8be859fe196c34eb1479b4937818b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusBar: {fileID: 0}
+  statusBar: {fileID: 1221602978}
   energy: 0
   oxygen: 0
   water: 0
