@@ -250,7 +250,7 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 91802
+  m_InstanceId: 123454
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -790,7 +790,7 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 91758
+  m_InstanceId: 123410
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -1724,7 +1724,7 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 91914
+  m_InstanceId: 123566
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -1841,7 +1841,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &5365407240559719552
 GameObject:
@@ -2423,7 +2423,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &8074190817247107167
 GameObject:
@@ -2487,7 +2487,7 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 91820
+  m_InstanceId: 123472
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
