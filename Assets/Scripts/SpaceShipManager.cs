@@ -11,12 +11,14 @@ public class SpaceShipManager : MonoBehaviour
     private const int ShipDimension = 50;
     public readonly GameObject[,] Ship = new GameObject[ShipDimension, ShipDimension];
     private ActorManager _actorManager;
+    private SpaceShipResources _shipResources;
     public GameObject lastPointer;
     private readonly Dictionary<GameObject, (IEnumerator, (Vector3 half1, Vector3 half2))> _doorsInAction = new();
     
     private void Start()
     {
         _actorManager = transform.GetComponent<ActorManager>();
+        _shipResources = transform.GetComponent<SpaceShipResources>();
         StartCoroutine(Constructor());
     }
 
@@ -63,6 +65,7 @@ public class SpaceShipManager : MonoBehaviour
                 RemoveObjectFrom((x, y), ObjectType.RotatedMediumRoom);
                 var rotatedMediumRoom = _actorManager.CreateObject(position, type);
                 rotatedMediumRoom.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
+                rotatedMediumRoom.transform.GetChild(4).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
                 rotatedMediumRoom.transform.GetChild(3).transform.GetChild(0).transform.localScale =
                     new Vector3(0.3f, 0.15f, 1);
                 rotatedMediumRoom.GetComponent<MediumRoom>().roomResourcesType = resourceType;
@@ -304,6 +307,7 @@ public class SpaceShipManager : MonoBehaviour
 
     public void RemoveObjectFrom((double x, double y) position, ObjectType type)
     {
+            
         switch (type)
         {
             case ObjectType.MediumRoom:

@@ -6172,6 +6172,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a7a20e45bde9dff48b67b641bcacaa85, type: 3}
   - {fileID: 21300000, guid: 635d41c7a1d19514da01073b7cf3f9bb, type: 3}
   - {fileID: 21300000, guid: bb90d6eeefdcf9d42a67c417526f2ed2, type: 3}
+  collectIconsSprites:
+  - {fileID: 21300000, guid: 8a7b0ea773cd6f84895943d6dc46d7ee, type: 3}
+  - {fileID: 21300000, guid: 338ee3405ec9f5f449f757b7d759c3ec, type: 3}
+  - {fileID: 21300000, guid: cde7844e4d9760f46a2774b4ac94ae43, type: 3}
+  - {fileID: 21300000, guid: 01686218684c582438ce4cb4659df1d1, type: 3}
 --- !u!114 &1464754255
 MonoBehaviour:
   m_ObjectHideFlags: 0

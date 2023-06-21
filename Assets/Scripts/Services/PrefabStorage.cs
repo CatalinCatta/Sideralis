@@ -27,4 +27,6 @@ public class PrefabStorage : MonoBehaviour
     [SerializeField] public List<Sprite> largeRoomSprites;
     [SerializeField] public List<Sprite> mediumRoomSprites;
     [SerializeField] public List<Sprite> smallRoomSprites;
+    
+    [SerializeField] public List<Sprite> collectIconsSprites;
 }

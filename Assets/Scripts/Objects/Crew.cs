@@ -10,6 +10,7 @@ public class Crew : MonoBehaviour
     public Room room;
     private readonly float _speed = 1;
     private ActorManager _actorManager;
+    private SpaceShipResources _shipResources;
     private bool _crewSelected;
     private bool _isMoving;
     private bool _selectingCrew;
@@ -24,6 +25,7 @@ public class Crew : MonoBehaviour
     {
         _prefabStorage = FindObjectOfType<PrefabStorage>();
         _spaceShipManager = FindObjectOfType<SpaceShipManager>();
+        _shipResources = FindObjectOfType<SpaceShipResources>();
         _actorManager = FindObjectOfType<ActorManager>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
@@ -31,6 +33,10 @@ public class Crew : MonoBehaviour
         _spriteRenderer.sprite = _prefabStorage.crewSprites[(int) SpritesTypes.AfkStatus];
         _breadthFirstSearch = new BreadthFirstSearch();
         _controls = new Controls();
+        
+        _shipResources.foodConsumption += 0.02;
+        _shipResources.oxygenConsumption += 0.02;
+        _shipResources.waterConsumption += 0.02;
     }
 
     private void OnEnable()
@@ -219,5 +225,12 @@ public class Crew : MonoBehaviour
         SlideSide,
         SlideUp,
         SlideDown
+    }
+
+    private void OnDestroy()
+    {
+        _shipResources.foodConsumption -= 0.02;
+        _shipResources.oxygenConsumption -= 0.02;
+        _shipResources.waterConsumption -= 0.02;
     }
 }
