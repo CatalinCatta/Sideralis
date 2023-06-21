@@ -40,9 +40,10 @@ public class RoomMerger : MonoBehaviour
                 var rightRoom = j < cols - 1 ? _shipManager.Ship[i, j + 1] : null;
                 var bottomRoom = i < rows - 1 ? _shipManager.Ship[i + 1, j] : null;
 
-                if (j < cols - 1 && rightRoom != null && rightRoom.TryGetComponent<Room>(out var room)
-                    && currentRoom.GetComponent<Room>().lvl == room.lvl &&
-                    currentRoom != rightRoom)
+                if (j < cols - 1 && rightRoom != null && rightRoom.TryGetComponent<Room>(out var room) &&
+                    currentRoom.GetComponent<Room>().lvl == room.lvl &&
+                    currentRoom != rightRoom &&
+                    currentRoom.GetComponent<Room>().roomResourcesType == room.roomResourcesType)
                 {
                     if (currentRoom.TryGetComponent<SmallRoom>(out _)
                         && rightRoom.TryGetComponent<SmallRoom>(out _))
@@ -60,7 +61,8 @@ public class RoomMerger : MonoBehaviour
 
                 if (i >= rows - 1 || bottomRoom == null || !bottomRoom.TryGetComponent<Room>(out var room2)
                     || currentRoom.GetComponent<Room>().lvl != room2.lvl ||
-                    currentRoom == bottomRoom) 
+                    currentRoom == bottomRoom || 
+                    currentRoom.GetComponent<Room>().roomResourcesType != room2.roomResourcesType) 
                     continue;
                 
                 if (currentRoom.TryGetComponent<SmallRoom>(out _)
@@ -88,13 +90,13 @@ public class RoomMerger : MonoBehaviour
             _shipManager.Ship[(int)(x + 0.5), (int)(y + 0.5)]); 
 
         if (Math.Round(x) == x)
-            _shipManager.CreateObject(ObjectType.MediumRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0));
+            _shipManager.CreateObject(ObjectType.MediumRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0), oldRoom1.roomResourcesType);
         
         else if (Math.Round(y) == y)
-            _shipManager.CreateObject(ObjectType.RotatedMediumRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0));
+            _shipManager.CreateObject(ObjectType.RotatedMediumRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0), oldRoom1.roomResourcesType);
         
         else
-            _shipManager.CreateObject(ObjectType.BigRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0));
+            _shipManager.CreateObject(ObjectType.BigRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0), oldRoom1.roomResourcesType);
         
         var newRoom = _shipManager.Ship[(int)x, (int)y].GetComponent<Room>();
 

@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,6 +6,7 @@ using UnityEngine.EventSystems;
 public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] public ObjectType objectType;
+    [SerializeField] public Resource resourceType;
     
     private GameObject _draggingClone;
     private Transform _draggingCloneTransform;
@@ -34,13 +34,16 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
             canvasGroup.interactable = false;
             canvasGroup.alpha = 0;
         }
+        else if (transform.parent.TryGetComponent<Room>(out var room))
+            resourceType = room.roomResourcesType;
 
         _draggingClone = new GameObject("Dragging Clone");
 
         _draggingCloneTransform = _draggingClone.transform;
         _draggingCloneTransform.SetParent(_prefabStorage.constructMaterialCloneParent);
         _draggingCloneTransform.SetAsLastSibling();
-
+        _draggingCloneTransform.rotation = transform.rotation;
+        
         var rb = _draggingClone.AddComponent<Rigidbody2D>();
         rb.isKinematic = true;
 
@@ -50,7 +53,7 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
         var cameraPosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
         _draggingCloneTransform.position = new Vector3(cameraPosition.x, cameraPosition.y, -5f);
-        _draggingCloneTransform.localScale = new Vector3(5.5f, 5.5f, 1f);
+        _draggingCloneTransform.localScale = transform.localScale * 10;
 
         GameObject movingObject = null;
         
@@ -96,22 +99,22 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         objectType switch
         {
             ObjectType.SmallRoom =>
-                _prefabStorage.smallRoomSprite,
+                _prefabStorage.smallRoomSprites[(int)resourceType],
 
             ObjectType.MediumRoom =>
-                _prefabStorage.mediumRoomSprite,
+                _prefabStorage.mediumRoomSprites[(int)resourceType],
 
             ObjectType.RotatedMediumRoom =>
-                _prefabStorage.mediumRotatedRoomSprite,
+                _prefabStorage.mediumRoomSprites[(int)resourceType],
 
             ObjectType.BigRoom =>
-                _prefabStorage.bigRoomSprite,
+                _prefabStorage.largeRoomSprites[(int)resourceType],
 
             ObjectType.Road =>
                 _prefabStorage.roadSprite,
 
             ObjectType.RoadRotated =>
-                _prefabStorage.roadRotatedSprite,
+                _prefabStorage.roadSprite,
 
             ObjectType.CrossRoad =>
                 _prefabStorage.crossRoadSprite,
@@ -120,13 +123,13 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
                 _prefabStorage.lRoadSprite,
 
             ObjectType.LRoadRotated90 =>
-                _prefabStorage.lRoadRotated90Sprite,
+                _prefabStorage.lRoadSprite,
 
             ObjectType.LRoadRotated180 =>
-                _prefabStorage.lRoadRotated180Sprite,
+                _prefabStorage.lRoadSprite,
 
             ObjectType.LRoadRotated270 =>
-                _prefabStorage.lRoadRotated270Sprite,
+                _prefabStorage.lRoadSprite,
 
             _ => throw new Exception("Invalid object type")
         };

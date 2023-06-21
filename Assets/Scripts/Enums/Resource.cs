@@ -3,5 +3,6 @@
     Energy,
     Oxygen,
     Water,
-    Food
+    Food,
+    None
 }

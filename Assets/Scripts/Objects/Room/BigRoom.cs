@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class BigRoom : Room
 {
     protected override void Initialize()
@@ -5,5 +7,6 @@ public class BigRoom : Room
         MaxCrewNumber = 4;
         maxCapacity = 7;
         farmingRatePerCrew = 7;
+        transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = PrefabStorage.largeRoomSprites[(int)roomResourcesType];
     }
 }

@@ -22,15 +22,15 @@ public class SpaceShipManager : MonoBehaviour
 
     private IEnumerator Constructor()
     {
-        CreateObject(ObjectType.BigRoom, new Vector2(-10, 10));
-        CreateObject(ObjectType.MediumRoom, new Vector2(10, 15));
-        CreateObject(ObjectType.RotatedMediumRoom, new Vector2(15, 0));
-        CreateObject(ObjectType.SmallRoom, new Vector2(5, -5));
+        CreateObject(ObjectType.BigRoom, new Vector2(-10, 10), Resource.Energy);
+        CreateObject(ObjectType.MediumRoom, new Vector2(10, 15), Resource.Oxygen);
+        CreateObject(ObjectType.RotatedMediumRoom, new Vector2(15, 0), Resource.Water);
+        CreateObject(ObjectType.SmallRoom, new Vector2(5, -5), Resource.Food);
 
         yield return new WaitForSeconds(0.5f);
         
-        CreateObject(ObjectType.Crew, new Vector2(-15, 15));
-        CreateObject(ObjectType.Crew, new Vector2(5, -5));
+        CreateObject(ObjectType.Crew, new Vector2(-15, 15), Resource.None);
+        CreateObject(ObjectType.Crew, new Vector2(5, -5), Resource.None);
     }
     
     /// <summary>
@@ -38,20 +38,25 @@ public class SpaceShipManager : MonoBehaviour
     /// </summary>
     /// <param name="type">The type of the object to create.</param>
     /// <param name="position">The position of the room.</param>
-    public void CreateObject(ObjectType type, Vector2 position)
+    public void CreateObject(ObjectType type, Vector2 position, Resource resourceType)
     {
         var (x, y) = Utilities.GetPositionInArrayOfCoordinate(position);
-        
+        GameObject currentObject;
+
         switch (type)
         {
             case ObjectType.SmallRoom:
                 RemoveObjectFrom((x, y), ObjectType.SmallRoom);
-                AddToShip(_actorManager.CreateObject(position, type), (x, y));
+                currentObject = _actorManager.CreateObject(position, type);
+                currentObject.GetComponent<SmallRoom>().roomResourcesType = resourceType;
+                AddToShip(currentObject, (x, y));
                 break;
 
             case ObjectType.MediumRoom:
                 RemoveObjectFrom((x, y), ObjectType.MediumRoom);
-                AddToShip(_actorManager.CreateObject(position, type), (x, y - 0.5), (x, y + 0.5));
+                currentObject = _actorManager.CreateObject(position, type);
+                currentObject.GetComponent<MediumRoom>().roomResourcesType = resourceType;
+                AddToShip(currentObject, (x, y - 0.5), (x, y + 0.5));
                 break;
 
             case ObjectType.RotatedMediumRoom:
@@ -60,13 +65,16 @@ public class SpaceShipManager : MonoBehaviour
                 rotatedMediumRoom.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
                 rotatedMediumRoom.transform.GetChild(3).transform.GetChild(0).transform.localScale =
                     new Vector3(0.3f, 0.15f, 1);
+                rotatedMediumRoom.GetComponent<MediumRoom>().roomResourcesType = resourceType;
                 AddToShip(rotatedMediumRoom, (x - 0.5, y),
                     (x + 0.5, y));
                 break;
 
             case ObjectType.BigRoom:
                 RemoveObjectFrom((x, y), ObjectType.BigRoom);
-                AddToShip(_actorManager.CreateObject(position, type), (x - 0.5, y - 0.5),
+                currentObject = _actorManager.CreateObject(position, type);
+                currentObject.GetComponent<BigRoom>().roomResourcesType = resourceType;
+                AddToShip(currentObject, (x - 0.5, y - 0.5),
                     (x - 0.5, y + 0.5), (x + 0.5, y - 0.5), (x + 0.5, y + 0.5));
                 break;
 

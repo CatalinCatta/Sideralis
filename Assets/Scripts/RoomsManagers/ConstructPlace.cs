@@ -23,8 +23,8 @@ public class ConstructPlace : MonoBehaviour, IDropHandler
             return;
 
         var position = transform.position;
-        
-        _spaceShipManager.CreateObject(constructMaterial.objectType, position);
+
+        _spaceShipManager.CreateObject(constructMaterial.objectType, position, constructMaterial.resourceType);
         _roomEditor.lastConstructedObjectPosition = position;
         _roomEditor.successfullyMoved = true;
     }

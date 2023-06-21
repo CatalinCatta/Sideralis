@@ -60,7 +60,7 @@ public class Crew : MonoBehaviour
             _crewSelected = false;
             _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             _actorManager.selectedCrewNumber = 0;
-            _spaceShipManager.CreateObject(ObjectType.Pointer, Utilities.GetInGameCoordinateForPosition(finalRoomPosition.Item1, finalRoomPosition.Item2, -5f));
+            _spaceShipManager.CreateObject(ObjectType.Pointer, Utilities.GetInGameCoordinateForPosition(finalRoomPosition.Item1, finalRoomPosition.Item2, -5f), Resource.None);
             _pointer = _spaceShipManager.lastPointer;
             room = _actorManager.currentRoom;
 

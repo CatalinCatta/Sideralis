@@ -1,8 +1,6 @@
-using System;
 using System.Linq;
 using UnityEngine;
 using System.Collections;
-using UnityEngine.Serialization;
 
 public abstract class Room : MonoBehaviour
 {
@@ -13,7 +11,9 @@ public abstract class Room : MonoBehaviour
     public int maxCapacity;
     public int farmingRatePerCrew;
     public double actualCapacity;
-    
+    public Resource roomResourcesType;
+    protected PrefabStorage PrefabStorage;
+
     public int CrewSpaceLeft => 
         crews.Count(crew => crew == null);
     
@@ -22,8 +22,9 @@ public abstract class Room : MonoBehaviour
     
     protected abstract void Initialize();
     
-    private void Awake()
+    private void Start()
     {
+        PrefabStorage = FindObjectOfType<PrefabStorage>(); 
         _actorManager = FindObjectOfType<ActorManager>();
         lvl = 0;
         actualCapacity = 0;
