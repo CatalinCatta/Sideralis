@@ -1,11 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public abstract class Road : MonoBehaviour
 {
     private ActorManager _actorManager;
+    private SpaceShipResources _shipResources;
 
-    private void Awake() =>
+    private void Awake()
+    {
+        _shipResources = FindObjectOfType<SpaceShipResources>();
         _actorManager = FindObjectOfType<ActorManager>();
+    }
+
+    private void Start() =>
+        _shipResources.energyConsumption += 0.01;
 
     public void AddMeToActorManager()
     {
@@ -18,5 +26,7 @@ public abstract class Road : MonoBehaviour
         if (_actorManager != null)
             _actorManager.currentObject = null;
     }
-    
+
+    private void OnDestroy() =>
+        _shipResources.energyConsumption -= 0.01;
 }

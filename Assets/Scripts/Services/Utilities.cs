@@ -78,6 +78,14 @@ public static class Utilities
                 _ => objectType
             },
 
+            ObjectType.TRoad => rotation.eulerAngles.z switch
+            {
+                90 => ObjectType.TRoadRotated90,
+                180 => ObjectType.TRoadRotated180,
+                270 => ObjectType.TRoadRotated270,
+                _ => objectType
+            },
+
             ObjectType.MediumRoom => rotation == Quaternion.Euler(0, 0, 90) ? ObjectType.RotatedMediumRoom : objectType,
 
             _ => objectType

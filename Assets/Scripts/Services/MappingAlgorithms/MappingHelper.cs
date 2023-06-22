@@ -51,7 +51,16 @@ public class MappingHelper
                   (directionY == -1 &&
                    (roadRotation == Quaternion.Euler(0f, 0f, 90f) || roadRotation == Quaternion.Euler(0f, 0f, 180f))) ||
                   (directionY == +1 &&
-                   (roadRotation == Quaternion.Euler(0f, 0f, 0f) || roadRotation == Quaternion.Euler(0f, 0f, 270f))))));
+                   (roadRotation == Quaternion.Euler(0f, 0f, 0f) || roadRotation == Quaternion.Euler(0f, 0f, 270f))))) ||
+                (road is TRoad &&
+                 ((directionX == -1 &&
+                   roadRotation != Quaternion.Euler(0f, 0f, 0f)) ||
+                  (directionX == +1 &&
+                   roadRotation != Quaternion.Euler(0f, 0f, 180f))||
+                  (directionY == -1 &&
+                   roadRotation != Quaternion.Euler(0f, 0f, 90f)) ||
+                  (directionY == +1 &&
+                   roadRotation != Quaternion.Euler(0f, 0f, 270f)))));
     }
 
 }

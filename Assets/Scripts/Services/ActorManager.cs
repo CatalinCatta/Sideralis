@@ -85,6 +85,14 @@ public class ActorManager : MonoBehaviour
 
             ObjectType.LRoadRotated270 => Instantiate(_prefabStorage.lRoad, position, Quaternion.Euler(0f, 0f, 270f), parentLocation),
 
+            ObjectType.TRoad => Instantiate(_prefabStorage.tRoad, position, rotation, parentLocation),
+
+            ObjectType.TRoadRotated90 => Instantiate(_prefabStorage.tRoad, position, Quaternion.Euler(0f, 0f, 90f), parentLocation),
+
+            ObjectType.TRoadRotated180 => Instantiate(_prefabStorage.tRoad, position, Quaternion.Euler(0f, 0f, 180f), parentLocation),
+
+            ObjectType.TRoadRotated270 => Instantiate(_prefabStorage.tRoad, position, Quaternion.Euler(0f, 0f, 270f), parentLocation),
+
             ObjectType.Crew => Instantiate(_prefabStorage.crew, new Vector3(position.x, position.y, -5), rotation,
                 parentLocation),
 

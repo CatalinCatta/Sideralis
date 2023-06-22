@@ -133,6 +133,32 @@ public class SpaceShipManager : MonoBehaviour
                 AddToShip(rotatedLRoad270, (x, y));
                 break;
 
+            case ObjectType.TRoad:
+                RemoveObjectFrom((x, y), ObjectType.TRoad);
+                AddToShip(_actorManager.CreateObject(position, type), (x, y));
+                break;
+
+            case ObjectType.TRoadRotated90:
+                RemoveObjectFrom((x, y), ObjectType.TRoadRotated90);
+                var rotatedTRoad90 = _actorManager.CreateObject(position, type);
+                rotatedTRoad90.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
+                AddToShip(rotatedTRoad90, (x, y));
+                break;
+
+            case ObjectType.TRoadRotated180:
+                RemoveObjectFrom((x, y), ObjectType.TRoadRotated180);
+                var rotatedTRoad180 = _actorManager.CreateObject(position, type);
+                rotatedTRoad180.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
+                AddToShip(rotatedTRoad180, (x, y));
+                break;
+
+            case ObjectType.TRoadRotated270:
+                RemoveObjectFrom((x, y), ObjectType.TRoadRotated270);
+                var rotatedTRoad270 = _actorManager.CreateObject(position, type);
+                rotatedTRoad270.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
+                AddToShip(rotatedTRoad270, (x, y));
+                break;
+
             case ObjectType.Crew:
                 var crew = _actorManager.CreateObject(position, type).GetComponent<Crew>();
                 var room = Ship[(int)x, (int)y].GetComponent<Room>();
@@ -192,38 +218,66 @@ public class SpaceShipManager : MonoBehaviour
                                             break;
                                         
                                         case ObjectType.Road:
-                                            if (!IsBlocked(Ship[newDirectionI - 1, newDirectionJ], 0f, 180f, 270f) ||
-                                                !IsBlocked(Ship[newDirectionI + 1, newDirectionJ], 0f, 90f, 0f)) 
+                                            if (!IsBlocked(Ship[newDirectionI - 1, newDirectionJ], RotationForDirection[(int)Direction.Up]) ||
+                                                !IsBlocked(Ship[newDirectionI + 1, newDirectionJ], RotationForDirection[(int)Direction.Down])) 
                                                 places.Add((newDirectionI, newDirectionJ));
                                             break;
                                         
                                         case ObjectType.RoadRotated:
-                                            if (!IsBlocked(Ship[newDirectionI, newDirectionJ - 1], 90f, 0f, 270f) ||
-                                                !IsBlocked(Ship[newDirectionI, newDirectionJ + 1], 90f, 90f, 180f)) 
+                                            if (!IsBlocked(Ship[newDirectionI, newDirectionJ - 1], RotationForDirection[(int)Direction.Left]) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ + 1], RotationForDirection[(int)Direction.Right])) 
                                                 places.Add((newDirectionI, newDirectionJ));
                                             break;
                                         
                                         case ObjectType.LRoad:
-                                            if (!IsBlocked(Ship[newDirectionI - 1, newDirectionJ], 0f, 180f, 270f) ||
-                                                !IsBlocked(Ship[newDirectionI, newDirectionJ + 1], 90f, 90f, 180f)) 
+                                            if (!IsBlocked(Ship[newDirectionI - 1, newDirectionJ], RotationForDirection[(int)Direction.Up]) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ + 1], RotationForDirection[(int)Direction.Right])) 
                                                 places.Add((newDirectionI, newDirectionJ));
                                             break;
                                         
                                         case ObjectType.LRoadRotated90:
-                                            if (!IsBlocked(Ship[newDirectionI - 1, newDirectionJ], 0f, 180f, 270f) ||
-                                                !IsBlocked(Ship[newDirectionI, newDirectionJ - 1], 90f, 0f, 270f)) 
+                                            if (!IsBlocked(Ship[newDirectionI - 1, newDirectionJ], RotationForDirection[(int)Direction.Up]) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ - 1], RotationForDirection[(int)Direction.Down])) 
                                                 places.Add((newDirectionI, newDirectionJ));
                                             break;
                                         
                                         case ObjectType.LRoadRotated180:
-                                            if (!IsBlocked(Ship[newDirectionI + 1, newDirectionJ], 0f, 90f, 0f) ||
-                                                !IsBlocked(Ship[newDirectionI, newDirectionJ - 1], 90f, 0f, 270f)) 
+                                            if (!IsBlocked(Ship[newDirectionI + 1, newDirectionJ], RotationForDirection[(int)Direction.Down]) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ - 1], RotationForDirection[(int)Direction.Left])) 
                                                 places.Add((newDirectionI, newDirectionJ));
                                             break;
                                         
                                         case ObjectType.LRoadRotated270:
-                                            if (!IsBlocked(Ship[newDirectionI + 1, newDirectionJ], 0f, 90f, 0f) ||
-                                                !IsBlocked(Ship[newDirectionI, newDirectionJ + 1], 90f, 90f, 180f))
+                                            if (!IsBlocked(Ship[newDirectionI + 1, newDirectionJ], RotationForDirection[(int)Direction.Down]) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ + 1], RotationForDirection[(int)Direction.Right]))
+                                                places.Add((newDirectionI, newDirectionJ));
+                                            break;
+                                        
+                                        case ObjectType.TRoad:
+                                            if (!IsBlocked(Ship[newDirectionI, newDirectionJ - 1], RotationForDirection[(int)Direction.Left]) ||
+                                                !IsBlocked(Ship[newDirectionI + 1, newDirectionJ], RotationForDirection[(int)Direction.Down]) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ + 1], RotationForDirection[(int)Direction.Right])) 
+                                                places.Add((newDirectionI, newDirectionJ));
+                                            break;
+                                        
+                                        case ObjectType.TRoadRotated90:
+                                            if (!IsBlocked(Ship[newDirectionI - 1, newDirectionJ], RotationForDirection[(int)Direction.Up]) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ + 1], RotationForDirection[(int)Direction.Right]) ||
+                                                !IsBlocked(Ship[newDirectionI + 1, newDirectionJ], RotationForDirection[(int)Direction.Down])) 
+                                                places.Add((newDirectionI, newDirectionJ));
+                                            break;
+                                        
+                                        case ObjectType.TRoadRotated180:
+                                            if (!IsBlocked(Ship[newDirectionI - 1, newDirectionJ], RotationForDirection[(int)Direction.Up]) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ + 1], RotationForDirection[(int)Direction.Right]) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ - 1], RotationForDirection[(int)Direction.Left])) 
+                                                places.Add((newDirectionI, newDirectionJ));
+                                            break;
+                                        
+                                        case ObjectType.TRoadRotated270:
+                                            if (!IsBlocked(Ship[newDirectionI - 1, newDirectionJ], RotationForDirection[(int)Direction.Up]) ||
+                                                !IsBlocked(Ship[newDirectionI, newDirectionJ - 1], RotationForDirection[(int)Direction.Left]) ||
+                                                !IsBlocked(Ship[newDirectionI + 1, newDirectionJ], RotationForDirection[(int)Direction.Down]))
                                                 places.Add((newDirectionI, newDirectionJ));
                                             break;
                                     }
@@ -300,6 +354,13 @@ public class SpaceShipManager : MonoBehaviour
         return places;
     }
     
+    private static readonly (int, int, int, int)[] RotationForDirection =
+    {
+        (  0, 180, 270, 180 ),          // Up
+        (  0,   0,  90,   0 ),          // Down
+        ( 90, 270,   0, 270 ),          // Left
+        ( 90,  90, 180,  90 )           // Right
+    };
     
     private void AddToShip(GameObject construction, params (double x, double y)[] coords) => 
         coords.ToList().ForEach(
@@ -358,13 +419,16 @@ public class SpaceShipManager : MonoBehaviour
         return (-1, -1);
     }
     
-    private static bool IsBlocked(GameObject gameObject, float linearRoadRotationDeg, float lRoadRotation1Deg, float lRoadRotation2Deg) => 
+    private static bool IsBlocked(GameObject gameObject,
+        (float linearRoadRotationDeg, float lRoadRotation1Deg, float lRoadRotation2Deg, float tRoadRotationDeg) rotations) => 
         gameObject == null ||
         (gameObject.TryGetComponent<LinearRoad>(out var linearRoad) &&
-         linearRoad.transform.rotation != Quaternion.Euler(0f, 0f, linearRoadRotationDeg)) ||
+         linearRoad.transform.rotation != Quaternion.Euler(0f, 0f, rotations.linearRoadRotationDeg)) ||
         (gameObject.TryGetComponent<LRoad>(out var lRoad) &&
-         lRoad.transform.rotation != Quaternion.Euler(0f, 0f, lRoadRotation1Deg) &&
-         lRoad.transform.rotation != Quaternion.Euler(0f, 0f, lRoadRotation2Deg));
+         lRoad.transform.rotation != Quaternion.Euler(0f, 0f, rotations.lRoadRotation1Deg) &&
+         lRoad.transform.rotation != Quaternion.Euler(0f, 0f, rotations.lRoadRotation2Deg)) ||
+        (gameObject.TryGetComponent<TRoad>(out var tRoad) &&
+         tRoad.transform.rotation == Quaternion.Euler(0f, 0f, rotations.tRoadRotationDeg));
 
     private enum Direction
     {

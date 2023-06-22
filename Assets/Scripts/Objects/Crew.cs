@@ -115,7 +115,7 @@ public class Crew : MonoBehaviour
         if (!collision.gameObject.GetComponent<BoxSelection>() || !_controls.InGame.BoxControll.IsPressed()) return;
         _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         _crewSelected = false;
-        _actorManager.selectedCrewNumber = 0;
+        _actorManager.selectedCrewNumber -= 0;
     }
 
     private IEnumerator MoveCrew(IReadOnlyList<(int x, int y)> movements)

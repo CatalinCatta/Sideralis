@@ -10,6 +10,7 @@ public class PrefabStorage : MonoBehaviour
     [SerializeField] public GameObject road;
     [SerializeField] public GameObject crossRoad;
     [SerializeField] public GameObject lRoad;
+    [SerializeField] public GameObject tRoad;
     [SerializeField] public GameObject crew;
     [SerializeField] public GameObject pointer;
     [SerializeField] public GameObject mergeButton;
@@ -17,6 +18,7 @@ public class PrefabStorage : MonoBehaviour
     [SerializeField] public Sprite roadSprite;
     [SerializeField] public Sprite crossRoadSprite;
     [SerializeField] public Sprite lRoadSprite;
+    [SerializeField] public Sprite tRoadSprite;
 
     [SerializeField] public List<Sprite> crewSprites;
     [SerializeField] public List<RuntimeAnimatorController> crewAnimations;
