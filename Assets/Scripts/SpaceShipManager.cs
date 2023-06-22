@@ -455,7 +455,7 @@ public class SpaceShipManager : MonoBehaviour
     
     public void OpenDor((int x, int y)firstRoom, (int x, int y)secondRoom)
     {
-        if (Ship[firstRoom.x, firstRoom.y] == Ship[secondRoom.x, secondRoom.y])
+        if (Ship[firstRoom.x, firstRoom.y] == Ship[secondRoom.x, secondRoom.y] || Ship[firstRoom.x, firstRoom.y] == null || Ship[secondRoom.x, secondRoom.y] == null)
             return;
         
         var startingRoom = Ship[firstRoom.x, firstRoom.y];

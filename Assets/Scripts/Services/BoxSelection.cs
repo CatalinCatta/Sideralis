@@ -27,9 +27,10 @@ public class BoxSelection : MonoBehaviour
     {
         _controls.Disable();
     }
+    
     private void Update()
     {
-        if (_controls.InGame.Interact.triggered && _actorManager.selectedCrewNumber == 0 && !_camera.isMouseOverUI && !_actorManager.moveRoomMode && !_actorManager.deleteRoomMode)
+        if (_controls.InGame.BoxControll.triggered && _actorManager.selectedCrewNumber == 0 && !_camera.isMouseOverUI && !_actorManager.moveRoomMode && !_actorManager.deleteRoomMode)
         {
             _lineRenderer.positionCount = 4;
             _initialMousePosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
@@ -43,7 +44,7 @@ public class BoxSelection : MonoBehaviour
             _boxCollider.offset = transform.position;
         }
 
-        if (Input.GetMouseButton(0) && _lineRenderer.positionCount != 0)
+        if (_controls.InGame.BoxControll.IsPressed() && _lineRenderer.positionCount != 0)
         {
             _currentMousePosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
             _lineRenderer.SetPosition(0, new Vector3(_initialMousePosition.x, _initialMousePosition.y, -8f));
@@ -58,7 +59,7 @@ public class BoxSelection : MonoBehaviour
                 Mathf.Abs(_initialMousePosition.y - _currentMousePosition.y));
         }
 
-        if (!Input.GetMouseButtonUp(0) && !_controls.InGame.Move.triggered) 
+        if (!_controls.InGame.BoxControll.WasReleasedThisFrame()) 
             return;
         
         _lineRenderer.positionCount = 0;
