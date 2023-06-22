@@ -17,6 +17,7 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
     private SpaceShipManager _spaceShip;
     private Image _parentImage;
     private ConstructSelector _constructSelector;
+    private Controls _controls;
 
     private void Awake()
     { 
@@ -26,19 +27,30 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         _spaceShip = FindObjectOfType<SpaceShipManager>();
         _parentImage = transform.parent.GetComponent<Image>();
         _constructSelector = FindObjectOfType<ConstructSelector>();
+        _controls = new Controls();
     }
-    
+
+    private void OnEnable() =>
+        _controls.Enable();
+
+    private void OnDisable() => 
+        _controls.Disable();
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
-        _constructSelector.SelectMe(_parentImage);
-        _actorManager.DestroyAllChildrenOf(_prefabStorage.constructPlacesParent.gameObject);
-  
+        if (TryGetComponent<CanvasGroup>(out _))
+            _constructSelector.SelectMe(_parentImage);
+
+        if (_controls.InGame.Move.IsPressed() && !_actorManager.moveRoomMode)
+            return;
+            
         objectType = Utilities.CheckObjectTypeIntegrity(objectType, transform.rotation);
         if (TryGetComponent<CanvasGroup>(out var canvasGroup))
         {
+            _actorManager.DestroyAllChildrenOf(_prefabStorage.constructPlacesParent.gameObject);
             canvasGroup.interactable = false;
             canvasGroup.alpha = 0;
         }
@@ -78,7 +90,7 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (eventData.button != PointerEventData.InputButton.Left)
+        if (eventData.button != PointerEventData.InputButton.Left || (_controls.InGame.Move.IsPressed() && !_actorManager.moveRoomMode))
             return;
                 
         var cameraPosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
@@ -90,6 +102,9 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
         
+        _actorManager.DestroyAllChildrenOf(_prefabStorage.constructPlacesParent.gameObject);
+        Destroy(_draggingClone);
+        
         if (_actorManager.moveRoomMode)
             _roomEditor.EndMoveRoom(transform.parent, objectType);
 
@@ -97,11 +112,8 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         {
             canvasGroup.interactable = true;
             canvasGroup.alpha = 1;
+            _constructSelector.SelectMe(_parentImage);
         }
-        
-        _actorManager.DestroyAllChildrenOf(_prefabStorage.constructPlacesParent.gameObject);
-        Destroy(_draggingClone);
-        _constructSelector.SelectMe(_parentImage);
     }
 
     private Sprite GetImageForClone() =>

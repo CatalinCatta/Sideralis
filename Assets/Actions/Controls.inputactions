@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Deselect",
+                    "type": "Button",
+                    "id": "58b36fa6-71eb-439d-b0c3-a81c268a87db",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -48,7 +57,7 @@
                 {
                     "name": "",
                     "id": "503c05e7-d34a-4c84-af6a-85378aad6b0e",
-                    "path": "<Touchscreen>/touch1/press",
+                    "path": "<Touchscreen>/primaryTouch/press",
                     "interactions": "",
                     "processors": "",
                     "groups": "Phone",
@@ -86,6 +95,28 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "BoxControll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2d3a5181-3555-458e-a1f5-49c5adb87e17",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Deselect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "57c4976a-8b1b-4d94-8983-a50b02525c03",
+                    "path": "<Touchscreen>/touch1/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Phone",
+                    "action": "Deselect",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

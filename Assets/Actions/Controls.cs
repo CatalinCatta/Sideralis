@@ -53,6 +53,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Deselect"",
+                    ""type"": ""Button"",
+                    ""id"": ""58b36fa6-71eb-439d-b0c3-a81c268a87db"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -70,7 +79,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""503c05e7-d34a-4c84-af6a-85378aad6b0e"",
-                    ""path"": ""<Touchscreen>/touch1/press"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Phone"",
@@ -108,6 +117,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""PC"",
                     ""action"": ""BoxControll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d3a5181-3555-458e-a1f5-49c5adb87e17"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Deselect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57c4976a-8b1b-4d94-8983-a50b02525c03"",
+                    ""path"": ""<Touchscreen>/touch1/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Phone"",
+                    ""action"": ""Deselect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -149,6 +180,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_InGame_Move = m_InGame.FindAction("Move", throwIfNotFound: true);
         m_InGame_Interact = m_InGame.FindAction("Interact", throwIfNotFound: true);
         m_InGame_BoxControll = m_InGame.FindAction("BoxControll", throwIfNotFound: true);
+        m_InGame_Deselect = m_InGame.FindAction("Deselect", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -213,6 +245,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_InGame_Move;
     private readonly InputAction m_InGame_Interact;
     private readonly InputAction m_InGame_BoxControll;
+    private readonly InputAction m_InGame_Deselect;
     public struct InGameActions
     {
         private @Controls m_Wrapper;
@@ -220,6 +253,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_InGame_Move;
         public InputAction @Interact => m_Wrapper.m_InGame_Interact;
         public InputAction @BoxControll => m_Wrapper.m_InGame_BoxControll;
+        public InputAction @Deselect => m_Wrapper.m_InGame_Deselect;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -238,6 +272,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @BoxControll.started += instance.OnBoxControll;
             @BoxControll.performed += instance.OnBoxControll;
             @BoxControll.canceled += instance.OnBoxControll;
+            @Deselect.started += instance.OnDeselect;
+            @Deselect.performed += instance.OnDeselect;
+            @Deselect.canceled += instance.OnDeselect;
         }
 
         private void UnregisterCallbacks(IInGameActions instance)
@@ -251,6 +288,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @BoxControll.started -= instance.OnBoxControll;
             @BoxControll.performed -= instance.OnBoxControll;
             @BoxControll.canceled -= instance.OnBoxControll;
+            @Deselect.started -= instance.OnDeselect;
+            @Deselect.performed -= instance.OnDeselect;
+            @Deselect.canceled -= instance.OnDeselect;
         }
 
         public void RemoveCallbacks(IInGameActions instance)
@@ -291,5 +331,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnBoxControll(InputAction.CallbackContext context);
+        void OnDeselect(InputAction.CallbackContext context);
     }
 }

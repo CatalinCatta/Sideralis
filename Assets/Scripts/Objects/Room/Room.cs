@@ -31,7 +31,6 @@ public abstract class Room : MonoBehaviour
         _actorManager = FindObjectOfType<ActorManager>();
         _shipResources = FindObjectOfType<SpaceShipResources>();
         lvl = 1;
-        actualCapacity = 0;
         Initialize();
         crews = new Crew[MaxCrewNumber];
         StartCoroutine(Farm());
@@ -139,25 +138,25 @@ public abstract class Room : MonoBehaviour
         {
             case Resource.Energy:
                 _shipResources.energyCapacity -= shipCaryCapacity;
-                _shipResources.energy = Math.Min(_shipResources.energy, _shipResources.energyCapacity);
+                _shipResources.energy = Math.Min(_shipResources.energy - shipCaryCapacity/2, _shipResources.energyCapacity);
                 break;
             
             case Resource.Oxygen:
                 _shipResources.oxygenCapacity -= shipCaryCapacity;
                 _shipResources.energyConsumption -= MaxCrewNumber * 0.02;
-                _shipResources.energy = Math.Min(_shipResources.oxygen, _shipResources.oxygenCapacity);
+                _shipResources.oxygen = Math.Min(_shipResources.oxygen - shipCaryCapacity/2, _shipResources.oxygenCapacity);
                 break;
             
             case Resource.Water:
                 _shipResources.waterCapacity -= shipCaryCapacity;
                 _shipResources.energyConsumption -= MaxCrewNumber * 0.02;
-                _shipResources.energy = Math.Min(_shipResources.water, _shipResources.waterCapacity);
+                _shipResources.water = Math.Min(_shipResources.water - shipCaryCapacity/2, _shipResources.waterCapacity);
                 break;
             
             case Resource.Food:
                 _shipResources.foodCapacity -= shipCaryCapacity;
                 _shipResources.energyConsumption -= MaxCrewNumber * 0.02;
-                _shipResources.energy = Math.Min(_shipResources.food, _shipResources.foodCapacity);
+                _shipResources.food = Math.Min(_shipResources.food - shipCaryCapacity/2, _shipResources.foodCapacity);
                 break;
             
             default:

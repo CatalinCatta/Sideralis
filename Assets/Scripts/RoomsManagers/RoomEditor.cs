@@ -24,25 +24,28 @@ public class RoomEditor : MonoBehaviour
 
     public void EndMoveRoom(Transform transformObject, ObjectType objectType)
     {
+        var newRoom = _shipManager.Ship[25, 25].GetComponent<Room>();
         if (successfullyMoved)
         {
             if (transformObject.gameObject.TryGetComponent<Room>(out var oldRoom))
             {
                 var (x, y) = Utilities.GetPositionInArrayOfCoordinate(lastConstructedObjectPosition);
-                var newRoom = _shipManager.Ship[(int)x, (int)y].GetComponent<Room>();
-
+                newRoom = _shipManager.Ship[(int)x, (int)y].GetComponent<Room>();
                 newRoom.actualCapacity = oldRoom.actualCapacity;
                 newRoom.lvl = oldRoom.lvl;
+                Debug.Log(newRoom.actualCapacity);
             }
-
+            
             _shipManager.RemoveObjectFrom(Utilities.GetPositionInArrayOfCoordinate(transformObject.position),
                 objectType);
+            Debug.Log(newRoom.actualCapacity);
         }
         
         Utilities.SetTransparency(transformObject, 1);
         transformObject.GetChild(2).gameObject.SetActive(false);
         HighlightMovableObjects();
         successfullyMoved = false;
+        Debug.Log(newRoom.actualCapacity);
     }
 
     public void HighlightMovableObjects()

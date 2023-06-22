@@ -1,13 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class PinchScrollDetection : MonoBehaviour 
 {
 	public float speed = 0.01f;
 	private float prevMagnitude = 0;
-	private int touchCount = 0;
-	private void Start () 
+	public int touchCount = 0;
+	
+	private void Start ()
 	{
 		// mouse scroll
 		var scrollAction = new InputAction(binding: "<Mouse>/scroll");
@@ -57,6 +56,7 @@ public class PinchScrollDetection : MonoBehaviour
 		{
 			if(touchCount < 2)
 				return;
+
 			var magnitude = (touch0pos.ReadValue<Vector2>() - touch1pos.ReadValue<Vector2>()).magnitude;
 			if(prevMagnitude == 0)
 				prevMagnitude = magnitude;

@@ -42,7 +42,7 @@ public class ConstructSelector : MonoBehaviour
 
     private void Update()
     {
-        if (_controls.InGame.Move.triggered)
+        if (_controls.InGame.Deselect.triggered)
             DeselectCurrentImage();
     }
 

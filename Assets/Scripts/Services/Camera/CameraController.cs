@@ -1,25 +1,25 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private const float _zoomLerpSpeed = 10;
-    private const float ZoomFactor = 3f;
     private Camera _cam;
     private Vector3 _dragStartPos;
     private Vector3 _velocity = Vector3.zero;
     private bool _isDragging;
     private bool _hasStartedDragging;
-    private float _targetZoom;
     public bool isMouseOverUI;
     private Controls _controls;
-    
+    private PinchScrollDetection _pinchScrollDetection;
+    private ActorManager _actorManager;
     
     private void Awake()
     {
         _cam = Camera.main;
-        _targetZoom = _cam!.orthographicSize;
         _controls = new Controls();
+        _pinchScrollDetection = transform.GetComponent<PinchScrollDetection>();
+        _actorManager = FindObjectOfType<ActorManager>();
     }
 
     private void OnEnable() =>
@@ -28,23 +28,31 @@ public class CameraController : MonoBehaviour
     private void OnDisable() =>
         _controls.Disable();
 
+
+    private void Update()
+    {
+        if (_pinchScrollDetection.touchCount > 1)
+        {
+            _isDragging = false;
+            StopAllCoroutines();
+        }
+    }
+
     private void LateUpdate()
     {
-        if (_controls.InGame.Move.triggered)
-            _hasStartedDragging = !_hasStartedDragging;
-        
-        if (_hasStartedDragging)
+        if (_controls.InGame.Move.IsPressed() && _pinchScrollDetection.touchCount < 2 && (!_actorManager.moveRoomMode || _pinchScrollDetection.touchCount == 0))
         {
             _isDragging = true;
             _dragStartPos = _cam.ScreenToWorldPoint(Input.mousePosition);
             StartCoroutine(StartDrag(_dragStartPos));
-            return;
         }
 
+        if (!_controls.InGame.Move.WasReleasedThisFrame()) return;
+        
         _isDragging = false;
         StopAllCoroutines();
     }
-
+    
 
     /// <summary>
     /// Sets the isMouseOverUI flag to indicate whether the mouse is over a UI element.
