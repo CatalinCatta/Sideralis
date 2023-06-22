@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -14,6 +15,8 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
     private ActorManager _actorManager;
     private RoomEditor _roomEditor;
     private SpaceShipManager _spaceShip;
+    private Image _parentImage;
+    private ConstructSelector _constructSelector;
 
     private void Awake()
     { 
@@ -21,6 +24,8 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         _actorManager = FindObjectOfType<ActorManager>();
         _roomEditor = FindObjectOfType<RoomEditor>();
         _spaceShip = FindObjectOfType<SpaceShipManager>();
+        _parentImage = transform.parent.GetComponent<Image>();
+        _constructSelector = FindObjectOfType<ConstructSelector>();
     }
     
     public void OnBeginDrag(PointerEventData eventData)
@@ -28,6 +33,9 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
+        _constructSelector.SelectMe(_parentImage);
+        _actorManager.DestroyAllChildrenOf(_prefabStorage.constructPlacesParent.gameObject);
+  
         objectType = Utilities.CheckObjectTypeIntegrity(objectType, transform.rotation);
         if (TryGetComponent<CanvasGroup>(out var canvasGroup))
         {
@@ -93,6 +101,7 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         
         _actorManager.DestroyAllChildrenOf(_prefabStorage.constructPlacesParent.gameObject);
         Destroy(_draggingClone);
+        _constructSelector.SelectMe(_parentImage);
     }
 
     private Sprite GetImageForClone() =>

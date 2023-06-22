@@ -39,15 +39,11 @@ public class Crew : MonoBehaviour
         _shipResources.waterConsumption += 0.02;
     }
 
-    private void OnEnable()
-    {
+    private void OnEnable() =>
         _controls.Enable();
-    }
 
-    private void OnDisable()
-    {
+    private void OnDisable() =>
         _controls.Disable();
-    }
 
     private void Update()
     {

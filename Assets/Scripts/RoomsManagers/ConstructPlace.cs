@@ -1,15 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ConstructPlace : MonoBehaviour, IDropHandler
 {
     private SpaceShipManager _spaceShipManager;
     private RoomEditor _roomEditor;
+    private ConstructSelector _constructSelector;
 
     private void Awake()
     {
         _spaceShipManager = FindObjectOfType<SpaceShipManager>();
         _roomEditor = FindObjectOfType<RoomEditor>();
+        _constructSelector = FindObjectOfType<ConstructSelector>();
     }
     
     /// <summary>
@@ -29,4 +32,19 @@ public class ConstructPlace : MonoBehaviour, IDropHandler
         _roomEditor.successfullyMoved = true;
     }
 
+    public void OnMouseDown()
+    {
+        if (_constructSelector.currentSelectedImage == null)
+            return;
+        
+        var constructMaterial = _constructSelector.currentSelectedImage.GetComponentInChildren<ConstructMaterial>();
+        
+        var position = transform.position;
+
+        _spaceShipManager.CreateObject(constructMaterial.objectType, position, constructMaterial.resourceType);
+        _roomEditor.lastConstructedObjectPosition = position;
+        _roomEditor.successfullyMoved = true;
+        
+        _constructSelector.SelectMe(_constructSelector.currentSelectedImage);
+    }
 }

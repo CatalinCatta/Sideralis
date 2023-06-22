@@ -4,12 +4,18 @@ using UnityEngine;
 public class ChangePage : MonoBehaviour
 {
     private GameObject[] _pages;
+    private ConstructSelector _constructSelector;
 
-    private void Start() =>
-        _pages = transform.Cast<Transform>().Select(t=>t.gameObject).ToArray();
-
+    private void Start()
+    {
+        _constructSelector = transform.GetComponent<ConstructSelector>();
+        _pages = transform.Cast<Transform>().Select(t => t.gameObject).ToArray();
+    }
+    
     public void PrevPage()
     {
+        _constructSelector.DeselectCurrentImage();
+        
         for (var i = 0; i < _pages.Length; i++)
         {
             if (!_pages[i].activeSelf) continue;
@@ -28,6 +34,8 @@ public class ChangePage : MonoBehaviour
     
     public void NextPage()
     {
+        _constructSelector.DeselectCurrentImage();
+        
         for (var i = 0; i < _pages.Length; i++)
         {
             if (!_pages[i].activeSelf) continue;

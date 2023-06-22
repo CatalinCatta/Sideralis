@@ -18,15 +18,11 @@ public class BoxSelection : MonoBehaviour
         _controls = new Controls();
     }
 
-    private void OnEnable()
-    {
+    private void OnEnable() =>
         _controls.Enable();
-    }
 
-    private void OnDisable()
-    {
+    private void OnDisable() =>
         _controls.Disable();
-    }
     
     private void Update()
     {
