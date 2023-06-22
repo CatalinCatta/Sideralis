@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -52,19 +54,19 @@ public class CameraController : MonoBehaviour
         _isDragging = false;
         StopAllCoroutines();
     }
-    
 
-    /// <summary>
-    /// Sets the isMouseOverUI flag to indicate whether the mouse is over a UI element.
-    /// </summary>
-    public void OnPointerEnterUI() => 
-        isMouseOverUI = true;
-
-    /// <summary>
-    /// Clears the isMouseOverUI flag to indicate that the mouse is not over a UI element.
-    /// </summary>
-    public void OnPointerExitUI() => 
-        isMouseOverUI = false;
+    public bool IsPointerOverUIObject()
+    {
+        var eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        foreach (var rez in results)
+        {
+            Debug.Log(rez.gameObject);
+        }
+        return results.Count > 2;
+    }
 
     private IEnumerator StartDrag(Vector3 startPos)
     {

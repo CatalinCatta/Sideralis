@@ -45,7 +45,6 @@ public class RoomEditor : MonoBehaviour
         transformObject.GetChild(2).gameObject.SetActive(false);
         HighlightMovableObjects();
         successfullyMoved = false;
-        Debug.Log(newRoom.actualCapacity);
     }
 
     public void HighlightMovableObjects()

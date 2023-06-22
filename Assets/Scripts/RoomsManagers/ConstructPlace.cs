@@ -35,7 +35,7 @@ public class ConstructPlace : MonoBehaviour, IDropHandler
 
     public void OnMouseDown()
     {
-        if (_constructSelector.currentSelectedImage == null || _cameraController.isMouseOverUI)
+        if (_constructSelector.currentSelectedImage == null || _cameraController.IsPointerOverUIObject())
             return;
         
         var constructMaterial = _constructSelector.currentSelectedImage.GetComponentInChildren<ConstructMaterial>();

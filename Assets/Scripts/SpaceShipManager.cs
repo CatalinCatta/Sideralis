@@ -32,6 +32,13 @@ public class SpaceShipManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         
         CreateObject(ObjectType.Crew, new Vector2(-15, 15), Resource.None);
+        CreateObject(ObjectType.Crew, new Vector2(-5, 15), Resource.None);
+        CreateObject(ObjectType.Crew, new Vector2(-5, 5), Resource.None);
+        CreateObject(ObjectType.Crew, new Vector2(-15, 5), Resource.None);
+        CreateObject(ObjectType.Crew, new Vector2(15, 15), Resource.None);
+        CreateObject(ObjectType.Crew, new Vector2(5, 15), Resource.None);
+        CreateObject(ObjectType.Crew, new Vector2(15, 5), Resource.None);
+        CreateObject(ObjectType.Crew, new Vector2(15, -5), Resource.None);
         CreateObject(ObjectType.Crew, new Vector2(5, -5), Resource.None);
     }
     

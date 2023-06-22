@@ -26,7 +26,7 @@ public class BoxSelection : MonoBehaviour
     
     private void Update()
     {
-        if (_controls.InGame.BoxControll.triggered && _actorManager.selectedCrewNumber == 0 && !_camera.isMouseOverUI && !_actorManager.moveRoomMode && !_actorManager.deleteRoomMode)
+        if (_controls.InGame.BoxControll.triggered && _actorManager.selectedCrewNumber == 0 && !_camera.IsPointerOverUIObject() && !_actorManager.moveRoomMode && !_actorManager.deleteRoomMode)
         {
             _lineRenderer.positionCount = 4;
             _initialMousePosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);

@@ -39,6 +39,12 @@ public class Crew : MonoBehaviour
         _shipResources.waterConsumption += 0.02;
     }
 
+    private void Start()
+    {
+        _animator.enabled = true;
+        _animator.runtimeAnimatorController = _prefabStorage.crewWorkAnimations[(int) WorkAnimation.Work];
+    }
+
     private void OnEnable() =>
         _controls.Enable();
 
@@ -171,13 +177,18 @@ public class Crew : MonoBehaviour
 
         Destroy(_pointer);
         _spriteRenderer.sprite = _prefabStorage.crewSprites[(int) SpritesTypes.AfkStatus];
-        _animator.enabled = false;
+        _animator.runtimeAnimatorController = _prefabStorage.crewWorkAnimations[(int) WorkAnimation.Work];
         _isMoving = false;
     }
     
     private enum SpritesTypes
     {
         AfkStatus
+    }
+    
+    private enum WorkAnimation
+    {
+        Work
     }
     
     private enum AnimationsTypes
