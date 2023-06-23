@@ -178,8 +178,33 @@ public class SpaceShipManager : MonoBehaviour
     public void CreateConstructPlacesFor(ObjectSize objectSize, ObjectType objectType, [CanBeNull] GameObject movingObject = null)
     {
         foreach (var (x, y) in GetListOfConstructPlacesPositionsFor(objectSize, objectType, movingObject))
-            _actorManager.CreateObject(Utilities.GetInGameCoordinateForPosition(x, y, 0),
-                ObjectType.ConstructRotatedPlace);
+        {
+            switch (objectSize)
+            {
+                case ObjectSize.Small:
+                    _actorManager.CreateObject(Utilities.GetInGameCoordinateForPosition(x, y, 0),
+                        ObjectType.SmallConstructPlace);
+                    break;
+                
+                case ObjectSize.Medium:
+                    _actorManager.CreateObject(Utilities.GetInGameCoordinateForPosition(x, y, 0),
+                        ObjectType.MediumConstructPlace);
+                    break;
+                
+                case ObjectSize.MediumRotated:
+                    _actorManager.CreateObject(Utilities.GetInGameCoordinateForPosition(x, y, 0),
+                        ObjectType.MediumConstructPlaceRotated);
+                    break;
+                
+                case ObjectSize.Large:
+                    _actorManager.CreateObject(Utilities.GetInGameCoordinateForPosition(x, y, 0),
+                        ObjectType.LargeConstructPlace);
+                    break;
+                
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(objectSize), objectSize, null);
+            }
+        }
     }
     
     private List<(double, double)> GetListOfConstructPlacesPositionsFor(ObjectSize objectSize, ObjectType objectType, [CanBeNull] Object movingObject)

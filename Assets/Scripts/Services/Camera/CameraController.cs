@@ -61,10 +61,6 @@ public class CameraController : MonoBehaviour
         eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-        foreach (var rez in results)
-        {
-            Debug.Log(rez.gameObject);
-        }
         return results.Count > 2;
     }
 

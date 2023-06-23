@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 6
+  objectType: 8
   resourceType: 0
 --- !u!1 &5301913627807897595
 GameObject:
@@ -1272,4 +1272,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f61d13143b4da0834011591890c409, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objectType: 6
+  _objectType: 8

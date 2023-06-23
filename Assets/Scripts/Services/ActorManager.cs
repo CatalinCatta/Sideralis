@@ -56,10 +56,16 @@ public class ActorManager : MonoBehaviour
         
         return objectType switch
         {
-            ObjectType.ConstructPlace => Instantiate(_prefabStorage.constructPlace, position, rotation,
+            ObjectType.SmallConstructPlace => Instantiate(_prefabStorage.smallConstructPlace, position, rotation,
                 _prefabStorage.constructPlacesParent),
 
-            ObjectType.ConstructRotatedPlace => Instantiate(_prefabStorage.constructPlace, position, Quaternion.Euler(0f, 0f, 90f),
+            ObjectType.MediumConstructPlace => Instantiate(_prefabStorage.mediumConstructPlace, position, Quaternion.Euler(0f, 0f, 0f),
+                _prefabStorage.constructPlacesParent),
+
+            ObjectType.MediumConstructPlaceRotated => Instantiate(_prefabStorage.mediumConstructPlace, position, Quaternion.Euler(0f, 0f, 90f),
+                _prefabStorage.constructPlacesParent),
+
+            ObjectType.LargeConstructPlace => Instantiate(_prefabStorage.largeConstructPlace, position, Quaternion.Euler(0f, 0f, 0f),
                 _prefabStorage.constructPlacesParent),
 
             ObjectType.SmallRoom => Instantiate(_prefabStorage.smallRoom, position, rotation, parentLocation),

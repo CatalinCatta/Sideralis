@@ -1,7 +1,9 @@
 ﻿public enum ObjectType
 {
-    ConstructPlace,
-    ConstructRotatedPlace,
+    SmallConstructPlace,
+    MediumConstructPlace,
+    MediumConstructPlaceRotated,
+    LargeConstructPlace,
     SmallRoom,
     MediumRoom,
     RotatedMediumRoom,

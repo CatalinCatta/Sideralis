@@ -145,7 +145,7 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 67182
+  m_InstanceId: 58792
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -427,6 +427,7 @@ MonoBehaviour:
   crews: []
   lvl: 0
   maxCapacity: 0
+  shipCaryCapacity: 0
   farmingRatePerCrew: 0
   actualCapacity: 0
   roomResourcesType: 0
@@ -1626,7 +1627,7 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 67052
+  m_InstanceId: 58660
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -2493,7 +2494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f61d13143b4da0834011591890c409, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objectType: 3
+  _objectType: 5
 --- !u!1 &4106788112334114280
 GameObject:
   m_ObjectHideFlags: 0
@@ -2928,7 +2929,7 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 66852
+  m_InstanceId: 58460
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -3078,7 +3079,7 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 67188
+  m_InstanceId: 58798
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -4132,7 +4133,7 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 67150
+  m_InstanceId: 58760
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}
@@ -4665,7 +4666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 3
+  objectType: 5
   resourceType: 0
 --- !u!1 &8140151702242751975
 GameObject:
@@ -5115,7 +5116,7 @@ MonoBehaviour:
   - {x: 0.49999708, y: -0.49999988, z: 0}
   m_ShapePathHash: 1887524736
   m_Mesh: {fileID: 0}
-  m_InstanceId: 67032
+  m_InstanceId: 58640
   m_LocalBounds:
     m_Center: {x: -0.0000028312206, y: 0.00000017881393, z: 0}
     m_Extent: {x: 0.49999997, y: 0.50000006, z: 0}

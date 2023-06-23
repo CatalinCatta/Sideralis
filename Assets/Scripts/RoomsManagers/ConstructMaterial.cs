@@ -152,6 +152,18 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
             ObjectType.LRoadRotated270 =>
                 _prefabStorage.lRoadSprite,
 
+            ObjectType.TRoad =>
+                _prefabStorage.tRoadSprite,
+
+            ObjectType.TRoadRotated90 =>
+                _prefabStorage.tRoadSprite,
+
+            ObjectType.TRoadRotated180 =>
+                _prefabStorage.tRoadSprite,
+
+            ObjectType.TRoadRotated270 =>
+                _prefabStorage.tRoadSprite,
+
             _ => throw new Exception("Invalid object type")
         };
 

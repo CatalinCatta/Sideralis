@@ -47,8 +47,10 @@ public static class Utilities
 
     public static ObjectSize GetSizeOfObject(ObjectType objectType) => objectType switch
         {
-            ObjectType.ConstructPlace => ObjectSize.Small,
-            ObjectType.ConstructRotatedPlace => ObjectSize.Small,
+            ObjectType.SmallConstructPlace => ObjectSize.Small,
+            ObjectType.MediumConstructPlace => ObjectSize.Medium,
+            ObjectType.MediumConstructPlaceRotated => ObjectSize.MediumRotated,
+            ObjectType.LargeConstructPlace => ObjectSize.Large,
             ObjectType.SmallRoom => ObjectSize.Small,
             ObjectType.MediumRoom => ObjectSize.Medium,
             ObjectType.RotatedMediumRoom => ObjectSize.MediumRotated,
@@ -60,6 +62,10 @@ public static class Utilities
             ObjectType.LRoadRotated90 => ObjectSize.Small,
             ObjectType.LRoadRotated180 => ObjectSize.Small,
             ObjectType.LRoadRotated270 => ObjectSize.Small,
+            ObjectType.TRoad => ObjectSize.Small,
+            ObjectType.TRoadRotated90 => ObjectSize.Small,
+            ObjectType.TRoadRotated180 => ObjectSize.Small,
+            ObjectType.TRoadRotated270 => ObjectSize.Small,
             ObjectType.Crew => ObjectSize.Small,
             ObjectType.Pointer => ObjectSize.Small,
             ObjectType.MergeButton => ObjectSize.Small,

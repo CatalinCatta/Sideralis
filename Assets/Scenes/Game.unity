@@ -7560,7 +7560,9 @@ MonoBehaviour:
   bigRoom: {fileID: 5404955537889227050, guid: 8884ebd76e973f34ca22b282a24f7285, type: 3}
   mediumRoom: {fileID: 726400634961921773, guid: 418fd3382e14c8348a46b9282d8c6cdf, type: 3}
   smallRoom: {fileID: 1144134431469425386, guid: 0483aa087ff55e949bd30cc9a8145569, type: 3}
-  constructPlace: {fileID: 1703000592169971722, guid: 7103f60cdaf40d045bacdbad95a1ff81, type: 3}
+  smallConstructPlace: {fileID: 1703000592169971722, guid: 7103f60cdaf40d045bacdbad95a1ff81, type: 3}
+  mediumConstructPlace: {fileID: 1703000592169971722, guid: 76020c0ac7459fe47ac264883e631170, type: 3}
+  largeConstructPlace: {fileID: 1703000592169971722, guid: 04d0289d01ac38542ba79018907061c1, type: 3}
   road: {fileID: 5301913628617156287, guid: 58a520c0f5e5f2145ba32422ef501eee, type: 3}
   crossRoad: {fileID: 4985443457942632628, guid: d78a21d6634420f43bcb42d680ed39be, type: 3}
   lRoad: {fileID: 5887852453952457717, guid: dfd36ec21469a8f49ba6fc25380e8dab, type: 3}

@@ -6,7 +6,9 @@ public class PrefabStorage : MonoBehaviour
     [SerializeField] public GameObject bigRoom;
     [SerializeField] public GameObject mediumRoom;
     [SerializeField] public GameObject smallRoom;
-    [SerializeField] public GameObject constructPlace;
+    [SerializeField] public GameObject smallConstructPlace;
+    [SerializeField] public GameObject mediumConstructPlace;
+    [SerializeField] public GameObject largeConstructPlace;
     [SerializeField] public GameObject road;
     [SerializeField] public GameObject crossRoad;
     [SerializeField] public GameObject lRoad;
