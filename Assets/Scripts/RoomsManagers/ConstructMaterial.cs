@@ -10,7 +10,7 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
     [SerializeField] public Resource resourceType;
     
     private GameObject _draggingClone;
-    private Transform _draggingCloneTransform;
+    public Transform draggingCloneTransform;
     private PrefabStorage _prefabStorage;
     private ActorManager _actorManager;
     private RoomEditor _roomEditor;
@@ -46,7 +46,9 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
         if (_controls.InGame.Move.IsPressed() && !_actorManager.moveRoomMode)
             return;
-            
+
+        _actorManager.currentConstructingMaterial = this;
+        
         objectType = Utilities.CheckObjectTypeIntegrity(objectType, transform.rotation);
         if (TryGetComponent<CanvasGroup>(out var canvasGroup))
         {
@@ -59,10 +61,10 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
         _draggingClone = new GameObject("Dragging Clone");
 
-        _draggingCloneTransform = _draggingClone.transform;
-        _draggingCloneTransform.SetParent(_prefabStorage.constructMaterialCloneParent);
-        _draggingCloneTransform.SetAsLastSibling();
-        _draggingCloneTransform.rotation = transform.rotation;
+        draggingCloneTransform = _draggingClone.transform;
+        draggingCloneTransform.SetParent(_prefabStorage.constructMaterialCloneParent);
+        draggingCloneTransform.SetAsLastSibling();
+        draggingCloneTransform.rotation = transform.rotation;
         
         var rb = _draggingClone.AddComponent<Rigidbody2D>();
         rb.isKinematic = true;
@@ -72,8 +74,8 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
         draggingImage.color = new Color(1f, 1f, 1f, 0.5f);
 
         var cameraPosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
-        _draggingCloneTransform.position = new Vector3(cameraPosition.x, cameraPosition.y, -5f);
-        _draggingCloneTransform.localScale = transform.localScale * 10;
+        draggingCloneTransform.position = new Vector3(cameraPosition.x, cameraPosition.y, -5f);
+        draggingCloneTransform.localScale = transform.localScale * 10;
 
         GameObject movingObject = null;
         
@@ -94,7 +96,7 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
             return;
                 
         var cameraPosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
-        _draggingCloneTransform.position = new Vector3(cameraPosition.x, cameraPosition.y, -5f);
+        draggingCloneTransform.position = new Vector3(cameraPosition.x, cameraPosition.y, -5f);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -114,9 +116,11 @@ public class ConstructMaterial : MonoBehaviour, IBeginDragHandler, IDragHandler,
             canvasGroup.alpha = 1;
             _constructSelector.SelectMe(_parentImage);
         }
+
+        _actorManager.currentConstructingMaterial = null;
     }
 
-    private Sprite GetImageForClone() =>
+    public Sprite GetImageForClone() =>
         objectType switch
         {
             ObjectType.SmallRoom =>

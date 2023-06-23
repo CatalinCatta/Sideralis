@@ -202,8 +202,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 2
+  objectType: 4
   resourceType: 0
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &22626029
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2441,8 +2442,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 2
+  objectType: 4
   resourceType: 1
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &462498440
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2705,8 +2707,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 6
+  objectType: 8
   resourceType: 4
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &550000593
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2971,8 +2974,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 2
+  objectType: 4
   resourceType: 3
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &583075263
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3237,8 +3241,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 8
+  objectType: 10
   resourceType: 4
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &616049902
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -5428,8 +5433,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 12
+  objectType: 14
   resourceType: 4
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &1075301570
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -5597,8 +5603,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 2
+  objectType: 4
   resourceType: 2
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &1107638342
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -7251,8 +7258,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 10
+  objectType: 12
   resourceType: 4
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &1446451693
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -7570,6 +7578,9 @@ MonoBehaviour:
   crew: {fileID: 4171901122111014050, guid: 6f6c760b32076d64f80229bae1780ca1, type: 3}
   pointer: {fileID: 422574074387163017, guid: 15bb8d02c088c0540a3eb84d39c540a2, type: 3}
   mergeButton: {fileID: 1703000592169971722, guid: 30eae52af78d811439fe2464da55204d, type: 3}
+  smallSnappingPoint: {fileID: 21300000, guid: a9ce16a5b8e7cbc4ea997547a28ee9f3, type: 3}
+  mediumSnappingPoint: {fileID: 21300000, guid: bbc70050fcf1bf045aed48d185d3c293, type: 3}
+  largeSnappingPoint: {fileID: 21300000, guid: df506db1c04e67b4ab3b1d73b7384690, type: 3}
   roadSprite: {fileID: 21300000, guid: ee1fc786fc16ebf4a96fa422e953ea9d, type: 3}
   crossRoadSprite: {fileID: 21300000, guid: eb06240befed02d4daf7964f951978ef, type: 3}
   lRoadSprite: {fileID: 21300000, guid: 05031d275df266b4d96371bda0d8d3cd, type: 3}
@@ -7622,6 +7633,7 @@ MonoBehaviour:
   selectedCrewNumber: 0
   currentRoom: {fileID: 0}
   currentObject: {fileID: 0}
+  currentConstructingMaterial: {fileID: 0}
   moveRoomMode: 0
   deleteRoomMode: 0
 --- !u!114 &1464754256
@@ -8777,8 +8789,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 7
+  objectType: 9
   resourceType: 4
+  draggingCloneTransform: {fileID: 0}
 --- !u!114 &1680678099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9393,8 +9406,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 9
+  objectType: 11
   resourceType: 4
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &1778628778
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -10171,8 +10185,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 11
+  objectType: 13
   resourceType: 4
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &1906337682
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -10437,8 +10452,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 15
+  objectType: 17
   resourceType: 4
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &1954950398
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -10568,8 +10584,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 13
+  objectType: 15
   resourceType: 4
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &1994458286
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -10699,8 +10716,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 16
+  objectType: 18
   resourceType: 4
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &2017325220
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -10990,8 +11008,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b8ab122312d428dd866a5cc97557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 14
+  objectType: 16
   resourceType: 4
+  draggingCloneTransform: {fileID: 0}
 --- !u!225 &2102262111
 CanvasGroup:
   m_ObjectHideFlags: 0

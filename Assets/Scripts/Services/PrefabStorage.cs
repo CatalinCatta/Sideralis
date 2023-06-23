@@ -17,6 +17,10 @@ public class PrefabStorage : MonoBehaviour
     [SerializeField] public GameObject pointer;
     [SerializeField] public GameObject mergeButton;
     
+    [SerializeField] public Sprite smallSnappingPoint;
+    [SerializeField] public Sprite mediumSnappingPoint;
+    [SerializeField] public Sprite largeSnappingPoint;
+    
     [SerializeField] public Sprite roadSprite;
     [SerializeField] public Sprite crossRoadSprite;
     [SerializeField] public Sprite lRoadSprite;

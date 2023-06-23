@@ -22,6 +22,11 @@ public class ActorManager : MonoBehaviour
     /// The current object(Road/Room) where the mouse is positioned.
     /// </summary>
     public GameObject? currentObject;
+
+    /// <summary>
+    /// The current Constructing Material(Road/Room) that was selected for build/move.
+    /// </summary>
+    public ConstructMaterial? currentConstructingMaterial;
     
     public bool moveRoomMode;
     

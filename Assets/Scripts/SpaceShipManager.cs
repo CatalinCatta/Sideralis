@@ -33,8 +33,8 @@ public class SpaceShipManager : MonoBehaviour
         
         CreateObject(ObjectType.Crew, new Vector2(-15, 15), Resource.None);
         CreateObject(ObjectType.Crew, new Vector2(-5, 15), Resource.None);
-        CreateObject(ObjectType.Crew, new Vector2(-5, 5), Resource.None);
         CreateObject(ObjectType.Crew, new Vector2(-15, 5), Resource.None);
+        CreateObject(ObjectType.Crew, new Vector2(-5, 5), Resource.None);
         CreateObject(ObjectType.Crew, new Vector2(15, 15), Resource.None);
         CreateObject(ObjectType.Crew, new Vector2(5, 15), Resource.None);
         CreateObject(ObjectType.Crew, new Vector2(15, 5), Resource.None);
@@ -55,21 +55,18 @@ public class SpaceShipManager : MonoBehaviour
         switch (type)
         {
             case ObjectType.SmallRoom:
-                RemoveObjectFrom((x, y), ObjectType.SmallRoom);
                 currentObject = _actorManager.CreateObject(position, type);
                 currentObject.GetComponent<SmallRoom>().roomResourcesType = resourceType;
                 AddToShip(currentObject, (x, y));
                 break;
 
             case ObjectType.MediumRoom:
-                RemoveObjectFrom((x, y), ObjectType.MediumRoom);
                 currentObject = _actorManager.CreateObject(position, type);
                 currentObject.GetComponent<MediumRoom>().roomResourcesType = resourceType;
                 AddToShip(currentObject, (x, y - 0.5), (x, y + 0.5));
                 break;
 
             case ObjectType.RotatedMediumRoom:
-                RemoveObjectFrom((x, y), ObjectType.RotatedMediumRoom);
                 var rotatedMediumRoom = _actorManager.CreateObject(position, type);
                 rotatedMediumRoom.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
                 rotatedMediumRoom.transform.GetChild(4).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -81,7 +78,6 @@ public class SpaceShipManager : MonoBehaviour
                 break;
 
             case ObjectType.BigRoom:
-                RemoveObjectFrom((x, y), ObjectType.BigRoom);
                 currentObject = _actorManager.CreateObject(position, type);
                 currentObject.GetComponent<BigRoom>().roomResourcesType = resourceType;
                 AddToShip(currentObject, (x - 0.5, y - 0.5),
@@ -89,12 +85,10 @@ public class SpaceShipManager : MonoBehaviour
                 break;
 
             case ObjectType.Road:
-                RemoveObjectFrom((x, y), ObjectType.Road);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
                 break;
 
             case ObjectType.RoadRotated:
-                RemoveObjectFrom((x, y), ObjectType.RoadRotated);
                 var rotatedRoad = _actorManager.CreateObject(position, type);
                 rotatedRoad.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
                 rotatedRoad.transform.GetChild(3).transform.GetChild(0).transform.localScale =
@@ -103,57 +97,48 @@ public class SpaceShipManager : MonoBehaviour
                 break;
 
             case ObjectType.CrossRoad:
-                RemoveObjectFrom((x, y), ObjectType.CrossRoad);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
                 break;
 
             case ObjectType.LRoad:
-                RemoveObjectFrom((x, y), ObjectType.LRoad);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
                 break;
 
             case ObjectType.LRoadRotated90:
-                RemoveObjectFrom((x, y), ObjectType.LRoadRotated90);
                 var rotatedLRoad90 = _actorManager.CreateObject(position, type);
                 rotatedLRoad90.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
                 AddToShip(rotatedLRoad90, (x, y));
                 break;
 
             case ObjectType.LRoadRotated180:
-                RemoveObjectFrom((x, y), ObjectType.LRoadRotated180);
                 var rotatedLRoad180 = _actorManager.CreateObject(position, type);
                 rotatedLRoad180.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
                 AddToShip(rotatedLRoad180, (x, y));
                 break;
 
             case ObjectType.LRoadRotated270:
-                RemoveObjectFrom((x, y), ObjectType.LRoadRotated270);
                 var rotatedLRoad270 = _actorManager.CreateObject(position, type);
                 rotatedLRoad270.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
                 AddToShip(rotatedLRoad270, (x, y));
                 break;
 
             case ObjectType.TRoad:
-                RemoveObjectFrom((x, y), ObjectType.TRoad);
                 AddToShip(_actorManager.CreateObject(position, type), (x, y));
                 break;
 
             case ObjectType.TRoadRotated90:
-                RemoveObjectFrom((x, y), ObjectType.TRoadRotated90);
                 var rotatedTRoad90 = _actorManager.CreateObject(position, type);
                 rotatedTRoad90.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
                 AddToShip(rotatedTRoad90, (x, y));
                 break;
 
             case ObjectType.TRoadRotated180:
-                RemoveObjectFrom((x, y), ObjectType.TRoadRotated180);
                 var rotatedTRoad180 = _actorManager.CreateObject(position, type);
                 rotatedTRoad180.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
                 AddToShip(rotatedTRoad180, (x, y));
                 break;
 
             case ObjectType.TRoadRotated270:
-                RemoveObjectFrom((x, y), ObjectType.TRoadRotated270);
                 var rotatedTRoad270 = _actorManager.CreateObject(position, type);
                 rotatedTRoad270.transform.GetChild(3).transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
                 AddToShip(rotatedTRoad270, (x, y));
@@ -224,7 +209,7 @@ public class SpaceShipManager : MonoBehaviour
                     var newDirectionJ = j + direction[1];
 
                     if (Utilities.CheckIfValid(newDirectionI, newDirectionJ, ShipDimension, ShipDimension) &&
-                        Ship[newDirectionI, newDirectionJ] == null &&
+                        IsNull(newDirectionI, newDirectionJ) &&
                         (Ship[i, j].TryGetComponent<Room>(out _) ||
                          mappingHelper.IsValidRoad(i, j, direction[0], direction[1])) &&
                         (movingObject == null ||
@@ -311,62 +296,62 @@ public class SpaceShipManager : MonoBehaviour
                         
                             case ObjectSize.Medium:
                                 if (Utilities.CheckIfValid(newDirectionI, newDirectionJ + 1, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI, newDirectionJ + 1] == null &&
+                                    IsNull(newDirectionI, newDirectionJ + 1) &&
                                     !places.Contains((newDirectionI, newDirectionJ + 0.5)))
                                     places.Add((newDirectionI, newDirectionJ + 0.5));
                                 
                                 if (Utilities.CheckIfValid(newDirectionI, newDirectionJ - 1, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI, newDirectionJ - 1] == null &&
+                                    IsNull(newDirectionI, newDirectionJ - 1) &&
                                     !places.Contains((newDirectionI, newDirectionJ - 0.5)))
                                     places.Add((newDirectionI, newDirectionJ - 0.5));
                                 break;
                         
                             case ObjectSize.MediumRotated:
                                 if (Utilities.CheckIfValid(newDirectionI + 1, newDirectionJ, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI + 1, newDirectionJ] == null &&
+                                    IsNull(newDirectionI + 1, newDirectionJ) &&
                                     !places.Contains((newDirectionI + 0.5, newDirectionJ)))
                                     places.Add((newDirectionI + 0.5, newDirectionJ));
                                 
                                 if (Utilities.CheckIfValid(newDirectionI - 1, newDirectionJ, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI - 1, newDirectionJ] == null &&
+                                    IsNull(newDirectionI - 1, newDirectionJ) &&
                                     !places.Contains((newDirectionI - 0.5, newDirectionJ)))
                                     places.Add((newDirectionI - 0.5, newDirectionJ));
                                 break;
                     
                             case ObjectSize.Large:
                                 if (Utilities.CheckIfValid(newDirectionI + 1, newDirectionJ, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI + 1, newDirectionJ] == null &&
+                                    IsNull(newDirectionI + 1, newDirectionJ) &&
                                     Utilities.CheckIfValid(newDirectionI, newDirectionJ + 1, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI, newDirectionJ + 1] == null &&
+                                    IsNull(newDirectionI, newDirectionJ + 1) &&
                                     Utilities.CheckIfValid(newDirectionI + 1, newDirectionJ + 1, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI + 1, newDirectionJ + 1] == null &&
+                                    IsNull(newDirectionI + 1, newDirectionJ + 1) &&
                                     !places.Contains((newDirectionI + 0.5, newDirectionJ + 0.5)))
                                     places.Add((newDirectionI + 0.5, newDirectionJ + 0.5));
                                
                                 if (Utilities.CheckIfValid(newDirectionI - 1, newDirectionJ, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI - 1, newDirectionJ] == null &&
+                                    IsNull(newDirectionI - 1, newDirectionJ) &&
                                     Utilities.CheckIfValid(newDirectionI, newDirectionJ - 1, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI, newDirectionJ - 1] == null &&
+                                    IsNull(newDirectionI, newDirectionJ - 1) &&
                                     Utilities.CheckIfValid(newDirectionI - 1, newDirectionJ - 1, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI - 1, newDirectionJ - 1] == null &&
+                                    IsNull(newDirectionI - 1, newDirectionJ - 1) &&
                                     !places.Contains((newDirectionI - 0.5, newDirectionJ - 0.5)))
                                     places.Add((newDirectionI - 0.5, newDirectionJ - 0.5));
                                
                                 if (Utilities.CheckIfValid(newDirectionI + 1, newDirectionJ, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI + 1, newDirectionJ] == null &&
+                                    IsNull(newDirectionI + 1, newDirectionJ) &&
                                     Utilities.CheckIfValid(newDirectionI, newDirectionJ - 1, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI, newDirectionJ - 1] == null &&
+                                    IsNull(newDirectionI, newDirectionJ - 1) &&
                                     Utilities.CheckIfValid(newDirectionI + 1, newDirectionJ - 1, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI + 1, newDirectionJ - 1] == null &&
+                                    IsNull(newDirectionI + 1, newDirectionJ - 1) &&
                                     !places.Contains((newDirectionI + 0.5, newDirectionJ - 0.5)))
                                     places.Add((newDirectionI + 0.5, newDirectionJ - 0.5));
                                
                                 if (Utilities.CheckIfValid(newDirectionI - 1, newDirectionJ, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI - 1, newDirectionJ] == null &&
+                                    IsNull(newDirectionI - 1, newDirectionJ) &&
                                     Utilities.CheckIfValid(newDirectionI, newDirectionJ + 1, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI, newDirectionJ + 1] == null &&
+                                    IsNull(newDirectionI, newDirectionJ + 1) &&
                                     Utilities.CheckIfValid(newDirectionI - 1, newDirectionJ + 1, ShipDimension, ShipDimension) &&
-                                    Ship[newDirectionI - 1, newDirectionJ + 1] == null &&
+                                    IsNull(newDirectionI - 1, newDirectionJ + 1) &&
                                     !places.Contains((newDirectionI - 0.5, newDirectionJ + 0.5)))
                                     places.Add((newDirectionI - 0.5, newDirectionJ + 0.5));
                                 break;
@@ -376,6 +361,9 @@ public class SpaceShipManager : MonoBehaviour
             }
         }
 
+        bool IsNull(int x, int y) => Ship[x, y] == null || Ship[x, y] == movingObject;
+        
+        
         return places;
     }
     

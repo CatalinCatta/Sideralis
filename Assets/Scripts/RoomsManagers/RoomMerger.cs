@@ -90,14 +90,26 @@ public class RoomMerger : MonoBehaviour
             _shipManager.Ship[(int)(x + 0.5), (int)(y + 0.5)]); 
 
         if (Math.Round(x) == x)
-            _shipManager.CreateObject(ObjectType.MediumRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0), oldRoom1.roomResourcesType);
-        
+        {
+            _shipManager.RemoveObjectFrom(((int)x, (int)y), ObjectType.SmallRoom);
+            _shipManager.RemoveObjectFrom(((int)(x + 0.5), (int)(y + 0.5)), ObjectType.SmallRoom);
+            _shipManager.CreateObject(ObjectType.MediumRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0),
+                oldRoom1.roomResourcesType);
+        }
         else if (Math.Round(y) == y)
-            _shipManager.CreateObject(ObjectType.RotatedMediumRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0), oldRoom1.roomResourcesType);
-        
+        {
+            _shipManager.RemoveObjectFrom(((int)x, (int)y), ObjectType.SmallRoom);
+            _shipManager.RemoveObjectFrom(((int)(x + 0.5), (int)(y + 0.5)), ObjectType.SmallRoom);
+            _shipManager.CreateObject(ObjectType.RotatedMediumRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0),
+                oldRoom1.roomResourcesType);
+        }
         else
-            _shipManager.CreateObject(ObjectType.BigRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0), oldRoom1.roomResourcesType);
-        
+        {
+            _shipManager.RemoveObjectFrom((x - 0.5, y), ObjectType.MediumRoom);
+            _shipManager.RemoveObjectFrom((x + 0.5, y), ObjectType.MediumRoom);
+            _shipManager.CreateObject(ObjectType.BigRoom, Utilities.GetInGameCoordinateForPosition(x, y, 0),
+                oldRoom1.roomResourcesType);
+        }
         var newRoom = _shipManager.Ship[(int)x, (int)y].GetComponent<Room>();
 
         StartCoroutine(MoveCrew(newRoom, oldRoom1, oldRoom2));

@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using UnityEngine;
+using System.Linq;
 
 public class RoomEditor : MonoBehaviour
 {
@@ -18,31 +19,53 @@ public class RoomEditor : MonoBehaviour
 
     public void StartMoveRoom(Transform transformObject)
     {
+         transformObject.GetComponentsInChildren<BoxCollider2D>()
+            .ToList()
+            .ForEach(boxCollider2D => boxCollider2D.enabled = false);
+        
         DeactivateAllHighlights(transformObject.gameObject);
         successfullyMoved = false;
     }
 
     public void EndMoveRoom(Transform transformObject, ObjectType objectType)
     {
-        var newRoom = _shipManager.Ship[25, 25].GetComponent<Room>();
+
         if (successfullyMoved)
         {
+            double oldCapacity = 0;
+            var oldLvl = 0;
+            var oldResourceType = Resource.None;
+            
             if (transformObject.gameObject.TryGetComponent<Room>(out var oldRoom))
             {
-                var (x, y) = Utilities.GetPositionInArrayOfCoordinate(lastConstructedObjectPosition);
-                newRoom = _shipManager.Ship[(int)x, (int)y].GetComponent<Room>();
-                newRoom.actualCapacity = oldRoom.actualCapacity;
-                newRoom.lvl = oldRoom.lvl;
-                Debug.Log(newRoom.actualCapacity);
+                oldCapacity = oldRoom.actualCapacity;
+                oldLvl = oldRoom.lvl;
+                oldResourceType = oldRoom.roomResourcesType;
             }
             
             _shipManager.RemoveObjectFrom(Utilities.GetPositionInArrayOfCoordinate(transformObject.position),
                 objectType);
-            Debug.Log(newRoom.actualCapacity);
+            
+            
+            var (x, y) = Utilities.GetPositionInArrayOfCoordinate(lastConstructedObjectPosition);
+            _shipManager.CreateObject(objectType, lastConstructedObjectPosition, oldResourceType);
+            
+            if (_shipManager.Ship[(int)x, (int)y].TryGetComponent<Room>(out var newRoom))
+            {
+                newRoom.actualCapacity = oldCapacity;
+                newRoom.lvl = oldLvl;
+            }
+
         }
-        
-        Utilities.SetTransparency(transformObject, 1);
-        transformObject.GetChild(2).gameObject.SetActive(false);
+        else
+        {
+            transformObject.GetComponentsInChildren<BoxCollider2D>()
+                .ToList()
+                .ForEach(boxCollider2D => boxCollider2D.enabled = true);
+
+            Utilities.SetTransparency(transformObject, 1);
+            transformObject.GetChild(2).gameObject.SetActive(false);
+        }
         HighlightMovableObjects();
         successfullyMoved = false;
     }
