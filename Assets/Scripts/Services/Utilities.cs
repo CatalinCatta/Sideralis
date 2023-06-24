@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public static class Utilities
 {
@@ -36,10 +38,25 @@ public static class Utilities
     
     public static void SetColor(Transform currentTransform, Color newColor)
     {
+        if (currentTransform.TryGetComponent<SpriteRenderer>(out var spriteRenderer1))
+            spriteRenderer1.color =  newColor;
+
+        if (currentTransform.TryGetComponent<TextMeshProUGUI>(out var textMeshProUGUI1))
+            textMeshProUGUI1.color =  newColor;
+            
+        if (currentTransform.TryGetComponent<Image>(out var image1))
+            image1.color =  newColor;
+        
         foreach (Transform child in currentTransform)
         {
             if (child.TryGetComponent<SpriteRenderer>(out var spriteRenderer))
                 spriteRenderer.color =  newColor;
+
+            if (child.TryGetComponent<TextMeshProUGUI>(out var textMeshProUGUI))
+                textMeshProUGUI.color =  newColor;
+            
+            if (child.TryGetComponent<Image>(out var image))
+                image.color =  newColor;
 
             SetColor(child, newColor);
         }
@@ -132,4 +149,26 @@ public static class Utilities
         _ => number.ToString("F2")
 
     };
+
+    public static string DoubleToTime(double seconds)
+    {
+        var timeSpan = TimeSpan.FromSeconds(seconds);
+
+        string formattedTime;
+
+        if (timeSpan.TotalDays >= 1)
+            formattedTime =
+                $"{(int)timeSpan.TotalDays}d {timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+        else if (timeSpan.TotalHours >= 1)
+            formattedTime = 
+                $"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+        else if (timeSpan.TotalMinutes >= 1)
+            formattedTime = 
+                $"{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+        else
+            formattedTime = 
+                $"{timeSpan.Seconds:D2}";
+
+        return formattedTime;
+    }
 }

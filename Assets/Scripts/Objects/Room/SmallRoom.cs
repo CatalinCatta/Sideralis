@@ -4,7 +4,7 @@ public class SmallRoom : Room
 {
     protected override void Initialize()
     {
-        MaxCrewNumber = 1;
+        maxCrewNumber = 1;
         maxCapacity = 2*lvl + 6;
         farmingRatePerCrew = 0.05;
         shipCaryCapacity = 25*(lvl+1);

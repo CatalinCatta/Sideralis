@@ -5,7 +5,7 @@ using System.Collections;
 
 public abstract class Room : MonoBehaviour
 {
-    protected static int MaxCrewNumber;
+    public int maxCrewNumber;
     public Crew[] crews;
     private ActorManager _actorManager;
     public int lvl;
@@ -16,6 +16,7 @@ public abstract class Room : MonoBehaviour
     public Resource roomResourcesType;
     protected PrefabStorage PrefabStorage;
     private SpaceShipResources _shipResources;
+    private RoomStatus _roomStatus;
 
     public int CrewSpaceLeft => 
         crews.Count(crew => crew == null);
@@ -24,7 +25,12 @@ public abstract class Room : MonoBehaviour
         crews.Count(crew => crew != null);
     
     protected abstract void Initialize();
-    
+
+    private void Awake()
+    {
+        _roomStatus = FindObjectOfType<RoomStatus>();
+    }
+
     private void Start()
     {
         PrefabStorage = FindObjectOfType<PrefabStorage>(); 
@@ -32,7 +38,7 @@ public abstract class Room : MonoBehaviour
         _shipResources = FindObjectOfType<SpaceShipResources>();
         lvl = 1;
         Initialize();
-        crews = new Crew[MaxCrewNumber];
+        crews = new Crew[maxCrewNumber];
         StartCoroutine(Farm());
         transform.GetChild(4).GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = PrefabStorage.collectIconsSprites[(int)roomResourcesType];
         switch (roomResourcesType)
@@ -45,19 +51,19 @@ public abstract class Room : MonoBehaviour
             case Resource.Oxygen:
                 _shipResources.oxygenCapacity += shipCaryCapacity;
                 _shipResources.oxygen += shipCaryCapacity / 2;
-                _shipResources.energyConsumption += MaxCrewNumber * 0.02;
+                _shipResources.energyConsumption += maxCrewNumber * 0.02;
                 break;
             
             case Resource.Water:
                 _shipResources.waterCapacity += shipCaryCapacity;
                 _shipResources.water += shipCaryCapacity / 2;
-                _shipResources.energyConsumption += MaxCrewNumber * 0.02;
+                _shipResources.energyConsumption += maxCrewNumber * 0.02;
                 break;
             
             case Resource.Food:
                 _shipResources.foodCapacity += shipCaryCapacity;
                 _shipResources.food += shipCaryCapacity / 2;
-                _shipResources.energyConsumption += MaxCrewNumber * 0.02;
+                _shipResources.energyConsumption += maxCrewNumber * 0.02;
                 break;
             
             default:
@@ -98,6 +104,14 @@ public abstract class Room : MonoBehaviour
             transform.GetChild(4).gameObject.SetActive(true);
     }
 
+    private void OnMouseDown()
+    {
+        // if (_roomStatus == null)
+        //     _roomStatus = FindObjectOfType<RoomStatus>();
+
+        _roomStatus.SetMeUpForRoom(this);
+    }
+    
     public void CollectResources()
     {
         transform.GetChild(4).gameObject.SetActive(false);
@@ -143,19 +157,19 @@ public abstract class Room : MonoBehaviour
             
             case Resource.Oxygen:
                 _shipResources.oxygenCapacity -= shipCaryCapacity;
-                _shipResources.energyConsumption -= MaxCrewNumber * 0.02;
+                _shipResources.energyConsumption -= maxCrewNumber * 0.02;
                 _shipResources.oxygen = Math.Min(_shipResources.oxygen - shipCaryCapacity/2, _shipResources.oxygenCapacity);
                 break;
             
             case Resource.Water:
                 _shipResources.waterCapacity -= shipCaryCapacity;
-                _shipResources.energyConsumption -= MaxCrewNumber * 0.02;
+                _shipResources.energyConsumption -= maxCrewNumber * 0.02;
                 _shipResources.water = Math.Min(_shipResources.water - shipCaryCapacity/2, _shipResources.waterCapacity);
                 break;
             
             case Resource.Food:
                 _shipResources.foodCapacity -= shipCaryCapacity;
-                _shipResources.energyConsumption -= MaxCrewNumber * 0.02;
+                _shipResources.energyConsumption -= maxCrewNumber * 0.02;
                 _shipResources.food = Math.Min(_shipResources.food - shipCaryCapacity/2, _shipResources.foodCapacity);
                 break;
             
