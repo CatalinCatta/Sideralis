@@ -29,6 +29,8 @@ public class ActorManager : MonoBehaviour
     public ConstructMaterial? currentConstructingMaterial;
     
     public bool moveRoomMode;
+
+    public bool toolInAction;
     
     public bool deleteRoomMode;
 
@@ -37,6 +39,12 @@ public class ActorManager : MonoBehaviour
     
     public void EnterDeleteRoomMode() =>
         deleteRoomMode = true;
+
+    public void ToolGoActive() =>
+        toolInAction = true;
+    
+    public void ToolGoInactive() =>
+        toolInAction = false;
 
     private void Awake() => 
         _prefabStorage = transform.GetComponent<PrefabStorage>();

@@ -1,13 +1,16 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoomStatus : MonoBehaviour
 {
     [SerializeField]private GameObject roomTab;
+    [SerializeField]private GameObject buildTabOppener;
     private Room _room;
     private Controls _controls;
-
+    
+    
     private void Awake() =>
         _controls = new Controls();
 
@@ -22,7 +25,7 @@ public class RoomStatus : MonoBehaviour
         if (_room == null)
             return;
 
-        if (_controls.InGame.Move.triggered)
+        if (_controls.InGame.Deselect.triggered || buildTabOppener.GetComponent<Toggle>().isOn)
             roomTab.SetActive(false);
             
         if (!roomTab.activeSelf)
@@ -37,10 +40,14 @@ public class RoomStatus : MonoBehaviour
 
     public void SetMeUpForRoom(Room room)
     {
+        if (_room == room)
+            return;
+        
         if (_room != null)
             _room.transform.GetChild(5).gameObject.SetActive(false);
         
         roomTab.SetActive(true);
+        buildTabOppener.GetComponent<Toggle>().isOn = false;
         _room = room;
         switch (room)
         {

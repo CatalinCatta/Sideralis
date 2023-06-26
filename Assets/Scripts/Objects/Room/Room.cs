@@ -17,6 +17,7 @@ public abstract class Room : MonoBehaviour
     protected PrefabStorage PrefabStorage;
     private SpaceShipResources _shipResources;
     private RoomStatus _roomStatus;
+    private CameraController _cameraController;
 
     public int CrewSpaceLeft => 
         crews.Count(crew => crew == null);
@@ -29,6 +30,7 @@ public abstract class Room : MonoBehaviour
     private void Awake()
     {
         _roomStatus = FindObjectOfType<RoomStatus>();
+        _cameraController = FindObjectOfType<CameraController>();
     }
 
     private void Start()
@@ -106,6 +108,9 @@ public abstract class Room : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (_cameraController.isMouseOverUI || _actorManager.toolInAction)
+            return;
+        
         transform.GetChild(5).gameObject.SetActive(true);
         _roomStatus.SetMeUpForRoom(this);
     }
