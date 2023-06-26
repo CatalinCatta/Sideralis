@@ -5,14 +5,20 @@ using UnityEngine.UI;
 
 public class RoomStatus : MonoBehaviour
 {
-    [SerializeField]private GameObject roomTab;
-    [SerializeField]private GameObject buildTabOppener;
+    [SerializeField]public GameObject roomTab;
+    [SerializeField]private GameObject buildTabOpener;
     private Room _room;
     private Controls _controls;
-    
-    
-    private void Awake() =>
+    private DepthFirstSearch _depthFirstSearch;
+    private SpaceShipManager _spaceShipManager;
+    private bool _removable;
+
+    private void Awake()
+    {
+        _depthFirstSearch = new DepthFirstSearch();
         _controls = new Controls();
+        _spaceShipManager = transform.GetComponent<SpaceShipManager>();
+    }
 
     private void OnEnable() =>
         _controls.Enable();
@@ -25,7 +31,7 @@ public class RoomStatus : MonoBehaviour
         if (_room == null)
             return;
 
-        if (_controls.InGame.Deselect.triggered || buildTabOppener.GetComponent<Toggle>().isOn)
+        if (_controls.InGame.Deselect.triggered || buildTabOpener.GetComponent<Toggle>().isOn)
             roomTab.SetActive(false);
             
         if (!roomTab.activeSelf)
@@ -42,12 +48,14 @@ public class RoomStatus : MonoBehaviour
     {
         if (_room == room)
             return;
+
+        _removable = _depthFirstSearch.IsSafeToRemove(room.gameObject, _spaceShipManager.Ship);
         
         if (_room != null)
             _room.transform.GetChild(5).gameObject.SetActive(false);
         
         roomTab.SetActive(true);
-        buildTabOppener.GetComponent<Toggle>().isOn = false;
+        buildTabOpener.GetComponent<Toggle>().isOn = false;
         _room = room;
         switch (room)
         {
@@ -65,6 +73,25 @@ public class RoomStatus : MonoBehaviour
         ChangeMyColorForRoom();
     }
 
+    public void CollectNow() =>
+        _room.CollectResources();
+    
+    public void DestroyRoom()
+    {
+        if (!_removable)
+            return;
+        
+        _spaceShipManager.RemoveObjectFrom(Utilities.GetPositionInArrayOfCoordinate(_room.transform.position),
+            Utilities.CheckObjectTypeIntegrity(_room switch
+            {
+                SmallRoom => ObjectType.SmallRoom,
+                MediumRoom => ObjectType.MediumRoom,
+                _ => ObjectType.BigRoom
+            }, _room.transform.rotation));
+        
+        roomTab.SetActive(false);
+    }
+    
     private void ChangeMyColorForRoom()
     {
         switch (_room.roomResourcesType)
@@ -90,7 +117,11 @@ public class RoomStatus : MonoBehaviour
         }
 
         Utilities.SetColor(roomTab.transform.GetChild(0), new Color(1, 0, 0, 1));
-        Utilities.SetColor(roomTab.transform.GetChild(4), new Color(1, 0, 0, 1));
+        
+        roomTab.transform.GetChild(4).GetComponent<Image>().color = _removable? new Color(1, 0, 0, 1) : new Color(0, 0, 0, 1);
+        roomTab.transform.GetChild(4).GetChild(0).GetComponent<Image>().color = _removable? new Color(1, 0, 0, 1) : new Color(0.25f, 0.25f, 0.25f, 1);
+        roomTab.transform.GetChild(4).GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 1);
+        roomTab.transform.GetChild(4).GetChild(0).GetChild(0).gameObject.SetActive(!_removable);
     }
 
     private void SetUpMyNumbersForRoom()
