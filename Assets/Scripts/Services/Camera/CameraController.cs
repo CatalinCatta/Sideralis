@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +14,7 @@ public class CameraController : MonoBehaviour
     private Controls _controls;
     private PinchScrollDetection _pinchScrollDetection;
     private ActorManager _actorManager;
+    private UpgradeRoom _upgradeRoom;
     
     private void Awake()
     {
@@ -22,6 +22,7 @@ public class CameraController : MonoBehaviour
         _controls = new Controls();
         _pinchScrollDetection = transform.GetComponent<PinchScrollDetection>();
         _actorManager = FindObjectOfType<ActorManager>();
+        _upgradeRoom = FindObjectOfType<UpgradeRoom>();
     }
 
     private void OnEnable() =>
@@ -33,16 +34,16 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (_pinchScrollDetection.touchCount > 1)
-        {
-            _isDragging = false;
-            StopAllCoroutines();
-        }
+        if (_pinchScrollDetection.touchCount <= 1)
+            return;
+        
+        _isDragging = false;
+        StopAllCoroutines();
     }
 
     private void LateUpdate()
     {
-        if (_controls.InGame.Move.IsPressed() && _pinchScrollDetection.touchCount < 2 && (!_actorManager.moveRoomMode || _pinchScrollDetection.touchCount == 0))
+        if (_controls.InGame.Move.IsPressed() && _pinchScrollDetection.touchCount < 2 && (!_actorManager.moveRoomMode || _pinchScrollDetection.touchCount == 0) && !_upgradeRoom.inUse)
         {
             _isDragging = true;
             _dragStartPos = _cam.ScreenToWorldPoint(Input.mousePosition);
@@ -61,7 +62,7 @@ public class CameraController : MonoBehaviour
         eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-        return results.Count > 2;
+        return results.Count > 2 || _upgradeRoom.inUse;
     }
 
     private IEnumerator StartDrag(Vector3 startPos)

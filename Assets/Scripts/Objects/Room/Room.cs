@@ -108,9 +108,8 @@ public abstract class Room : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (_cameraController.isMouseOverUI || _actorManager.toolInAction)
+        if (_cameraController.IsPointerOverUIObject() || _actorManager.toolInAction)
             return;
-        
         transform.GetChild(5).gameObject.SetActive(true);
         _roomStatus.SetMeUpForRoom(this);
     }

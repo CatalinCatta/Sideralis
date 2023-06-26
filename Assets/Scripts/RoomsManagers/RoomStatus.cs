@@ -11,6 +11,7 @@ public class RoomStatus : MonoBehaviour
     private Controls _controls;
     private DepthFirstSearch _depthFirstSearch;
     private SpaceShipManager _spaceShipManager;
+    private UpgradeRoom _upgradeRoom;
     private bool _removable;
 
     private void Awake()
@@ -18,6 +19,7 @@ public class RoomStatus : MonoBehaviour
         _depthFirstSearch = new DepthFirstSearch();
         _controls = new Controls();
         _spaceShipManager = transform.GetComponent<SpaceShipManager>();
+        _upgradeRoom = transform.GetComponent<UpgradeRoom>();
     }
 
     private void OnEnable() =>
@@ -71,6 +73,11 @@ public class RoomStatus : MonoBehaviour
         }
         
         ChangeMyColorForRoom();
+    }
+
+    public void GoToUpgrade() {
+        _upgradeRoom.SetMeUpForRoom(_room, roomTab.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text);
+        roomTab.SetActive(false);
     }
 
     public void CollectNow() =>

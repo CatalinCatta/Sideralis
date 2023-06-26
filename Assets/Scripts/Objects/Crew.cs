@@ -20,6 +20,7 @@ public class Crew : MonoBehaviour
     private GameObject _pointer;
     private BreadthFirstSearch _breadthFirstSearch;
     private Controls _controls;
+    private CameraController _cameraController;
     
     private void Awake()
     {
@@ -33,7 +34,8 @@ public class Crew : MonoBehaviour
         _spriteRenderer.sprite = _prefabStorage.crewSprites[(int) SpritesTypes.AfkStatus];
         _breadthFirstSearch = new BreadthFirstSearch();
         _controls = new Controls();
-        
+        _cameraController = FindObjectOfType<CameraController>();
+            
         _shipResources.foodConsumption += 0.02;
         _shipResources.oxygenConsumption += 0.02;
         _shipResources.waterConsumption += 0.02;
@@ -54,7 +56,7 @@ public class Crew : MonoBehaviour
     private void Update()
     {
         if (_crewSelected && _controls.InGame.Interact.triggered && !_selectingCrew && _actorManager.currentRoom != null &&
-            _actorManager.currentRoom.CrewSpaceLeft >= _actorManager.selectedCrewNumber && !_isMoving && _actorManager.currentRoom != room && !_actorManager.moveRoomMode && !_actorManager.deleteRoomMode)
+            _actorManager.currentRoom.CrewSpaceLeft >= _actorManager.selectedCrewNumber && !_isMoving && _actorManager.currentRoom != room && !_actorManager.toolInAction && !_cameraController.IsPointerOverUIObject())
         {
             var finalRoomPosition = _spaceShipManager.FindRoomPosition(_actorManager.currentRoom, false, this);
             var startRoomPosition = _spaceShipManager.FindRoomPosition(room, true, this);
@@ -86,6 +88,9 @@ public class Crew : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (_cameraController.IsPointerOverUIObject())
+            return;
+        
         if (_crewSelected)
         {
             _selectingCrew = false;

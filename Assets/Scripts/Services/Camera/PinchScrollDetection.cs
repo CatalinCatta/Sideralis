@@ -3,11 +3,14 @@ using UnityEngine.InputSystem;
 public class PinchScrollDetection : MonoBehaviour 
 {
 	public float speed = 0.01f;
-	private float prevMagnitude = 0;
-	public int touchCount = 0;
-	
+	private float prevMagnitude;
+	public int touchCount;
+	private UpgradeRoom _upgradeRoom;
+
 	private void Start ()
 	{
+		_upgradeRoom = FindObjectOfType<UpgradeRoom>();
+	
 		// mouse scroll
 		var scrollAction = new InputAction(binding: "<Mouse>/scroll");
 		scrollAction.Enable();
@@ -67,6 +70,9 @@ public class PinchScrollDetection : MonoBehaviour
 	}
 
 
-	private void CameraZoom(float increment) => Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize + increment, 20, 60);
-
+	private void CameraZoom(float increment)
+	{
+		if (!_upgradeRoom.inUse)
+			Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize + increment, 20, 60);
+	}
 }

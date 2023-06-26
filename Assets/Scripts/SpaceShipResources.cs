@@ -21,10 +21,8 @@ public class SpaceShipResources : MonoBehaviour
     public double waterConsumption;
     public double foodConsumption;
 
-    private void Start()
-    {
+    private void Start() =>
         StartCoroutine(UpdateResources());
-    }
 
     private IEnumerator UpdateResources()
     {
