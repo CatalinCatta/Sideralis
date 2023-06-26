@@ -106,9 +106,7 @@ public abstract class Room : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // if (_roomStatus == null)
-        //     _roomStatus = FindObjectOfType<RoomStatus>();
-
+        transform.GetChild(5).gameObject.SetActive(true);
         _roomStatus.SetMeUpForRoom(this);
     }
     

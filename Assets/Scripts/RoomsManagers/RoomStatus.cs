@@ -6,17 +6,40 @@ public class RoomStatus : MonoBehaviour
 {
     [SerializeField]private GameObject roomTab;
     private Room _room;
-    
+    private Controls _controls;
+
+    private void Awake() =>
+        _controls = new Controls();
+
+    private void OnEnable() =>
+        _controls.Enable();
+
+    private void OnDisable() =>
+        _controls.Disable();
+
     private void Update()
     {
-        if (_room == null || !roomTab.activeSelf)
+        if (_room == null)
             return;
+
+        if (_controls.InGame.Move.triggered)
+            roomTab.SetActive(false);
+            
+        if (!roomTab.activeSelf)
+        {
+            _room.transform.GetChild(5).gameObject.SetActive(false);
+            _room = null;
+            return;
+        }
         
         SetUpMyNumbersForRoom();
     }
 
     public void SetMeUpForRoom(Room room)
     {
+        if (_room != null)
+            _room.transform.GetChild(5).gameObject.SetActive(false);
+        
         roomTab.SetActive(true);
         _room = room;
         switch (room)
@@ -76,4 +99,5 @@ public class RoomStatus : MonoBehaviour
         roomTab.transform.GetChild(3).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _room.CrewsNumber() > 0? Utilities.DoubleToTime(
             (_room.maxCapacity - _room.actualCapacity) / (_room.farmingRatePerCrew * _room.CrewsNumber()) * 2) : "";
     }
+    
 }
