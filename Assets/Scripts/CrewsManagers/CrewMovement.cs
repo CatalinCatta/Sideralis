@@ -11,7 +11,7 @@ public class CrewMovement : MonoBehaviour
     private readonly float _speed = 1;
     private ActorManager _actorManager;
     private SpaceShipResources _shipResources;
-    private bool _crewSelected;
+    public bool crewSelected;
     private bool _isMoving;
     private bool _selectingCrew;
     private SpaceShipManager _spaceShipManager;
@@ -21,6 +21,7 @@ public class CrewMovement : MonoBehaviour
     private BreadthFirstSearch _breadthFirstSearch;
     private Controls _controls;
     private CameraController _cameraController;
+    private CrewStatus _crewStatus;
     
     private void Awake()
     {
@@ -35,6 +36,7 @@ public class CrewMovement : MonoBehaviour
         _breadthFirstSearch = new BreadthFirstSearch();
         _controls = new Controls();
         _cameraController = FindObjectOfType<CameraController>();
+        _crewStatus = FindObjectOfType<CrewStatus>();
     }
 
     private void Start()
@@ -51,7 +53,7 @@ public class CrewMovement : MonoBehaviour
 
     private void Update()
     {
-        if (_crewSelected && _controls.InGame.Interact.triggered && !_selectingCrew && _actorManager.currentRoom != null &&
+        if (crewSelected && _controls.InGame.Interact.triggered && !_selectingCrew && _actorManager.currentRoom != null &&
             _actorManager.currentRoom.CrewSpaceLeft >= _actorManager.selectedCrewNumber && !_isMoving && _actorManager.currentRoom != room && !_actorManager.toolInAction && !_cameraController.IsPointerOverUIObject())
         {
             var finalRoomPosition = _spaceShipManager.FindRoomPosition(_actorManager.currentRoom, false, this);
@@ -63,7 +65,7 @@ public class CrewMovement : MonoBehaviour
 
             room.crews[Array.IndexOf(room.crews, this)] = null;
             _actorManager.currentRoom.crews[Array.IndexOf(_actorManager.currentRoom.crews, null)] = transform.GetComponent<Crew>();
-            _crewSelected = false;
+            crewSelected = false;
             _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             _actorManager.selectedCrewNumber = 0;
             _spaceShipManager.CreateObject(ObjectType.Pointer, Utilities.GetInGameCoordinateForPosition(finalRoomPosition.Item1, finalRoomPosition.Item2, -5f), Resource.None);
@@ -74,7 +76,7 @@ public class CrewMovement : MonoBehaviour
 
         if (_controls.InGame.Deselect.triggered)
         {
-            _crewSelected = false;
+            crewSelected = false;
             _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             _actorManager.selectedCrewNumber = 0;
         }
@@ -87,17 +89,18 @@ public class CrewMovement : MonoBehaviour
         if (_cameraController.IsPointerOverUIObject())
             return;
         
-        if (_crewSelected)
+        if (crewSelected)
         {
             _selectingCrew = false;
-            _crewSelected = false;
+            crewSelected = false;
             _spriteRenderer.color = new Color(1f, 1f, 1f);
             _actorManager.selectedCrewNumber -= 1;
         }
         else
         {
+            _crewStatus.SetMeUpForCrew(transform.GetComponent<Crew>());
             _selectingCrew = true;
-            _crewSelected = true;
+            crewSelected = true;
             _spriteRenderer.color = new Color(0.3f, 1f, 0.28f);
             _actorManager.selectedCrewNumber += 1;
         }
@@ -105,17 +108,17 @@ public class CrewMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.gameObject.GetComponent<BoxSelection>() || _crewSelected) return;
+        if (!collision.gameObject.GetComponent<BoxSelection>() || crewSelected) return;
         _spriteRenderer.color = new Color(0.3f, 1f, 0.28f);
         _actorManager.selectedCrewNumber += 1;
-        _crewSelected = true;
+        crewSelected = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.gameObject.GetComponent<BoxSelection>() || !_controls.InGame.BoxControll.IsPressed()) return;
         _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
-        _crewSelected = false;
+        crewSelected = false;
         _actorManager.selectedCrewNumber -= 0;
     }
 
