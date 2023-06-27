@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using System;
 
-public class Crew : MonoBehaviour
+public class CrewMovement : MonoBehaviour
 {
     private PrefabStorage _prefabStorage;
     public Room room;
