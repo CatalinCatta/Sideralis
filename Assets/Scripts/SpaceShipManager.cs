@@ -145,10 +145,10 @@ public class SpaceShipManager : MonoBehaviour
                 break;
 
             case ObjectType.Crew:
-                var crew = _actorManager.CreateObject(position, type).GetComponent<Crew>();
+                var crew = _actorManager.CreateObject(position, type);
                 var room = Ship[(int)x, (int)y].GetComponent<Room>();
-                crew.room = room;
-                room.crews[Array.IndexOf(room.crews, null)] = crew;
+                crew.GetComponent<CrewMovement>().room = room;
+                room.crews[Array.IndexOf(room.crews, null)] = crew.GetComponent<Crew>();
                 break;
 
             case ObjectType.Pointer:
@@ -417,9 +417,9 @@ public class SpaceShipManager : MonoBehaviour
     /// <param name="isStartingRoom">If true, returns the crew position. Otherwise, returns the first empty position.</param>
     /// <param name="crew">Crew that leave the room.</param>
     /// <returns>The position (row, column) of the room in the spaceship grid. Returns (-1, -1) if the room is not found.</returns>
-    public (int, int) FindRoomPosition(Room room, bool isStartingRoom, Crew crew)
+    public (int, int) FindRoomPosition(Room room, bool isStartingRoom, CrewMovement crew)
     {
-        var counter = Array.IndexOf(room.crews, (isStartingRoom ? crew : null));
+        var counter = Array.IndexOf(room.crews, isStartingRoom ? crew : null);
         for (var i = 0; i < ShipDimension; i++)
         for (var j = 0; j < ShipDimension; j++)
             if (Ship[i, j] != null && Ship[i, j].TryGetComponent<Room>(out var foundRoom) && foundRoom == room)

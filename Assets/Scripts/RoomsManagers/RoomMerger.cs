@@ -122,7 +122,7 @@ public class RoomMerger : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         newRoom.crews = oldRoom1.crews.Concat(oldRoom2.crews).ToArray();
-        newRoom.crews.Where(c => c != null).ToList().ForEach(crew => crew.room = newRoom);
+        newRoom.crews.Where(c => c != null).ToList().ForEach(crew => crew.GetComponent<CrewMovement>().room = newRoom);
     }
 
     private static (Room, Room) FixCrewsPosition(GameObject room1, GameObject room2)

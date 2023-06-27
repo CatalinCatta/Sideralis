@@ -10,11 +10,11 @@ public class CameraController : MonoBehaviour
     private Vector3 _velocity = Vector3.zero;
     private bool _isDragging;
     private bool _hasStartedDragging;
-    public bool isMouseOverUI;
     private Controls _controls;
     private PinchScrollDetection _pinchScrollDetection;
     private ActorManager _actorManager;
     private UpgradeRoom _upgradeRoom;
+    private CrewsOfRoom _crewsOfRoom;
     
     private void Awake()
     {
@@ -23,6 +23,7 @@ public class CameraController : MonoBehaviour
         _pinchScrollDetection = transform.GetComponent<PinchScrollDetection>();
         _actorManager = FindObjectOfType<ActorManager>();
         _upgradeRoom = FindObjectOfType<UpgradeRoom>();
+        _crewsOfRoom = FindObjectOfType<CrewsOfRoom>();
     }
 
     private void OnEnable() =>
@@ -62,7 +63,7 @@ public class CameraController : MonoBehaviour
         eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-        return results.Count > 2 || _upgradeRoom.inUse;
+        return results.Count > 2 || _upgradeRoom.inUse || _crewsOfRoom.inUse;
     }
 
     private IEnumerator StartDrag(Vector3 startPos)

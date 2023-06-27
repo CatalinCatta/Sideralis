@@ -35,10 +35,6 @@ public class CrewMovement : MonoBehaviour
         _breadthFirstSearch = new BreadthFirstSearch();
         _controls = new Controls();
         _cameraController = FindObjectOfType<CameraController>();
-            
-        _shipResources.foodConsumption += 0.02;
-        _shipResources.oxygenConsumption += 0.02;
-        _shipResources.waterConsumption += 0.02;
     }
 
     private void Start()
@@ -66,7 +62,7 @@ public class CrewMovement : MonoBehaviour
                     finalRoomPosition, _spaceShipManager.Ship)));
 
             room.crews[Array.IndexOf(room.crews, this)] = null;
-            _actorManager.currentRoom.crews[Array.IndexOf(_actorManager.currentRoom.crews, null)] = this;
+            _actorManager.currentRoom.crews[Array.IndexOf(_actorManager.currentRoom.crews, null)] = transform.GetComponent<Crew>();
             _crewSelected = false;
             _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             _actorManager.selectedCrewNumber = 0;
