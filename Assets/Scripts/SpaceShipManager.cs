@@ -417,7 +417,7 @@ public class SpaceShipManager : MonoBehaviour
     /// <param name="isStartingRoom">If true, returns the crew position. Otherwise, returns the first empty position.</param>
     /// <param name="crew">Crew that leave the room.</param>
     /// <returns>The position (row, column) of the room in the spaceship grid. Returns (-1, -1) if the room is not found.</returns>
-    public (int, int) FindRoomPosition(Room room, bool isStartingRoom, CrewMovement crew)
+    public (int, int) FindRoomPosition(Room room, bool isStartingRoom, Crew crew)
     {
         var counter = Array.IndexOf(room.crews, isStartingRoom ? crew : null);
         for (var i = 0; i < ShipDimension; i++)

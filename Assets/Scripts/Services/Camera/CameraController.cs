@@ -74,13 +74,6 @@ public class CameraController : MonoBehaviour
         eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-        Debug.Log(results.Count > 2 - (roomStupidBug ?1  : 0));
-        Debug.Log(_upgradeRoom.inUse);
-        Debug.Log(_upgradeRoom.inUse);
-        Debug.Log(_crewsOfRoom.inUse);
-        Debug.Log(_crewStatus.inUse);
-        Debug.Log(_roomStatus.inUse);
-        Debug.Log(anyOtherUiOnUse);
         return results.Count > 2 - (roomStupidBug ?1  : 0) || _upgradeRoom.inUse || _crewsOfRoom.inUse || _crewStatus.inUse || _roomStatus.inUse || anyOtherUiOnUse;
     }
 

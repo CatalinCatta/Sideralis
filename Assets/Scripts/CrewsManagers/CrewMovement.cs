@@ -54,16 +54,19 @@ public class CrewMovement : MonoBehaviour
     private void Update()
     {
         if (crewSelected && _controls.InGame.Interact.triggered && !_selectingCrew && _actorManager.currentRoom != null &&
-            _actorManager.currentRoom.CrewSpaceLeft >= _actorManager.selectedCrewNumber && !_isMoving && _actorManager.currentRoom != room && !_actorManager.toolInAction && !_cameraController.IsPointerOverUIObject())
+            _actorManager.currentRoom.CrewSpaceLeft >= _actorManager.selectedCrewNumber && !_isMoving && _actorManager.currentRoom != room && !_actorManager.toolInAction && !_cameraController.IsPointerOverUIObject(true))
         {
-            var finalRoomPosition = _spaceShipManager.FindRoomPosition(_actorManager.currentRoom, false, this);
-            var startRoomPosition = _spaceShipManager.FindRoomPosition(room, true, this);
+            var finalRoomPosition = _spaceShipManager.FindRoomPosition(_actorManager.currentRoom, false, transform.GetComponent<Crew>());
+            var startRoomPosition = _spaceShipManager.FindRoomPosition(room, true, transform.GetComponent<Crew>());
 
+            Debug.Log(room);
+            Debug.Log(startRoomPosition);
+            
             StartCoroutine(MoveCrew(
                 _breadthFirstSearch.GetShortestPath(startRoomPosition,
                     finalRoomPosition, _spaceShipManager.Ship)));
 
-            room.crews[Array.IndexOf(room.crews, this)] = null;
+            room.crews[Array.IndexOf(room.crews, transform.GetComponent<Crew>())] = null;
             _actorManager.currentRoom.crews[Array.IndexOf(_actorManager.currentRoom.crews, null)] = transform.GetComponent<Crew>();
             crewSelected = false;
             _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
@@ -142,7 +145,7 @@ public class CrewMovement : MonoBehaviour
         if (!collision.gameObject.GetComponent<BoxSelection>() || !_controls.InGame.BoxControll.IsPressed()) return;
         _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         crewSelected = false;
-        _actorManager.selectedCrewNumber -= 0;
+        _actorManager.selectedCrewNumber -= 1;
     }
 
     private IEnumerator MoveCrew(IReadOnlyList<(int x, int y)> movements)
