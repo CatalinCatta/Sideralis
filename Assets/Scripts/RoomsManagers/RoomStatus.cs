@@ -39,8 +39,9 @@ public class RoomStatus : MonoBehaviour
         
         inUse = inUse && roomTab.activeSelf;
 
+        
         if (!_wasJustActivated &&
-            (((_controls.InGame.Move.triggered || _controls.InGame.Interact.triggered) && !inUse) ||
+            (((_controls.InGame.Interact.triggered || _controls.InGame.Deselect.triggered) && !inUse) ||
              !roomTab.activeSelf))
         {
             roomTab.SetActive(false);

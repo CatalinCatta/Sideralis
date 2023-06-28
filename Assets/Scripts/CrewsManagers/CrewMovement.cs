@@ -86,12 +86,19 @@ public class CrewMovement : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (_cameraController.IsPointerOverUIObject())
-            return;
-        SelectCrew(true);
+        StartCoroutine(Click());
     }
 
-    public void SelectCrew(bool singleCrew)
+    private IEnumerator Click()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        if (!_cameraController.IsPointerOverUIObject())
+            SelectCrew();
+        
+    }
+
+    public void SelectCrew()
     {
         if (crewSelected)
         {
@@ -102,7 +109,7 @@ public class CrewMovement : MonoBehaviour
         }
         else
         {
-            if (singleCrew)
+            if (!_actorManager.toolInAction)
                 _crewStatus.SetMeUpForCrew(transform.GetComponent<Crew>());
     
             _selectingCrew = true;
@@ -110,6 +117,16 @@ public class CrewMovement : MonoBehaviour
             _spriteRenderer.color = new Color(0.3f, 1f, 0.28f);
             _actorManager.selectedCrewNumber += 1;
         }
+    }
+    
+    public void SelectMultipleCrew()
+    {
+        if (!crewSelected)
+            _actorManager.selectedCrewNumber += 1;
+    
+        _selectingCrew = true;
+        crewSelected = true;
+        _spriteRenderer.color = new Color(0.3f, 1f, 0.28f);
     }
     
     private void OnTriggerEnter2D(Collider2D collision)

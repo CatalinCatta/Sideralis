@@ -29,7 +29,7 @@ public class UpgradeRoom : MonoBehaviour
         inUse = inUse && upgradeTab.activeSelf;
 
         if (!_wasJustActivated &&
-            (((_control.InGame.Move.triggered || _control.InGame.Interact.triggered) && !inUse) ||
+            (((_control.InGame.Deselect.triggered || _control.InGame.Interact.triggered) && !inUse) ||
              !upgradeTab.activeSelf))
         {
             upgradeTab.SetActive(false);

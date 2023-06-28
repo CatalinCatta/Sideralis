@@ -29,7 +29,7 @@ public class CrewsOfRoom : MonoBehaviour
         inUse = inUse && listTab.activeSelf;
 
         if (!_wasJustActivated &&
-            (((_control.InGame.Move.triggered || _control.InGame.Interact.triggered) && !inUse) ||
+            (((_control.InGame.Deselect.triggered || _control.InGame.Interact.triggered) && !inUse) ||
              !listTab.activeSelf))
         {
             listTab.SetActive(false);
@@ -85,14 +85,14 @@ public class CrewsOfRoom : MonoBehaviour
 
      public void SelectCrew(int crewNr)
      {
-         _currentRoom.crews[crewNr].transform.GetComponent<CrewMovement>().SelectCrew(true);
+         _currentRoom.crews[crewNr].transform.GetComponent<CrewMovement>().SelectCrew();
          listTab.gameObject.SetActive(false);
      }
      
      public void SelectAllCrews()
      {
          foreach (var crew in _currentRoom.crews)
-             crew.transform.GetComponent<CrewMovement>().SelectCrew(false);
+             crew.transform.GetComponent<CrewMovement>().SelectMultipleCrew();
          listTab.gameObject.SetActive(false);
          
      }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -17,7 +18,7 @@ public class CameraController : MonoBehaviour
     private CrewsOfRoom _crewsOfRoom;
     private CrewStatus _crewStatus;
     private RoomStatus _roomStatus;
-    private bool _anyOtherUiOnUse;
+    public bool anyOtherUiOnUse;
     
     private void Awake()
     {
@@ -38,15 +39,13 @@ public class CameraController : MonoBehaviour
         _controls.Disable();
 
     public void MouseInsideAnyUi() =>
-        _anyOtherUiOnUse = true;
+        anyOtherUiOnUse = true;
     
     public void MouseOutsideAnyUi() =>
-        _anyOtherUiOnUse = false;
+        anyOtherUiOnUse = false;
     
     private void Update()
     {
-        Debug.Log(_anyOtherUiOnUse);
-
         if (_pinchScrollDetection.touchCount <= 1)
             return;
 
@@ -69,13 +68,20 @@ public class CameraController : MonoBehaviour
         StopAllCoroutines();
     }
 
-    public bool IsPointerOverUIObject()
+    public bool IsPointerOverUIObject([NotNull] bool roomStupidBug = false)
     {
         var eventDataCurrentPosition = new PointerEventData(EventSystem.current);
         eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-        return results.Count > 2 || _upgradeRoom.inUse || _crewsOfRoom.inUse || _crewStatus.inUse || _roomStatus.inUse || _anyOtherUiOnUse;
+        Debug.Log(results.Count > 2 - (roomStupidBug ?1  : 0));
+        Debug.Log(_upgradeRoom.inUse);
+        Debug.Log(_upgradeRoom.inUse);
+        Debug.Log(_crewsOfRoom.inUse);
+        Debug.Log(_crewStatus.inUse);
+        Debug.Log(_roomStatus.inUse);
+        Debug.Log(anyOtherUiOnUse);
+        return results.Count > 2 - (roomStupidBug ?1  : 0) || _upgradeRoom.inUse || _crewsOfRoom.inUse || _crewStatus.inUse || _roomStatus.inUse || anyOtherUiOnUse;
     }
 
     private IEnumerator StartDrag(Vector3 startPos)

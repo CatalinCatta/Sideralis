@@ -33,7 +33,7 @@ public class CrewStatus : MonoBehaviour
         inUse = inUse && crewTab.activeSelf;
 
         if (!_wasJustActivated &&
-            (((_controls.InGame.Move.triggered || _controls.InGame.Interact.triggered) && !inUse) ||
+            (((_controls.InGame.Deselect.triggered || _controls.InGame.Interact.triggered) && !inUse) ||
              !crewTab.activeSelf))
         {
             crewTab.SetActive(false);
