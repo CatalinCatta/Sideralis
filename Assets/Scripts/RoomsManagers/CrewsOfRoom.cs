@@ -10,7 +10,8 @@ public class CrewsOfRoom : MonoBehaviour
     private Room _currentRoom;
     public bool inUse;
     [SerializeField] private GameObject listTab;
-    
+    private bool _wasJustActivated;
+
     private void Awake()
     {
         _spaceShipResources = transform.GetComponent<SpaceShipResources>();
@@ -23,15 +24,23 @@ public class CrewsOfRoom : MonoBehaviour
     private void OnDisable() =>
         _control.Disable();
     
-    private void LateUpdate()
+    private void Update()
     {
-        inUse = inUse && listTab.gameObject.activeSelf;
-        if ((!_control.InGame.Move.triggered && !_control.InGame.Interact.triggered) || inUse) return;
-        listTab.gameObject.SetActive(false);
-        _currentRoom = null;
+        inUse = inUse && listTab.activeSelf;
+
+        if (!_wasJustActivated &&
+            (((_control.InGame.Move.triggered || _control.InGame.Interact.triggered) && !inUse) ||
+             !listTab.activeSelf))
+        {
+            listTab.SetActive(false);
+            _currentRoom = null;
+            return;
+        }
+        
+        _wasJustActivated = false;
     }
 
-    public void MouseInsdie() =>         
+    public void MouseInside() =>         
         inUse = true;
 
     public void MouseOutside() =>
@@ -40,6 +49,7 @@ public class CrewsOfRoom : MonoBehaviour
     public void SetMeUpForRoom(Room room, string roomName)
     {
         _currentRoom = room;
+        _wasJustActivated = true;
         listTab.gameObject.SetActive(true);
         listTab.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = roomName;
         ChangeMyColorForRoom();
@@ -72,6 +82,20 @@ public class CrewsOfRoom : MonoBehaviour
         listTab.transform.GetChild(2).GetChild(1).GetChild(2).GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(1, 1, 1, 1);
         listTab.transform.GetChild(2).GetChild(1).GetChild(3).GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(1, 1, 1, 1);
     }
+
+     public void SelectCrew(int crewNr)
+     {
+         _currentRoom.crews[crewNr].transform.GetComponent<CrewMovement>().SelectCrew(true);
+         listTab.gameObject.SetActive(false);
+     }
+     
+     public void SelectAllCrews()
+     {
+         foreach (var crew in _currentRoom.crews)
+             crew.transform.GetComponent<CrewMovement>().SelectCrew(false);
+         listTab.gameObject.SetActive(false);
+         
+     }
     
     private void SetUpMyNumbersForRoom()
     {

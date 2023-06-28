@@ -88,7 +88,11 @@ public class CrewMovement : MonoBehaviour
     {
         if (_cameraController.IsPointerOverUIObject())
             return;
-        
+        SelectCrew(true);
+    }
+
+    public void SelectCrew(bool singleCrew)
+    {
         if (crewSelected)
         {
             _selectingCrew = false;
@@ -98,14 +102,16 @@ public class CrewMovement : MonoBehaviour
         }
         else
         {
-            _crewStatus.SetMeUpForCrew(transform.GetComponent<Crew>());
+            if (singleCrew)
+                _crewStatus.SetMeUpForCrew(transform.GetComponent<Crew>());
+    
             _selectingCrew = true;
             crewSelected = true;
             _spriteRenderer.color = new Color(0.3f, 1f, 0.28f);
             _actorManager.selectedCrewNumber += 1;
         }
     }
-
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.gameObject.GetComponent<BoxSelection>() || crewSelected) return;

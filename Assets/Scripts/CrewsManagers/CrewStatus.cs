@@ -10,6 +10,8 @@ public class CrewStatus : MonoBehaviour
     private Crew _crew;
     private Controls _controls;
     private SpaceShipManager _spaceShipManager;
+    public bool inUse;
+    private bool _wasJustActivated;
 
     private void Awake()
     {
@@ -27,21 +29,31 @@ public class CrewStatus : MonoBehaviour
     {
         if (_crew == null)
             return;
+        
+        inUse = inUse && crewTab.activeSelf;
 
-        if (buildTabOpener.GetComponent<Toggle>().isOn || !_crew.GetComponent<CrewMovement>().crewSelected)
-            crewTab.SetActive(false);
-            
-        if (!crewTab.activeSelf)
+        if (!_wasJustActivated &&
+            (((_controls.InGame.Move.triggered || _controls.InGame.Interact.triggered) && !inUse) ||
+             !crewTab.activeSelf))
         {
+            crewTab.SetActive(false);
             _crew = null;
             return;
-        }
+        }   
         
+        _wasJustActivated = false;
         SetUpMyNumbersForCrew();
     }
 
+    public void MouseInside() =>         
+        inUse = true;
+    
+    public void MouseOutside() =>
+        inUse = false;
+    
     public void SetMeUpForCrew(Crew crew)
     {
+        _wasJustActivated = true;
         crewTab.SetActive(true);
         buildTabOpener.GetComponent<Toggle>().isOn = false;
         _crew = crew;

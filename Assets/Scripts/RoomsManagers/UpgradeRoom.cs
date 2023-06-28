@@ -10,6 +10,7 @@ public class UpgradeRoom : MonoBehaviour
     private Room _currentRoom;
     public bool inUse;
     [SerializeField] private GameObject upgradeTab;
+    private bool _wasJustActivated;
 
     private void Awake()
     {
@@ -23,15 +24,23 @@ public class UpgradeRoom : MonoBehaviour
     private void OnDisable() =>
         _control.Disable();
     
-    private void LateUpdate()
+    private void Update()
     {
-        inUse = inUse && upgradeTab.gameObject.activeSelf;
-        if ((!_control.InGame.Move.triggered && !_control.InGame.Interact.triggered) || inUse) return;
-        upgradeTab.gameObject.SetActive(false);
-        _currentRoom = null;
+        inUse = inUse && upgradeTab.activeSelf;
+
+        if (!_wasJustActivated &&
+            (((_control.InGame.Move.triggered || _control.InGame.Interact.triggered) && !inUse) ||
+             !upgradeTab.activeSelf))
+        {
+            upgradeTab.SetActive(false);
+            _currentRoom = null;
+            return;
+        }
+        
+        _wasJustActivated = false;
     }
 
-    public void MouseInsdie() =>         
+    public void MouseInside() =>         
         inUse = true;
 
     public void MouseOutside() =>
@@ -40,7 +49,8 @@ public class UpgradeRoom : MonoBehaviour
     public void SetMeUpForRoom(Room room, string roomName)
     {
         _currentRoom = room;
-        upgradeTab.gameObject.SetActive(true);
+        _wasJustActivated = true;
+        upgradeTab.SetActive(true);
         upgradeTab.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = roomName;
         ChangeMyColorForRoom();
         SetUpMyNumbersForRoom();
@@ -109,9 +119,9 @@ public class UpgradeRoom : MonoBehaviour
         upgradeTab.transform.GetChild(3).GetChild(2).GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = _currentRoom.shipCaryCapacity.ToString();
         upgradeTab.transform.GetChild(3).GetChild(2).GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = _currentRoom.maxCrewNumber.ToString();
         upgradeTab.transform.GetChild(3).GetChild(2).GetChild(3).GetChild(0).GetComponent<TextMeshProUGUI>().text =
-            (_currentRoom.maxCrewNumber * (2 * _currentRoom.lvl + 8) - 2).ToString();
+            (_currentRoom.maxCrewNumber * (2 * (_currentRoom.lvl + 1) + 8) - 2).ToString();
         upgradeTab.transform.GetChild(3).GetChild(2).GetChild(4).GetChild(0).GetComponent<TextMeshProUGUI>().text =
-            (25 * _currentRoom.maxCrewNumber * (_currentRoom.lvl + 1)).ToString();
+            (25 * _currentRoom.maxCrewNumber * (_currentRoom.lvl + 2)).ToString();
         upgradeTab.transform.GetChild(3).GetChild(2).GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text = _currentRoom.maxCrewNumber.ToString();
     }
 }

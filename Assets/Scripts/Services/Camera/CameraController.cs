@@ -15,6 +15,9 @@ public class CameraController : MonoBehaviour
     private ActorManager _actorManager;
     private UpgradeRoom _upgradeRoom;
     private CrewsOfRoom _crewsOfRoom;
+    private CrewStatus _crewStatus;
+    private RoomStatus _roomStatus;
+    private bool _anyOtherUiOnUse;
     
     private void Awake()
     {
@@ -24,6 +27,8 @@ public class CameraController : MonoBehaviour
         _actorManager = FindObjectOfType<ActorManager>();
         _upgradeRoom = FindObjectOfType<UpgradeRoom>();
         _crewsOfRoom = FindObjectOfType<CrewsOfRoom>();
+        _crewStatus = FindObjectOfType<CrewStatus>();
+        _roomStatus = FindObjectOfType<RoomStatus>();
     }
 
     private void OnEnable() =>
@@ -32,12 +37,19 @@ public class CameraController : MonoBehaviour
     private void OnDisable() =>
         _controls.Disable();
 
-
+    public void MouseInsideAnyUi() =>
+        _anyOtherUiOnUse = true;
+    
+    public void MouseOutsideAnyUi() =>
+        _anyOtherUiOnUse = false;
+    
     private void Update()
     {
+        Debug.Log(_anyOtherUiOnUse);
+
         if (_pinchScrollDetection.touchCount <= 1)
             return;
-        
+
         _isDragging = false;
         StopAllCoroutines();
     }
@@ -63,7 +75,7 @@ public class CameraController : MonoBehaviour
         eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-        return results.Count > 2 || _upgradeRoom.inUse || _crewsOfRoom.inUse;
+        return results.Count > 2 || _upgradeRoom.inUse || _crewsOfRoom.inUse || _crewStatus.inUse || _roomStatus.inUse || _anyOtherUiOnUse;
     }
 
     private IEnumerator StartDrag(Vector3 startPos)

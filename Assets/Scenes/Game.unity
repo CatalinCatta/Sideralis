@@ -206,7 +206,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7042190}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1464754259}
+        m_TargetAssemblyTypeName: CrewsOfRoom, Assembly-CSharp
+        m_MethodName: SelectAllCrews
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &7042190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5109,7 +5121,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1464754259}
+        m_TargetAssemblyTypeName: CrewsOfRoom, Assembly-CSharp
+        m_MethodName: SelectCrew
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!1 &509578554
 GameObject:
   m_ObjectHideFlags: 0
@@ -10390,9 +10414,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1464754258}
-          m_TargetAssemblyTypeName: UpgradeRoom, Assembly-CSharp
-          m_MethodName: MouseInsdie
+        - m_Target: {fileID: 1464754259}
+          m_TargetAssemblyTypeName: CrewsOfRoom, Assembly-CSharp
+          m_MethodName: MouseInside
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -10406,8 +10430,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1464754258}
-          m_TargetAssemblyTypeName: UpgradeRoom, Assembly-CSharp
+        - m_Target: {fileID: 1464754259}
+          m_TargetAssemblyTypeName: CrewsOfRoom, Assembly-CSharp
           m_MethodName: MouseOutside
           m_Mode: 1
           m_Arguments:
@@ -11933,7 +11957,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1464754258}
           m_TargetAssemblyTypeName: UpgradeRoom, Assembly-CSharp
-          m_MethodName: MouseInsdie
+          m_MethodName: MouseInside
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -12175,7 +12199,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1464754259}
+        m_TargetAssemblyTypeName: CrewsOfRoom, Assembly-CSharp
+        m_MethodName: SelectCrew
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!1 &1117034187
 GameObject:
   m_ObjectHideFlags: 0
@@ -14035,7 +14071,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1274209537}
           m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
-          m_MethodName: OnPointerEnterUI
+          m_MethodName: MouseInsideAnyUi
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -14051,7 +14087,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1274209537}
           m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
-          m_MethodName: OnPointerExitUI
+          m_MethodName: MouseOutsideAnyUi
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -16844,6 +16880,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomTab: {fileID: 1840195140}
   buildTabOpener: {fileID: 1580167192}
+  inUse: 0
 --- !u!114 &1464754258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16886,6 +16923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crewTab: {fileID: 1589329247}
   buildTabOpener: {fileID: 1580167192}
+  inUse: 0
 --- !u!1 &1482428437
 GameObject:
   m_ObjectHideFlags: 0
@@ -17375,7 +17413,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1464754259}
+        m_TargetAssemblyTypeName: CrewsOfRoom, Assembly-CSharp
+        m_MethodName: SelectCrew
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!1 &1532422349
 GameObject:
   m_ObjectHideFlags: 0
@@ -18129,7 +18179,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1464754259}
+        m_TargetAssemblyTypeName: CrewsOfRoom, Assembly-CSharp
+        m_MethodName: SelectCrew
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!1 &1589329247
 GameObject:
   m_ObjectHideFlags: 0
@@ -18143,6 +18205,7 @@ GameObject:
   - component: {fileID: 1589329251}
   - component: {fileID: 1589329250}
   - component: {fileID: 1589329249}
+  - component: {fileID: 1589329253}
   m_Layer: 5
   m_Name: Crew Tab
   m_TagString: Untagged
@@ -18254,6 +18317,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1589329247}
   m_CullTransparentMesh: 0
+--- !u!114 &1589329253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589329247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1464754260}
+          m_TargetAssemblyTypeName: CrewStatus, Assembly-CSharp
+          m_MethodName: MouseInside
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1464754260}
+          m_TargetAssemblyTypeName: CrewStatus, Assembly-CSharp
+          m_MethodName: MouseOutside
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
 --- !u!1 &1592806719
 GameObject:
   m_ObjectHideFlags: 0
@@ -19946,6 +20054,7 @@ GameObject:
   - component: {fileID: 1726642257}
   - component: {fileID: 1726642261}
   - component: {fileID: 1726642260}
+  - component: {fileID: 1726642262}
   m_Layer: 5
   m_Name: Building Materials
   m_TagString: Untagged
@@ -20053,6 +20162,51 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1726642262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726642255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1274209537}
+          m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+          m_MethodName: MouseInsideAnyUi
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1274209537}
+          m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+          m_MethodName: MouseOutsideAnyUi
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
 --- !u!1 &1748814287
 GameObject:
   m_ObjectHideFlags: 0
@@ -21684,6 +21838,7 @@ GameObject:
   - component: {fileID: 1840195146}
   - component: {fileID: 1840195144}
   - component: {fileID: 1840195143}
+  - component: {fileID: 1840195148}
   m_Layer: 5
   m_Name: Room Tab
   m_TagString: Untagged
@@ -21795,6 +21950,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1840195140}
   m_CullTransparentMesh: 0
+--- !u!114 &1840195148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840195140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1464754257}
+          m_TargetAssemblyTypeName: RoomStatus, Assembly-CSharp
+          m_MethodName: MouseInside
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1464754257}
+          m_TargetAssemblyTypeName: RoomStatus, Assembly-CSharp
+          m_MethodName: MouseOutside
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
 --- !u!1 &1846998761
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,8 @@ public class RoomStatus : MonoBehaviour
     private UpgradeRoom _upgradeRoom;
     private CrewsOfRoom _crewsOfRoom;
     private bool _removable;
+    public bool inUse;
+    private bool _wasJustActivated;
 
     private void Awake()
     {
@@ -34,20 +36,29 @@ public class RoomStatus : MonoBehaviour
     {
         if (_room == null)
             return;
+        
+        inUse = inUse && roomTab.activeSelf;
 
-        if (_controls.InGame.Deselect.triggered || buildTabOpener.GetComponent<Toggle>().isOn)
-            roomTab.SetActive(false);
-            
-        if (!roomTab.activeSelf)
+        if (!_wasJustActivated &&
+            (((_controls.InGame.Move.triggered || _controls.InGame.Interact.triggered) && !inUse) ||
+             !roomTab.activeSelf))
         {
+            roomTab.SetActive(false);
             _room.transform.GetChild(5).gameObject.SetActive(false);
             _room = null;
             return;
-        }
+        }   
         
+        _wasJustActivated = false;
         SetUpMyNumbersForRoom();
     }
 
+    public void MouseInside() =>         
+        inUse = true;
+    
+    public void MouseOutside() =>
+        inUse = false;
+    
     public void SetMeUpForRoom(Room room)
     {
         if (_room == room)
@@ -57,23 +68,19 @@ public class RoomStatus : MonoBehaviour
         
         if (_room != null)
             _room.transform.GetChild(5).gameObject.SetActive(false);
-        
+
+        _wasJustActivated = true;
         roomTab.SetActive(true);
         buildTabOpener.GetComponent<Toggle>().isOn = false;
         _room = room;
-        switch (room)
+
+        roomTab.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = room switch
         {
-            case SmallRoom:
-                roomTab.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Small ";
-                break;
-            case MediumRoom:
-                roomTab.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Medium ";
-                break;
-            case BigRoom:
-                roomTab.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Large ";
-                break;                
-        }
-        
+            SmallRoom => "Small ",
+            MediumRoom => "Medium ",
+            _ => "Large "
+        };
+
         ChangeMyColorForRoom();
     }
 
